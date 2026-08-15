@@ -1,0 +1,2461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VDA Trail</title>
+<meta name="description" content="Track one batch of crypto from wallet to INR and get the exact figures for Schedule VDA — FY 2025–26 Indian rules.">
+<style>
+/* ============================================================
+   VDA Trail — visual system: a statutory record, not a dashboard.
+   Rules, not cards. No radius anywhere, no shadows anywhere.
+   Colour encodes the ASSET and nothing else:
+     indigo = your crypto · green = USDT · ochre = INR
+   Hops 1 and 2 share one unbroken indigo spine because it is the
+   same batch merely moving. So the two taxable events are exactly
+   the two hard colour breaks down the left edge.
+   ============================================================ */
+:root{
+  --desk:#C4CBCF;
+  --paper:#FBFBF9;
+  --paper-2:#F0F1EC;
+  --ink:#11161A;
+  --ink-2:#4B555C;
+  --ink-3:#79848B;
+  --rule:#11161A;
+  --hair:#C0C7CA;
+  --chrome:#11161A;
+  --on-chrome:#F3F4F0;
+
+  --asset-crypto:#1E3FA3;
+  --asset-usdt:#0F6349;
+  --asset-inr:#8A5405;
+
+  --flag:#AB2A1D;
+  --gain:#0F6349;
+  --loss:#AB2A1D;
+  --warn:#8A5405;
+
+  --wash-flag:#FAF0EE;
+  --wash-warn:#FAF5E9;
+  --wash-info:#EDF0F8;
+  --wash-ok:#EBF3EF;
+
+  --focus:#1E3FA3;
+
+  --display:"Bahnschrift","DIN Alternate","Liberation Sans Narrow","Arial Narrow",-apple-system,sans-serif;
+  --body:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --mono:"Cascadia Mono",Consolas,ui-monospace,"SF Mono","Roboto Mono",monospace;
+
+  --wrap:1160px;
+  --gutter:58px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#07090B;
+    --paper:#13181B;
+    --paper-2:#1A2024;
+    --ink:#E2E7E5;
+    --ink-2:#98A4AA;
+    --ink-3:#6B767D;
+    --rule:#47555C;
+    --hair:#242C31;
+    --chrome:#000000;
+    --on-chrome:#E2E7E5;
+
+    --asset-crypto:#7C9DF2;
+    --asset-usdt:#3EBF93;
+    --asset-inr:#D8A13E;
+
+    --flag:#EF7A6A;
+    --gain:#3EBF93;
+    --loss:#EF7A6A;
+    --warn:#D8A13E;
+
+    --wash-flag:#251411;
+    --wash-warn:#221B0D;
+    --wash-info:#111A2B;
+    --wash-ok:#0C1E18;
+
+    --focus:#7C9DF2;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#07090B;
+  --paper:#13181B;
+  --paper-2:#1A2024;
+  --ink:#E2E7E5;
+  --ink-2:#98A4AA;
+  --ink-3:#6B767D;
+  --rule:#47555C;
+  --hair:#242C31;
+  --chrome:#000000;
+  --on-chrome:#E2E7E5;
+
+  --asset-crypto:#7C9DF2;
+  --asset-usdt:#3EBF93;
+  --asset-inr:#D8A13E;
+
+  --flag:#EF7A6A;
+  --gain:#3EBF93;
+  --loss:#EF7A6A;
+  --warn:#D8A13E;
+
+  --wash-flag:#251411;
+  --wash-warn:#221B0D;
+  --wash-info:#111A2B;
+  --wash-ok:#0C1E18;
+
+  --focus:#7C9DF2;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--desk);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+img{max-width:100%}
+
+/* ---------- type ---------- */
+h1,h2,h3,h4{
+  font-family:var(--display);font-weight:700;margin:0;
+  text-wrap:balance;line-height:1.04;letter-spacing:.004em;
+  font-stretch:87.5%;text-transform:uppercase;
+}
+h1{font-size:clamp(2.5rem,1.2rem + 5.2vw,4.9rem)}
+h2{font-size:clamp(1.65rem,1.1rem + 2.3vw,2.7rem)}
+h3{font-size:1.02rem;letter-spacing:.02em;line-height:1.2}
+p{margin:0}
+a{color:var(--asset-crypto);text-underline-offset:3px}
+
+.eyebrow{
+  font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-2);margin:0;
+}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:63ch;line-height:1.6}
+.small{font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.xs{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.02em}
+.mono{font-family:var(--mono);font-size:.83em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- shell: one sheet on a desk ---------- */
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(18px,3.5vw,34px)}
+
+.site-head{
+  position:sticky;top:0;z-index:50;
+  background:var(--chrome);color:var(--on-chrome);
+  border-bottom:3px solid var(--chrome);
+}
+.head-row{display:flex;align-items:center;gap:18px;min-height:54px;flex-wrap:wrap}
+.brand{
+  display:flex;align-items:center;gap:10px;margin-right:auto;
+  font-family:var(--display);font-weight:700;font-size:1.16rem;font-stretch:87.5%;
+  text-transform:uppercase;letter-spacing:.06em;
+  background:none;border:0;color:var(--on-chrome);cursor:pointer;padding:0;border-radius:0;
+}
+.brand-mark{
+  width:11px;height:26px;flex:none;border-radius:0;
+  background:linear-gradient(180deg,var(--asset-crypto) 0 50%,var(--asset-usdt) 50% 76%,var(--asset-inr) 76% 100%);
+}
+nav.views{display:flex;flex-wrap:wrap;gap:0}
+nav.views button{
+  font-family:var(--mono);font-size:.73rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--on-chrome);opacity:.62;
+  background:none;border:0;border-radius:0;padding:8px 12px;cursor:pointer;
+  border-bottom:2px solid transparent;
+}
+nav.views button:hover{opacity:1}
+nav.views button[aria-current="page"]{opacity:1;border-bottom-color:var(--on-chrome)}
+.theme-btn{
+  font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--on-chrome);background:none;border:1px solid currentColor;border-radius:0;padding:5px 10px;cursor:pointer;opacity:.72;
+}
+.theme-btn:hover{opacity:1}
+
+main{
+  display:block;max-width:var(--wrap);margin:0 auto;
+  background:var(--paper);
+  border-left:1px solid var(--rule);border-right:1px solid var(--rule);
+}
+.view[hidden]{display:none}
+
+/* numbered sections, mirroring the brief's own §1–§10 */
+.view{counter-reset:sec}
+section.band{padding-block:clamp(38px,4.6vw,64px);border-bottom:1px solid var(--hair);position:relative}
+section.band:last-child{border-bottom:0}
+#view-overview .band+.band{counter-increment:sec;border-top:2px solid var(--rule);border-bottom:0;margin-top:-1px}
+#view-overview .band+.band::before{
+  content:counter(sec,decimal-leading-zero);
+  position:absolute;left:calc(50% - var(--wrap)/2 + 12px);top:clamp(36px,4.4vw,62px);
+  font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--ink-3);
+}
+@media (max-width:1230px){ #view-overview .band+.band::before{display:none} }
+
+.stack{display:flex;flex-direction:column;gap:20px}
+.stack-sm{display:flex;flex-direction:column;gap:11px}
+.stack-lg{display:flex;flex-direction:column;gap:32px}
+
+/* ---------- buttons: square, ruled, no shadow ---------- */
+.btn{
+  font-family:var(--mono);font-size:.76rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 15px;border-radius:0;cursor:pointer;
+  border:1px solid var(--rule);background:var(--paper);color:var(--ink);
+  text-decoration:none;transition:background .11s linear,color .11s linear;
+}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn-primary{background:var(--ink);color:var(--paper)}
+.btn-primary:hover{background:var(--paper);color:var(--ink)}
+.btn-sm{padding:6px 11px;font-size:.7rem}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.btn-quiet{border-color:var(--hair);color:var(--ink-2)}
+.btn-quiet:hover{background:var(--ink-2);color:var(--paper)}
+.btn-danger{border-color:var(--flag);color:var(--flag)}
+.btn-danger:hover{background:var(--flag);color:var(--paper)}
+
+/* ---------- chips: inked stamps ---------- */
+.chip{
+  display:inline-flex;align-items:center;gap:5px;border-radius:0;
+  font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  padding:3px 7px;border:1px solid currentColor;color:var(--ink-2);background:transparent;white-space:nowrap;
+}
+.chip.flagged{color:var(--flag);background:var(--wash-flag)}
+.chip.pass{color:var(--gain);background:var(--wash-ok)}
+.chip.warnish{color:var(--warn);background:var(--wash-warn)}
+.chip.crypto{color:var(--asset-crypto)}
+.chip.usdt{color:var(--asset-usdt)}
+.chip.inr{color:var(--asset-inr)}
+.dot{width:7px;height:7px;background:currentColor;flex:none;border-radius:0}
+
+/* ---------- ruled boxes, never cards ---------- */
+.card{background:var(--paper);border:1px solid var(--hair);border-top:2px solid var(--rule);padding:17px 19px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:0;border-left:1px solid var(--hair)}
+.grid-2>*{border-left:0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:0}
+.grid-2>.card,.grid-3>.card,.grid-2>.note,.grid-3>.note{border-right:1px solid var(--hair);margin-right:-1px}
+
+.note{padding:15px 18px;border:1px solid var(--hair);border-left:4px solid var(--ink-3);background:var(--paper-2)}
+.note h3{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px}
+.note p+p{margin-top:9px}
+.note-alarm{background:var(--wash-flag);border-color:var(--hair);border-left-color:var(--flag)}
+.note-alarm h3{color:var(--flag)}
+.note-warn{background:var(--wash-warn);border-left-color:var(--warn)}
+.note-warn h3{color:var(--warn)}
+.note-info{background:var(--wash-info);border-left-color:var(--asset-crypto)}
+.note-info h3{color:var(--asset-crypto)}
+.note-ok{background:var(--wash-ok);border-left-color:var(--asset-usdt)}
+.note-ok h3{color:var(--asset-usdt)}
+
+/* ---------- THE SPINE ----------
+   Each hop is a ledger row carrying a solid bar of its asset colour.
+   Consecutive same-asset hops butt together into one unbroken spine;
+   a taxable transfer is the hard break where the colour changes.     */
+.trail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:2px solid var(--rule)}
+.hop{
+  position:relative;display:grid;grid-template-columns:var(--gutter) 1fr;
+  border-bottom:1px solid var(--hair);
+  border-left:9px solid var(--tone,var(--ink-3));
+  padding:0;
+}
+.hop-node{display:none}
+.hop::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:0;
+}
+.hop-body{padding:17px 20px 19px 4px;display:grid;gap:9px;grid-column:2}
+.hop-no{
+  grid-column:1;align-self:start;
+  font-family:var(--mono);font-size:1.28rem;font-weight:700;letter-spacing:-.02em;
+  color:var(--tone,var(--ink-3));padding:15px 0 0 14px;white-space:nowrap;line-height:1;
+}
+.hop-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hop-title{font-family:var(--display);font-stretch:87.5%;text-transform:uppercase;font-weight:700;font-size:1.16rem;letter-spacing:.02em;color:var(--ink)}
+.hop-meta{display:flex;gap:6px 22px;flex-wrap:wrap;font-family:var(--mono);font-size:.78rem;color:var(--ink-2)}
+.hop-meta b{font-weight:700;color:var(--ink)}
+@media (max-width:640px){
+  .hop{grid-template-columns:1fr}
+  .hop-no{padding:14px 0 0 14px}
+  .hop-body{grid-column:1;padding:8px 16px 18px 14px}
+}
+
+.leg{
+  margin:3px 0 2px;padding:11px 14px;border:1px solid var(--flag);background:var(--wash-flag);display:grid;gap:6px;
+}
+.leg-title{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--flag)}
+.leg-math{font-family:var(--mono);font-size:.82rem;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.5}
+.tone-crypto{--tone:var(--asset-crypto)}
+.tone-usdt{--tone:var(--asset-usdt)}
+.tone-inr{--tone:var(--asset-inr)}
+
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0}
+  .reveal.in{opacity:1;transition:opacity .45s linear}
+}
+
+/* ---------- tables: the form itself ---------- */
+.scroller{overflow-x:auto;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:.86rem}
+caption{font-family:var(--mono)!important}
+thead th{
+  text-align:left;font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--on-chrome);background:var(--chrome);padding:10px 13px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.14);
+}
+thead th:last-child{border-right:0}
+tbody td{padding:11px 13px;border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);vertical-align:top}
+tbody td:last-child{border-right:0}
+tbody tr:nth-child(even){background:var(--paper-2)}
+tfoot td{padding:11px 13px;border-top:2px solid var(--rule);border-right:1px solid var(--hair);font-weight:700;background:var(--paper-2);font-family:var(--mono);font-size:.8rem}
+tfoot td:last-child{border-right:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gain{color:var(--gain)}
+.loss{color:var(--loss)}
+
+/* ---------- summary strip, not floating tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:0;border:1px solid var(--rule);border-top-width:2px}
+.tile{
+  padding:14px 16px;display:grid;gap:3px;background:var(--paper);
+  border-right:1px solid var(--hair);
+}
+.tile:last-child{border-right:0}
+.tile-k{font-family:var(--mono);font-size:.63rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.tile-v{font-family:var(--mono);font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+.tile-s{font-size:.78rem;color:var(--ink-2);line-height:1.45}
+.tile.accent{background:var(--ink)}
+.tile.accent .tile-k{color:var(--paper);opacity:.66}
+.tile.accent .tile-v{color:var(--paper)}
+.tile.accent .tile-s{color:var(--paper);opacity:.72}
+
+/* ---------- forms ---------- */
+form{display:grid;gap:0}
+fieldset{
+  border:1px solid var(--hair);border-top:2px solid var(--rule);
+  padding:16px 19px 19px;margin:0 0 -1px 0;background:var(--paper);display:grid;gap:13px;
+}
+legend{
+  padding:0 7px;margin-left:-4px;
+  font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--ink);
+}
+legend .dot{margin-right:6px;display:inline-block;transform:translateY(1px)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:13px}
+label{display:grid;gap:4px;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+label .hint{font-family:var(--body);font-weight:400;font-size:.78rem;letter-spacing:0;text-transform:none;color:var(--ink-3)}
+input,select,textarea{
+  font-family:var(--mono);font-size:.85rem;color:var(--ink);background:var(--paper-2);
+  border:1px solid var(--hair);border-radius:0;padding:8px 10px;width:100%;letter-spacing:0;text-transform:none;font-weight:400;
+}
+input:hover,select:hover,textarea:hover{border-color:var(--ink-3)}
+input:focus,select:focus,textarea:focus{background:var(--paper)}
+input[type="text"].mono-in{font-size:.78rem}
+textarea{resize:vertical;min-height:84px}
+.derived{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.84rem;
+  background:var(--paper-2);border:1px solid var(--hair);border-left:4px solid var(--asset-crypto);padding:9px 12px;color:var(--ink);
+}
+.err{font-family:var(--mono);color:var(--flag);font-size:.78rem}
+form .btn-row{padding-top:16px}
+
+/* ---------- app layout ---------- */
+.app-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid var(--rule)}
+.two-pane{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:24px;align-items:start}
+@media (max-width:900px){.two-pane{grid-template-columns:1fr}}
+.pane-side{position:sticky;top:70px;display:grid;gap:0;border:1px solid var(--rule);border-top-width:2px}
+.pane-side .tile{border-right:0;border-bottom:1px solid var(--hair)}
+.pane-side .tile:last-child{border-bottom:0}
+@media (max-width:900px){.pane-side{position:static}}
+
+.trail-card{
+  background:var(--paper);border:1px solid var(--hair);border-left:9px solid var(--asset-crypto);
+  padding:15px 18px;display:grid;gap:9px;width:100%;text-align:left;cursor:pointer;
+  font:inherit;color:inherit;border-radius:0;margin-bottom:-1px;
+  transition:background .11s linear;
+}
+.trail-card:hover{background:var(--paper-2)}
+.trail-card-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.trail-card-name{font-family:var(--display);font-stretch:87.5%;text-transform:uppercase;font-size:1.2rem;font-weight:700;letter-spacing:.02em}
+.mini{display:flex;gap:6px 20px;flex-wrap:wrap;font-family:var(--mono);font-size:.75rem;color:var(--ink-2)}
+.mini b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+.empty{border:1px solid var(--hair);border-top:2px solid var(--rule);padding:40px 24px;text-align:center;display:grid;gap:14px;justify-items:center;background:var(--paper-2)}
+
+/* ---------- ask ---------- */
+.ask-log{display:flex;flex-direction:column;gap:0;margin-bottom:18px;border:1px solid var(--hair);border-top:2px solid var(--rule)}
+.msg{max-width:none;padding:13px 16px;font-size:.94rem;border-bottom:1px solid var(--hair)}
+.msg:last-child{border-bottom:0}
+.msg-you{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.83rem}
+.msg-app{background:var(--paper)}
+.suggests{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.ask-form{display:flex;gap:0}
+.ask-form input{border-right:0}
+
+/* ---------- footer ---------- */
+.site-foot{padding-block:26px;background:var(--chrome);color:var(--on-chrome)}
+.site-foot .xs{color:var(--on-chrome);opacity:.7}
+.foot-row{display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap;align-items:center}
+
+/* ---------- lookup / import / settings ---------- */
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:10px 14px;border:0;border-radius:0;z-index:100;font-family:var(--mono);font-size:.78rem}
+.skip:focus{left:12px;top:9px}
+.lookup-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding-top:2px}
+.status{font-family:var(--mono);font-size:.75rem;color:var(--ink-2);line-height:1.5}
+.status.bad{color:var(--flag)}
+.status.good{color:var(--gain)}
+.spin{width:11px;height:11px;border:2px solid var(--hair);border-top-color:var(--asset-crypto);display:inline-block;animation:sp .7s linear infinite;vertical-align:-1px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spin{animation:none;border-top-color:var(--hair)}}
+.toast{
+  position:fixed;left:50%;bottom:0;transform:translateX(-50%);
+  background:var(--ink);color:var(--paper);padding:11px 22px;border-radius:0;
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;z-index:200;max-width:92vw;text-align:center;
+}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:0;font-family:var(--mono);font-size:.78rem;margin:0;border:1px solid var(--hair);border-top:2px solid var(--rule)}
+.kv dt{color:var(--ink-2);padding:7px 14px;border-bottom:1px solid var(--hair);background:var(--paper-2);letter-spacing:.08em;text-transform:uppercase;font-size:.68rem}
+.kv dd{margin:0;padding:7px 14px;border-bottom:1px solid var(--hair);font-variant-numeric:tabular-nums;word-break:break-all}
+.kv dt:last-of-type,.kv dd:last-of-type{border-bottom:0}
+
+details.drop{border:1px solid var(--hair);border-top:2px solid var(--rule);background:var(--paper)}
+details.drop>summary{
+  cursor:pointer;padding:13px 18px;list-style:none;display:flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);
+}
+details.drop>summary::-webkit-details-marker{display:none}
+details.drop>summary::before{content:"[+]";font-family:var(--mono);color:var(--ink-3)}
+details.drop[open]>summary::before{content:"[−]"}
+details.drop[open]>summary{border-bottom:1px solid var(--hair)}
+.drop-body{padding:17px 18px;display:grid;gap:13px}
+.pick{white-space:nowrap}
+.dropzone{border:1px dashed var(--ink-3);padding:22px;text-align:center;background:var(--paper-2);display:grid;gap:10px;justify-items:center}
+.dropzone.over{border-color:var(--asset-crypto);border-style:solid;background:var(--wash-info)}
+
+/* ---------- print (the CA statement) ---------- */
+@media print{
+  :root{--desk:#fff;--paper:#fff;--paper-2:#fff;--ink:#000;--ink-2:#222;--ink-3:#555;--rule:#000;--hair:#999;--chrome:#000;--on-chrome:#fff}
+  .site-head,.site-foot,.no-print{display:none!important}
+  body{background:#fff}
+  main{border:0;max-width:none}
+  .band{padding-block:0;border:0}
+  .two-pane{grid-template-columns:1fr}
+  .tile,.hop,tr{break-inside:avoid}
+  #view-overview .band+.band::before{display:none}
+}
+
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head no-print">
+  <div class="wrap head-row">
+    <button class="brand" data-go="overview" type="button">
+      <span class="brand-mark" aria-hidden="true"></span>
+      VDA&nbsp;Trail
+    </button>
+    <nav class="views" aria-label="Sections">
+      <button type="button" data-go="overview">Overview</button>
+      <button type="button" data-go="new">New Trail</button>
+      <button type="button" data-go="trails">Trails</button>
+      <button type="button" data-go="summary">Tax Summary</button>
+      <button type="button" data-go="ask">Ask</button>
+    </nav>
+    <button class="theme-btn" type="button" data-go="settings">Settings</button>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================ OVERVIEW ============================ -->
+<div class="view" id="view-overview">
+
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack">
+        <p class="eyebrow">India · FY 2025–26 · Schedule VDA</p>
+        <h1>Track one unit of crypto<br>from wallet to&nbsp;rupees.</h1>
+        <p class="lede">Paste the transaction IDs for each hop. You get back the figures that go into Schedule VDA: what you paid, what you sold for, the gain on each leg, the 30% plus cess, and the 1% TDS that nobody on Binance P2P deducts for you.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" data-go="new">Start a trail</button>
+          <button class="btn" type="button" data-go="overview" data-scroll="worked">See the worked example</button>
+        </div>
+        <div class="btn-row" style="margin-top:6px">
+          <span class="chip pass" id="engineChip"><span class="dot"></span>Checking engine…</span>
+          <span class="chip"><span class="dot" style="color:var(--ink-3)"></span>Runs entirely in your browser</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">The journey</p>
+        <h2>Four hops. Two of them are taxable.</h2>
+        <p class="lede">Colour here means one thing: <b>which asset you are holding</b>. Indigo is your crypto, green is USDT, brass is rupees. A taxable transfer is simply a point where the rail changes colour — and there are two of them.</p>
+      </div>
+
+      <ol class="trail" id="journeyDemo">
+        <li class="hop tone-crypto reveal">
+          <span class="hop-no">01</span>
+          <div class="hop-body">
+            <div class="hop-head"><span class="hop-title">Crypto lands in your wallet</span><span class="chip crypto"><span class="dot"></span>Crypto</span></div>
+            <p class="small">You paste the <b>on-chain tx hash</b>. The app pulls the arrival time and what the asset was worth in rupees at that moment. <b>That figure is your cost of acquisition</b>, and everything else is measured against it.</p>
+          </div>
+        </li>
+        <li class="hop tone-crypto reveal">
+          <span class="hop-no">02</span>
+          <div class="hop-body">
+            <div class="hop-head"><span class="hop-title">You send it to Binance</span><span class="chip crypto"><span class="dot"></span>Crypto</span></div>
+            <p class="small">Another <b>tx hash</b>. Nothing was sold here, you just moved your own coins between two places you control, so there's no tax. The hop is here to show it's the same batch that arrives at the exchange.</p>
+          </div>
+        </li>
+        <li class="hop tone-usdt reveal">
+          <span class="hop-no">03</span>
+          <div class="hop-body">
+            <div class="hop-head"><span class="hop-title">You convert it to USDT</span><span class="chip usdt"><span class="dot"></span>USDT</span></div>
+            <div class="leg">
+              <p class="leg-title">Taxable transfer 1 of 2 · crypto → USDT</p>
+              <p class="small" style="color:var(--ink)">Swapping one coin for another counts as a sale in India, even though no rupees moved. Your cost is the hop&nbsp;1 value. Your sale consideration is what the USDT was worth when you got it.</p>
+            </div>
+            <p class="small">Binance keeps this off the public chain, so it comes from your trade history export or you type it in.</p>
+          </div>
+        </li>
+        <li class="hop tone-inr reveal">
+          <span class="hop-no">04</span>
+          <div class="hop-body">
+            <div class="hop-head"><span class="hop-title">You sell the USDT for rupees</span><span class="chip inr"><span class="dot"></span>INR</span></div>
+            <div class="leg">
+              <p class="leg-title">Taxable transfer 2 of 2 · USDT → INR</p>
+              <p class="small" style="color:var(--ink)">A second sale, judged entirely on its own. Cost is what the USDT was worth when you acquired it. Sale consideration is what the buyer actually paid into your bank.</p>
+            </div>
+            <p class="small">From your P2P order history. This is also the leg carrying the <b>1% TDS that you have to deposit yourself</b>.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">The tax logic</p>
+        <h2>Three rules the engine refuses to break.</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card stack-sm">
+          <span class="chip warnish">Flat 31.2%</span>
+          <h3>30% + 4% cess, no exceptions</h3>
+          <p class="small">Every gain is taxed at 30% plus a 4% health &amp; education cess — an effective 31.2%. There is no short-term versus long-term split and no holding-period benefit. Holding for three years buys you nothing.</p>
+        </div>
+        <div class="card stack-sm">
+          <span class="chip flagged">No set-off</span>
+          <h3>A loss on one leg cannot touch a gain on another</h3>
+          <p class="small">If Event&nbsp;#1 is a gain and Event&nbsp;#2 is a loss, you still pay 30% on the full gain and the loss simply vanishes. It cannot be carried forward either. Each taxable leg stands completely alone.</p>
+        </div>
+        <div class="card stack-sm">
+          <span class="chip">Cost only</span>
+          <h3>Fees are not deductible</h3>
+          <p class="small">Gas, Binance trading fees and P2P spread come out of your pocket but not out of your taxable gain. VDA&nbsp;Trail records them so you know your real economics — and never subtracts them in the tax maths.</p>
+        </div>
+      </div>
+
+      <div class="note note-info">
+        <h3>Why timing is the whole point</h3>
+        <p class="small" style="color:var(--ink)">The gain on each leg is the price difference between two moments in time. That is why every hop stores its own precise timestamp and its own INR price. A few hours can move the price, and therefore the tax. The app will never reuse today's price for a trade that happened three months ago.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="note note-warn">
+          <h3>The 1% TDS is on you</h3>
+          <p class="small" style="color:var(--ink)">Section 194S puts a 1% TDS on VDA transfers. An Indian exchange usually deducts it for you. Binance P2P does not — for a P2P trade on an international platform, you are typically the one who has to deduct and deposit it.</p>
+          <p class="small" style="color:var(--ink)">VDA&nbsp;Trail computes it on the sale consideration of the P2P leg and labels it <b>payable by you</b>, never <em>already deducted</em>. It is an advance tax: it is credited against your 30% liability, not charged on top of it.</p>
+        </div>
+        <div class="note note-info">
+          <h3>A boundary worth knowing</h3>
+          <p class="small" style="color:var(--ink)">If you hold crypto on a foreign platform and the total value crosses ₹20&nbsp;lakh, it may also need disclosure in <b>Schedule FA</b> (Foreign Assets) — a separate obligation from Schedule VDA.</p>
+          <p class="small" style="color:var(--ink)">The Tax Summary raises a flag when your year crosses that line. It does not compute Schedule FA for you; that is a conversation with your CA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="worked">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">Worked example</p>
+        <h2>0.5 ETH, May 2025 — and the trap most calculators fall into.</h2>
+        <p class="lede">ETH arrives on 10 May worth ₹1,00,000. On 15 May you convert it to USDT worth ₹1,20,000. On 20 May the P2P sale lands ₹1,19,000 in your bank. Here is what that costs you.</p>
+      </div>
+
+      <div class="scroller">
+        <table>
+          <caption class="xs" style="text-align:left;padding:11px 14px;caption-side:top">All figures illustrative. The engine is tested against these exact numbers on every page load.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Taxable leg</th>
+              <th scope="col" class="n">Cost of acq.</th>
+              <th scope="col" class="n">Sale consid.</th>
+              <th scope="col" class="n">Gain / (Loss)</th>
+              <th scope="col" class="n">30% + 4% cess</th>
+              <th scope="col" class="n">1% TDS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="chip crypto" style="margin-right:6px"><span class="dot"></span>#1</span> ETH → USDT</td>
+              <td class="n">₹1,00,000</td>
+              <td class="n">₹1,20,000</td>
+              <td class="n gain">₹20,000</td>
+              <td class="n">₹6,240</td>
+              <td class="n">—</td>
+            </tr>
+            <tr>
+              <td><span class="chip inr" style="margin-right:6px"><span class="dot"></span>#2</span> USDT → INR (P2P)</td>
+              <td class="n">₹1,20,000</td>
+              <td class="n">₹1,19,000</td>
+              <td class="n loss">(₹1,000)</td>
+              <td class="n">₹0</td>
+              <td class="n">₹1,190</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total</td>
+              <td class="n"></td>
+              <td class="n"></td>
+              <td class="n"></td>
+              <td class="n">₹6,240</td>
+              <td class="n">₹1,190</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="note note-alarm">
+        <h3>What the tool must never do here</h3>
+        <p class="small" style="color:var(--ink)">Total tax is <b>₹6,240</b> — not ₹6,240 minus something for the ₹1,000 P2P loss. That loss is legally invisible; it cannot reduce the gain on Event&nbsp;#1. A naive calculator that nets the two legs into a ₹19,000 gain would report ₹5,928 and <b>under-state your tax by ₹312</b>, which is exactly the kind of thing that earns a notice. Avoiding that is the reason this tool exists.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">Where each number comes from</p>
+        <h2>Half your journey is public. Half of it only Binance can see.</h2>
+      </div>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th scope="col">Hop</th><th scope="col">On public chain?</th><th scope="col">How the number is obtained</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>1 · Wallet arrival</b></td><td><span class="chip usdt"><span class="dot"></span>Yes</span></td><td class="small">Block-explorer lookup by tx hash — Etherscan, Polygonscan, BscScan or a Solana RPC — for timestamp, asset and amount. Historical INR price from CoinGecko for that date.</td></tr>
+            <tr><td><b>2 · Wallet → Binance</b></td><td><span class="chip usdt"><span class="dot"></span>Yes</span></td><td class="small">Same explorer lookup. Confirms the batch left your wallet toward the exchange deposit address.</td></tr>
+            <tr><td><b>3 · Convert to USDT</b></td><td><span class="chip flagged"><span class="dot"></span>No</span></td><td class="small">Internal to Binance and invisible on-chain. Comes from your trade-history CSV export, or you type it from the Binance UI.</td></tr>
+            <tr><td><b>4 · P2P sale</b></td><td><span class="chip flagged"><span class="dot"></span>No</span></td><td class="small">From your Binance P2P order history. This is where you enter the actual rupees received.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-2">
+        <div class="note note-ok">
+          <h3>Privacy is the whole point</h3>
+          <p class="small" style="color:var(--ink)">This holds your complete crypto-to-cash trail, so it stores everything locally — in this build, in your own browser's storage on this machine. Nothing is uploaded, there is no account and there is no server.</p>
+        </div>
+        <div class="note note-alarm">
+          <h3>What this app will never ask for</h3>
+          <p class="small" style="color:var(--ink)">No private key. No seed phrase. No Binance password. No API secret with withdrawal rights. It needs only public addresses, public tx hashes and read-only exported history. <b>If a field could hold a secret that moves funds, it does not belong in this tool</b> — and you should distrust any crypto tax tool that asks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">Design note</p>
+        <h2>Why the trails are not stored on-chain.</h2>
+        <p class="lede">VDA&nbsp;Trail reads the public blockchain but keeps everything in a private local store. Putting your tax trails into a smart contract instead would be a mistake on four counts.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card stack-sm">
+          <h3>Privacy</h3>
+          <p class="small">A public chain publishes your finances permanently and to everyone. Writing your income, your bank-facing P2P sales and your wallet linkages on-chain would tie your real identity to every rupee you have ever moved, with no way to take it back.</p>
+        </div>
+        <div class="card stack-sm">
+          <h3>Immutability cuts the wrong way</h3>
+          <p class="small">Tax records get corrected — a mis-typed order ID, a hop classified as a sale when it was a transfer, a price fetched for the wrong date. A local record is edited. An on-chain record can only be appended to, leaving your mistake permanently visible next to the fix.</p>
+        </div>
+        <div class="card stack-sm">
+          <h3>Cost for nothing</h3>
+          <p class="small">Every write costs gas. You would be paying real money, per edit, to store data that only you will ever read — and paying it again each time you correct a figure during filing season.</p>
+        </div>
+        <div class="card stack-sm">
+          <h3>Wrong tool for the job</h3>
+          <p class="small">A blockchain's actual value is trustless shared state between strangers who cannot agree on a referee. A personal tax ledger has exactly one user, who already trusts themselves. There is no disagreement for consensus to resolve, so all you keep is the overhead.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack">
+      <div class="note note-warn">
+        <h3>What this tool is — and isn't</h3>
+        <p class="small" style="color:var(--ink)">VDA&nbsp;Trail produces an <b>estimate</b> to help you and your CA. It is not tax advice and it is not a filing service. Tax law changes, and edge cases — gifts, airdrops landing in the wallet, staking rewards, the ₹20 lakh Schedule FA threshold — sit outside this flow and need a professional. Have a CA review the numbers before you file. The tool exists to make you well-informed, not to replace expert judgement.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" type="button" data-go="new">Start your first trail</button>
+        <button class="btn" type="button" data-go="trails" id="seedFromOverview">Load the worked example as data</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ NEW TRAIL ============================ -->
+<div class="view" id="view-new" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="app-head">
+        <div class="stack-sm">
+          <p class="eyebrow">Screen 1</p>
+          <h2 id="newTrailHeading">New trail</h2>
+          <p class="small" style="max-width:62ch">One trail is one batch of crypto making all four hops. Paste the tx hash for hop&nbsp;1 and the app reads the chain itself — which token it was, how much arrived, and the exact minute it landed — then prices it in rupees for that moment. No key, no signup. Hops&nbsp;3 and 4 are inside Binance, so they come from your CSV export or you type them.</p>
+        </div>
+        <div class="btn-row no-print">
+          <button class="btn btn-sm" type="button" id="fillExample">Fill with worked example</button>
+          <button class="btn btn-sm btn-quiet" type="button" id="clearForm">Clear</button>
+        </div>
+      </div>
+
+      <details class="drop no-print" id="importDrop" style="margin-bottom:22px">
+        <summary>Import hops 3 &amp; 4 from a Binance CSV export</summary>
+        <div class="drop-body">
+          <p class="small">Binance keeps the convert and P2P legs off the public chain, so they come from your account export. Drop the CSV here, then pick which row is which hop. Column names drift between Binance exports, so the parser matches them loosely and shows you what it found before anything is filled in.</p>
+          <div class="dropzone" id="dropzone">
+            <p class="small"><b>Drop a CSV file here</b> or</p>
+            <div class="btn-row">
+              <label class="btn btn-sm" style="display:inline-flex">Choose file<input type="file" id="csvFile" accept=".csv,text/csv" style="display:none"></label>
+              <button class="btn btn-sm btn-quiet" type="button" id="pasteToggle">Paste CSV text instead</button>
+            </div>
+            <p class="xs">Read-only history export. Never a key or a password.</p>
+          </div>
+          <textarea id="csvPaste" placeholder="Paste the contents of your Binance CSV export here, then press Parse." hidden></textarea>
+          <div class="btn-row" id="pasteActions" hidden>
+            <button class="btn btn-sm btn-primary" type="button" id="parsePaste">Parse</button>
+          </div>
+          <span class="status" id="csvStatus" role="status" aria-live="polite"></span>
+          <div id="csvRows"></div>
+        </div>
+      </details>
+
+      <form id="trailForm" novalidate>
+        <fieldset>
+          <legend>The batch</legend>
+          <div class="fields">
+            <label>Label
+              <span class="hint">Something you'll recognise later</span>
+              <input type="text" name="label" placeholder="ETH batch, May 2025" required>
+            </label>
+            <label>Asset
+              <span class="hint">The coin that arrived in your wallet</span>
+              <input type="text" name="asset" placeholder="ETH" required>
+            </label>
+            <label>Quantity
+              <span class="hint">Decimal, as shown on-chain</span>
+              <input type="text" name="quantity" inputmode="decimal" placeholder="0.5" required>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="dot" style="color:var(--asset-crypto)"></span>Hop 1 — arrival in your private wallet · on-chain</legend>
+          <div class="fields">
+            <label>Chain
+              <select name="h1chain">
+                <option>Ethereum</option><option>Polygon</option><option>BNB Chain</option><option>Solana</option><option>Arbitrum</option><option>Base</option><option>Bitcoin</option><option>Other</option>
+              </select>
+            </label>
+            <label>Transaction hash
+              <span class="hint">Paste it and the rest fills itself in</span>
+              <input type="text" class="mono-in" name="h1ref" placeholder="0x9f2a…" required>
+            </label>
+            <label>Arrival timestamp
+              <span class="hint">From the block explorer</span>
+              <input type="datetime-local" name="h1ts" required>
+            </label>
+            <label>INR price of 1 <span data-unit>unit</span> at that moment
+              <span class="hint">Historical price for that date</span>
+              <input type="text" name="h1price" inputmode="decimal" placeholder="200000" required>
+            </label>
+            <label>Gas fee in INR <span class="hint">Optional · recorded, never deducted</span>
+              <input type="text" name="h1fee" inputmode="decimal" placeholder="0">
+            </label>
+          </div>
+          <div class="lookup-row no-print">
+            <button class="btn btn-sm" type="button" id="h1lookup">Look up tx on chain</button>
+            <button class="btn btn-sm" type="button" id="h1price-lookup">Fetch INR price for that date</button>
+            <span class="status" id="h1status" role="status" aria-live="polite"></span>
+          </div>
+          <p class="derived" id="h1derived">Cost of acquisition — enter quantity and price</p>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="dot" style="color:var(--asset-crypto)"></span>Hop 2 — wallet to Binance · on-chain · not taxable</legend>
+          <div class="fields">
+            <label>Chain
+              <select name="h2chain">
+                <option>Ethereum</option><option>Polygon</option><option>BNB Chain</option><option>Solana</option><option>Arbitrum</option><option>Base</option><option>Bitcoin</option><option>Other</option>
+              </select>
+            </label>
+            <label>Transaction hash
+              <input type="text" class="mono-in" name="h2ref" placeholder="0x4c81…">
+            </label>
+            <label>Transfer timestamp
+              <input type="datetime-local" name="h2ts">
+            </label>
+            <label>Gas fee in INR <span class="hint">Optional · recorded only</span>
+              <input type="text" name="h2fee" inputmode="decimal" placeholder="0">
+            </label>
+          </div>
+          <div class="lookup-row no-print">
+            <button class="btn btn-sm" type="button" id="h2lookup">Look up tx on chain</button>
+            <span class="status" id="h2status" role="status" aria-live="polite"></span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="dot" style="color:var(--asset-usdt)"></span>Hop 3 — convert to USDT · Binance · taxable event #1</legend>
+          <div class="fields">
+            <label>Binance trade / convert ID
+              <span class="hint">From your trade-history export</span>
+              <input type="text" class="mono-in" name="h3ref" placeholder="8812993410" required>
+            </label>
+            <label>Conversion timestamp
+              <input type="datetime-local" name="h3ts" required>
+            </label>
+            <label>INR value of the USDT received
+              <span class="hint">Sale consideration for event #1, cost for event #2</span>
+              <input type="text" name="h3value" inputmode="decimal" placeholder="120000" required>
+            </label>
+            <label>Trading fee in INR <span class="hint">Optional · recorded only</span>
+              <input type="text" name="h3fee" inputmode="decimal" placeholder="0">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="dot" style="color:var(--asset-inr)"></span>Hop 4 — P2P sale for rupees · Binance · taxable event #2</legend>
+          <div class="fields">
+            <label>Binance P2P order ID
+              <input type="text" class="mono-in" name="h4ref" placeholder="20250520114455" required>
+            </label>
+            <label>Sale timestamp
+              <input type="datetime-local" name="h4ts" required>
+            </label>
+            <label>Actual INR received in your bank
+              <span class="hint">What the buyer really paid, not the quoted rate</span>
+              <input type="text" name="h4value" inputmode="decimal" placeholder="119000" required>
+            </label>
+            <label>P2P fee in INR <span class="hint">Optional · recorded only</span>
+              <input type="text" name="h4fee" inputmode="decimal" placeholder="0">
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="btn-row no-print">
+          <button class="btn btn-primary" type="submit" id="submitBtn">Save trail &amp; compute</button>
+          <button class="btn btn-quiet" type="button" data-go="trails">Cancel</button>
+          <span class="err" id="formErr" role="alert"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ TRAILS ============================ -->
+<div class="view" id="view-trails" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="app-head">
+        <div class="stack-sm">
+          <p class="eyebrow">Screen 2</p>
+          <h2>Your trails</h2>
+        </div>
+        <div class="btn-row no-print">
+          <button class="btn btn-sm btn-primary" type="button" data-go="new">New trail</button>
+        </div>
+      </div>
+      <div id="trailsBody"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ TRAIL DETAIL ============================ -->
+<div class="view" id="view-detail" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div id="detailBody"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ TAX SUMMARY ============================ -->
+<div class="view" id="view-summary" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="app-head">
+        <div class="stack-sm">
+          <p class="eyebrow">Screen 3 · Schedule VDA</p>
+          <h2>Tax summary</h2>
+        </div>
+        <div class="btn-row no-print">
+          <label style="font-size:.78rem">Financial year
+            <select id="fySelect" style="min-width:130px"></select>
+          </label>
+          <button class="btn btn-sm" type="button" id="csvBtn">Download CSV</button>
+          <button class="btn btn-sm" type="button" id="copyBtn">Copy CSV</button>
+          <button class="btn btn-sm" type="button" id="printBtn">Print / PDF</button>
+        </div>
+      </div>
+      <div id="summaryBody"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ ASK ============================ -->
+<div class="view" id="view-ask" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="app-head">
+        <div class="stack-sm">
+          <p class="eyebrow">Screen 4</p>
+          <h2>Ask your trails</h2>
+          <p class="small" style="max-width:60ch">Plain-English questions over your own saved data. This build answers offline — your figures never leave the page and no API key is needed.</p>
+        </div>
+      </div>
+      <div class="ask-log" id="askLog"></div>
+      <div class="suggests no-print" id="askSuggests"></div>
+      <form class="ask-form no-print" id="askForm">
+        <input type="text" id="askInput" placeholder="What's my total VDA tax this year?" autocomplete="off" aria-label="Ask a question about your trails">
+        <button class="btn btn-primary" type="submit">Ask</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ SETTINGS ============================ -->
+<div class="view" id="view-settings" hidden>
+  <section class="band">
+    <div class="wrap stack-lg">
+      <div class="stack-sm">
+        <p class="eyebrow">Settings</p>
+        <h2>Lookups</h2>
+        <p class="lede">Everything below is optional. Out of the box the app reads public blockchain nodes and public price feeds with no key and no account, so pasting a tx hash just works. These boxes are for people who want to point it somewhere else.</p>
+      </div>
+
+      <div class="note note-ok">
+        <h3>What it reads, with no key</h3>
+        <p class="small" style="color:var(--ink)">Public nodes on Ethereum, Polygon, BNB Chain, Arbitrum, Base and Optimism give the timestamp, the token and the amount. Binance's public price feed gives what that token was worth at the exact minute of your hop, and the ECB reference rate converts it to rupees. Several nodes are tried per chain, so one being down doesn't stop you.</p>
+      </div>
+
+      <div class="note note-alarm">
+        <h3>Never paste a key that can move money</h3>
+        <p class="small" style="color:var(--ink)">Nothing here needs one. A <b>Binance API secret can move your funds and must never go in this app</b>, in this box or any other. If a tax tool ever asks you for one, it's asking for far more than it needs to do the job.</p>
+      </div>
+
+      <form id="settingsForm">
+        <fieldset>
+          <legend>Your own node</legend>
+          <div class="fields">
+            <label>Custom RPC endpoint
+              <span class="hint">Leave blank to use the built-in public nodes</span>
+              <input type="text" class="mono-in" name="customRpc" placeholder="https://your-node.example/rpc" autocomplete="off">
+            </label>
+          </div>
+          <p class="xs">Tried first, with the public nodes as fallback. Useful if you run your own node or have an Infura/Alchemy URL. Solana and Bitcoin aren't covered by automatic lookup — enter those hops by hand.</p>
+        </fieldset>
+        <fieldset>
+          <legend>Pricing fallback</legend>
+          <div class="fields">
+            <label>CoinGecko demo API key
+              <span class="hint">Only used if the Binance feed can't price your asset</span>
+              <input type="text" class="mono-in" name="coingeckoKey" placeholder="Free from coingecko.com/api" autocomplete="off">
+            </label>
+          </div>
+          <p class="xs">CoinGecko gives a daily average in INR directly. It's the backstop for assets Binance doesn't list — the free tier is rate-limited, so a key helps there.</p>
+        </fieldset>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-quiet" type="button" id="clearKeys">Clear these</button>
+          <span class="status" id="settingsStatus" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <div class="stack-sm">
+        <h2>Your data</h2>
+        <p class="lede">Everything lives in this browser on this machine. That is good for privacy and bad for accident recovery — clearing site data wipes your trails. Take a backup before filing season.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn" type="button" id="backupBtn">Download backup</button>
+        <label class="btn" style="display:inline-flex">Restore from backup<input type="file" id="restoreFile" accept=".json,application/json" style="display:none"></label>
+        <button class="btn btn-danger" type="button" id="wipeBtn">Erase all trails</button>
+        <span class="status" id="dataStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div id="storageInfo"></div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="site-foot no-print">
+  <div class="wrap foot-row">
+    <p class="xs">VDA&nbsp;Trail · estimates for Schedule VDA under FY 2025–26 rules. Not tax advice. Have a CA review before filing.</p>
+    <p class="xs">Stored locally in this browser. No account, no server.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ============================================================
+   MONEY — integer paise everywhere. Never floats for currency.
+   ============================================================ */
+function toPaise(v){
+  if(v===null||v===undefined) return 0;
+  const s=String(v).replace(/[^0-9.\-]/g,"");
+  if(s===""||s==="-"||s===".") return 0;
+  const neg=s.trim().startsWith("-");
+  const body=s.replace("-","");
+  const parts=body.split(".");
+  const rupees=parts[0]||"0";
+  const frac=((parts[1]||"")+"00").slice(0,2);
+  const n=(parseInt(rupees,10)||0)*100+(parseInt(frac,10)||0);
+  return neg?-n:n;
+}
+function fmtINR(p,opts){
+  const dec=opts&&opts.decimals;
+  const neg=p<0;
+  const r=Math.abs(p)/100;
+  const s="₹"+new Intl.NumberFormat("en-IN",{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0}).format(r);
+  return neg?"("+s+")":s;
+}
+function plainINR(p){ return (p/100).toFixed(2); }
+
+/* ============================================================
+   TAX ENGINE — the part you must be able to defend line by line.
+
+   Rule 1 · flat 30% + 4% health & education cess = 31.2% of the gain.
+   Rule 2 · a leg with a loss produces ZERO tax. Its loss is never
+            subtracted from any other leg. Totals only ever ADD tax.
+   Rule 3 · fees are recorded but never enter the tax maths.
+   TDS   · 1% of the sale consideration of the P2P leg, payable by you.
+   ============================================================ */
+var TAX_NUM=312, TAX_DEN=1000;            // 30% x 1.04
+function taxOnGain(gain){ return gain>0 ? Math.round(gain*TAX_NUM/TAX_DEN) : 0; }
+function tdsOnSale(sale){ return sale>0 ? Math.round(sale/100) : 0; }
+
+function hopOf(trail,n){
+  var hs=trail.hops||[];
+  for(var i=0;i<hs.length;i++){ if(hs[i].hopNo===n) return hs[i]; }
+  return {};
+}
+
+function computeEvents(trail){
+  var h1=hopOf(trail,1), h3=hopOf(trail,3), h4=hopOf(trail,4);
+
+  var e1cost=h1.inrValue||0;              // INR value when it landed in your wallet
+  var e1sale=h3.inrValue||0;              // INR value of the USDT received
+  var e1gain=e1sale-e1cost;
+
+  var e2cost=h3.inrValue||0;              // the SAME figure — it is now your cost
+  var e2sale=h4.inrValue||0;              // rupees actually received
+  var e2gain=e2sale-e2cost;
+
+  return [
+    { key:"crypto_to_usdt", n:1,
+      label:(trail.asset||"Crypto")+" → USDT",
+      dateAcq:h1.timestamp, dateTr:h3.timestamp,
+      cost:e1cost, sale:e1sale, gain:e1gain,
+      tax:taxOnGain(e1gain), tds:0, tdsNote:"Not applicable on this leg" },
+    { key:"usdt_to_inr", n:2,
+      label:"USDT → INR (P2P)",
+      dateAcq:h3.timestamp, dateTr:h4.timestamp,
+      cost:e2cost, sale:e2sale, gain:e2gain,
+      tax:taxOnGain(e2gain), tds:tdsOnSale(e2sale), tdsNote:"Payable by you" }
+  ];
+}
+
+/* Totals ADD. There is deliberately no code path that nets a loss
+   against a gain — that is the whole reason this tool exists. */
+function totalsOf(events){
+  var t={tax:0,tds:0,gains:0,lossesIgnored:0,sale:0,cost:0};
+  for(var i=0;i<events.length;i++){
+    var e=events[i];
+    t.tax+=e.tax; t.tds+=e.tds; t.sale+=e.sale; t.cost+=e.cost;
+    if(e.gain>0) t.gains+=e.gain; else t.lossesIgnored+=-e.gain;
+  }
+  t.balance=t.tax-t.tds;                  // TDS is a credit, not an extra charge
+  return t;
+}
+
+function feesOf(trail){
+  var s=0,hs=trail.hops||[];
+  for(var i=0;i<hs.length;i++) s+=hs[i].feeInr||0;
+  return s;
+}
+
+/* ---- self-test against the brief's worked example ---- */
+function selfTest(){
+  var t={asset:"ETH",quantity:"0.5",hops:[
+    {hopNo:1,timestamp:"2025-05-10T10:00",inrValue:toPaise("100000")},
+    {hopNo:2,timestamp:"2025-05-12T10:00"},
+    {hopNo:3,timestamp:"2025-05-15T10:00",inrValue:toPaise("120000")},
+    {hopNo:4,timestamp:"2025-05-20T10:00",inrValue:toPaise("119000")}
+  ]};
+  var ev=computeEvents(t), tt=totalsOf(ev);
+  var checks=[
+    ["Event 1 gain",ev[0].gain,toPaise("20000")],
+    ["Event 1 tax",ev[0].tax,toPaise("6240")],
+    ["Event 2 loss",ev[1].gain,toPaise("-1000")],
+    ["Event 2 tax is zero",ev[1].tax,0],
+    ["Event 2 TDS",ev[1].tds,toPaise("1190")],
+    ["Total tax is NOT netted",tt.tax,toPaise("6240")],
+    ["Total TDS",tt.tds,toPaise("1190")]
+  ];
+  var out=[],ok=true;
+  for(var i=0;i<checks.length;i++){
+    var pass=checks[i][1]===checks[i][2];
+    if(!pass) ok=false;
+    out.push({name:checks[i][0],got:checks[i][1],want:checks[i][2],pass:pass});
+  }
+  return {ok:ok,checks:out};
+}
+
+/* ============================================================
+   DATES / FY
+   ============================================================ */
+function fyOf(ts){
+  if(!ts) return null;
+  var d=new Date(ts);
+  if(isNaN(d.getTime())) return null;
+  var y=d.getFullYear(), m=d.getMonth();          // Indian FY runs 1 Apr – 31 Mar
+  var start=(m>=3)?y:y-1;
+  return start+"-"+String((start+1)%100).padStart(2,"0");
+}
+function fmtTs(ts){
+  if(!ts) return "—";
+  var d=new Date(ts);
+  if(isNaN(d.getTime())) return String(ts);
+  var date=d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+  var time=d.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:false});
+  return date+" · "+time;
+}
+function fmtDate(ts){
+  if(!ts) return "—";
+  var d=new Date(ts);
+  if(isNaN(d.getTime())) return String(ts);
+  return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();
+}
+
+/* ============================================================
+   STORE
+   ============================================================ */
+var KEY="vdatrail.v1";
+var store={trails:[]};
+
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){ var p=JSON.parse(raw); if(p&&Array.isArray(p.trails)) store=p; }
+  }catch(e){ /* corrupt or blocked storage — start empty rather than break */ }
+}
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify(store)); }
+  catch(e){ alert("This browser blocked local storage, so the trail could not be saved. Your figures are still shown on screen."); }
+}
+function uid(){ return "t"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+function exampleTrail(){
+  return {
+    id:uid(), label:"ETH batch, May 2025", asset:"ETH", quantity:"0.5",
+    createdAt:new Date().toISOString(),
+    hops:[
+      {hopNo:1,kind:"arrival",source:"onchain",chain:"Ethereum",referenceId:"0x9f2a4c7b1e88d3f0a6c25b94e7d1130f8ab6c4e29d75f31a08b6e2c4d9f01a3b7",timestamp:"2025-05-10T14:22",assetIn:"ETH",inrPrice:toPaise("200000"),inrValue:toPaise("100000"),feeInr:toPaise("420")},
+      {hopNo:2,kind:"transfer",source:"onchain",chain:"Ethereum",referenceId:"0x4c81ef03a7d259b6c0148e3fa91d7b6205c8e4419af23d06b7e5c81a2f9d43e0",timestamp:"2025-05-12T09:41",feeInr:toPaise("380")},
+      {hopNo:3,kind:"convert",source:"binance",referenceId:"8812993410",timestamp:"2025-05-15T18:05",assetIn:"ETH",assetOut:"USDT",inrValue:toPaise("120000"),feeInr:toPaise("120")},
+      {hopNo:4,kind:"p2p_sale",source:"binance",referenceId:"20250520114455",timestamp:"2025-05-20T11:44",assetIn:"USDT",assetOut:"INR",inrValue:toPaise("119000"),feeInr:toPaise("0")}
+    ]
+  };
+}
+
+function trailFY(t){ return fyOf(hopOf(t,4).timestamp)||fyOf(hopOf(t,3).timestamp)||fyOf(hopOf(t,1).timestamp)||"Unassigned"; }
+
+/* ============================================================
+   ROUTING
+   ============================================================ */
+var VIEWS=["overview","new","trails","detail","summary","ask","settings"];
+var current="overview", openTrailId=null, editingId=null;
+
+function go(view,opts){
+  if(VIEWS.indexOf(view)<0) view="overview";
+  current=view;
+  for(var i=0;i<VIEWS.length;i++){
+    var el=document.getElementById("view-"+VIEWS[i]);
+    if(el) el.hidden=(VIEWS[i]!==view);
+  }
+  var navKey=(view==="detail")?"trails":view;
+  var btns=document.querySelectorAll("nav.views button");
+  for(var j=0;j<btns.length;j++){
+    if(btns[j].getAttribute("data-go")===navKey) btns[j].setAttribute("aria-current","page");
+    else btns[j].removeAttribute("aria-current");
+  }
+  if(view==="trails") renderTrails();
+  if(view==="detail") renderDetail();
+  if(view==="summary") renderSummary();
+  if(view==="ask") renderAskSuggests();
+  if(view==="settings") renderSettings();
+  if(view!=="new" && editingId){ editingId=null; resetForm(); }
+  if(opts&&opts.scroll){
+    var target=document.getElementById(opts.scroll);
+    if(target){ target.scrollIntoView({behavior:"smooth",block:"start"}); return; }
+  }
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest("[data-go]");
+  if(!b) return;
+  ev.preventDefault();
+  go(b.getAttribute("data-go"),{scroll:b.getAttribute("data-scroll")});
+});
+
+/* ============================================================
+   ESCAPING
+   ============================================================ */
+function esc(s){
+  return String(s===null||s===undefined?"":s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function shortHash(h){
+  var s=String(h||"");
+  if(s.length<=22) return esc(s);
+  return esc(s.slice(0,10)+"…"+s.slice(-8));
+}
+
+/* ============================================================
+   RENDER — trails list
+   ============================================================ */
+function renderTrails(){
+  var host=document.getElementById("trailsBody");
+  if(!store.trails.length){
+    host.innerHTML=
+      '<div class="empty">'+
+        '<p class="eyebrow">No trails yet</p>'+
+        '<p class="small" style="max-width:46ch">A trail is one batch of crypto making all four hops. Start one from scratch, or load the worked example from the brief to see the engine run.</p>'+
+        '<div class="btn-row" style="justify-content:center">'+
+          '<button class="btn btn-primary" type="button" data-go="new">New trail</button>'+
+          '<button class="btn" type="button" id="seedBtn">Load worked example</button>'+
+        '</div>'+
+      '</div>';
+    var sb=document.getElementById("seedBtn");
+    if(sb) sb.addEventListener("click",seedExample);
+    return;
+  }
+  var html='<div class="stack-sm">';
+  for(var i=0;i<store.trails.length;i++){
+    var t=store.trails[i];
+    var ev=computeEvents(t), tt=totalsOf(ev);
+    html+=
+      '<button class="trail-card" type="button" data-open="'+esc(t.id)+'">'+
+        '<span class="trail-card-head">'+
+          '<span class="trail-card-name">'+esc(t.label||"Untitled trail")+'</span>'+
+          '<span class="chip crypto"><span class="dot"></span>'+esc(t.quantity||"")+' '+esc(t.asset||"")+'</span>'+
+          '<span class="chip">FY '+esc(trailFY(t))+'</span>'+
+        '</span>'+
+        '<span class="mini">'+
+          '<span>Tax due <b>'+fmtINR(tt.tax)+'</b></span>'+
+          '<span>TDS payable <b>'+fmtINR(tt.tds)+'</b></span>'+
+          '<span>Event #1 <b class="'+(ev[0].gain>=0?"gain":"loss")+'">'+fmtINR(ev[0].gain)+'</b></span>'+
+          '<span>Event #2 <b class="'+(ev[1].gain>=0?"gain":"loss")+'">'+fmtINR(ev[1].gain)+'</b></span>'+
+        '</span>'+
+      '</button>';
+  }
+  html+='</div>';
+  host.innerHTML=html;
+  var cards=host.querySelectorAll("[data-open]");
+  for(var k=0;k<cards.length;k++){
+    cards[k].addEventListener("click",function(){ openTrailId=this.getAttribute("data-open"); go("detail"); });
+  }
+}
+
+function seedExample(){
+  store.trails.push(exampleTrail());
+  save();
+  renderTrails();
+}
+
+/* ============================================================
+   RENDER — trail detail (the rail)
+   ============================================================ */
+function hopRow(cfg){
+  return ''+
+  '<li class="hop tone-'+cfg.tone+'">'+
+    '<span class="hop-no">'+String(cfg.no).padStart(2,"0")+'</span>'+
+    '<div class="hop-body">'+
+      '<div class="hop-head">'+
+        '<span class="hop-title">'+cfg.title+'</span>'+
+        '<span class="chip '+cfg.chipClass+'"><span class="dot"></span>'+cfg.chipText+'</span>'+
+      '</div>'+
+      '<div class="hop-meta">'+cfg.meta+'</div>'+
+      (cfg.leg||"")+
+    '</div>'+
+  '</li>';
+}
+
+function renderDetail(){
+  var host=document.getElementById("detailBody");
+  var t=null;
+  for(var i=0;i<store.trails.length;i++){ if(store.trails[i].id===openTrailId) t=store.trails[i]; }
+  if(!t){ host.innerHTML='<div class="empty"><p class="small">That trail is no longer here.</p><button class="btn" type="button" data-go="trails">Back to trails</button></div>'; return; }
+
+  var h1=hopOf(t,1),h2=hopOf(t,2),h3=hopOf(t,3),h4=hopOf(t,4);
+  var ev=computeEvents(t), tt=totalsOf(ev), fees=feesOf(t);
+
+  function ref(h){ return h.referenceId?'<span>Ref <b class="mono">'+shortHash(h.referenceId)+'</b></span>':''; }
+
+  var rail=
+    '<ol class="trail">'+
+    hopRow({no:1,tone:"crypto",seg:"var(--asset-crypto)",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
+      title:"Arrived in your private wallet",
+      meta:'<span>'+fmtTs(h1.timestamp)+'</span>'+
+           '<span>Chain <b>'+esc(h1.chain||"—")+'</b></span>'+ref(h1)+
+           '<span>Unit price <b>'+fmtINR(h1.inrPrice||0)+'</b></span>'+
+           '<span>Cost of acquisition <b>'+fmtINR(h1.inrValue||0)+'</b></span>'})+
+    hopRow({no:2,tone:"crypto",seg:"linear-gradient(180deg,var(--asset-crypto),var(--asset-usdt))",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
+      title:"Moved from your wallet to Binance",
+      meta:'<span>'+fmtTs(h2.timestamp)+'</span>'+
+           '<span>Chain <b>'+esc(h2.chain||"—")+'</b></span>'+ref(h2)+
+           '<span><b>Not a sale · no tax</b></span>'})+
+    hopRow({no:3,tone:"usdt",seg:"var(--asset-usdt)",chipClass:"usdt",chipText:"USDT",
+      title:"Converted to USDT on Binance",
+      meta:'<span>'+fmtTs(h3.timestamp)+'</span>'+ref(h3)+
+           '<span>Value received <b>'+fmtINR(h3.inrValue||0)+'</b></span>',
+      leg:'<div class="leg">'+
+            '<p class="leg-title">Taxable event #1 · '+esc(t.asset||"Crypto")+' → USDT</p>'+
+            '<p class="leg-math">'+fmtINR(ev[0].sale)+' sale − '+fmtINR(ev[0].cost)+' cost = <b class="'+(ev[0].gain>=0?"gain":"loss")+'">'+fmtINR(ev[0].gain)+'</b></p>'+
+            '<p class="leg-math">Tax at 31.2% = <b>'+fmtINR(ev[0].tax)+'</b>'+(ev[0].gain<=0?' · a loss here is taxed at zero and cannot offset anything else':'')+'</p>'+
+          '</div>'})+
+    hopRow({no:4,tone:"inr",seg:"var(--asset-inr)",chipClass:"inr",chipText:"INR",
+      title:"Sold for rupees over P2P",
+      meta:'<span>'+fmtTs(h4.timestamp)+'</span>'+ref(h4)+
+           '<span>Received in bank <b>'+fmtINR(h4.inrValue||0)+'</b></span>',
+      leg:'<div class="leg">'+
+            '<p class="leg-title">Taxable event #2 · USDT → INR</p>'+
+            '<p class="leg-math">'+fmtINR(ev[1].sale)+' sale − '+fmtINR(ev[1].cost)+' cost = <b class="'+(ev[1].gain>=0?"gain":"loss")+'">'+fmtINR(ev[1].gain)+'</b></p>'+
+            '<p class="leg-math">Tax at 31.2% = <b>'+fmtINR(ev[1].tax)+'</b> · TDS at 1% of sale = <b>'+fmtINR(ev[1].tds)+'</b> <span class="chip warnish" style="margin-left:4px">Payable by you</span></p>'+
+          '</div>'})+
+    '</ol>';
+
+  var lossNote = tt.lossesIgnored>0
+    ? '<div class="note note-alarm" style="margin-top:14px">'+
+        '<h3>A loss of '+fmtINR(tt.lossesIgnored)+' has been discarded</h3>'+
+        '<p class="small" style="color:var(--ink)">It is legally invisible. It has <b>not</b> been subtracted from the other leg’s gain, and it cannot be carried into next year. Netting the two legs would have shown '+fmtINR(taxOnGain(tt.gains-tt.lossesIgnored))+' instead of '+fmtINR(tt.tax)+' — an under-statement of '+fmtINR(tt.tax-taxOnGain(tt.gains-tt.lossesIgnored))+'.</p>'+
+      '</div>'
+    : '';
+
+  host.innerHTML=
+    '<div class="app-head">'+
+      '<div class="stack-sm">'+
+        '<p class="eyebrow">Trail · FY '+esc(trailFY(t))+'</p>'+
+        '<h2>'+esc(t.label||"Untitled trail")+'</h2>'+
+        '<p class="small">'+esc(t.quantity||"")+' '+esc(t.asset||"")+' · four hops · two taxable transfers</p>'+
+      '</div>'+
+      '<div class="btn-row no-print">'+
+        '<button class="btn btn-sm" type="button" id="editTrail">Edit</button>'+
+        '<button class="btn btn-sm" type="button" data-go="summary">Tax summary</button>'+
+        '<button class="btn btn-sm btn-danger" type="button" id="delTrail">Delete trail</button>'+
+        '<button class="btn btn-sm btn-quiet" type="button" data-go="trails">All trails</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="two-pane">'+
+      '<div>'+rail+lossNote+'</div>'+
+      '<aside class="pane-side">'+
+        '<div class="tile accent"><span class="tile-k">Tax on this trail</span><span class="tile-v">'+fmtINR(tt.tax)+'</span><span class="tile-s">30% + 4% cess, legs added never netted</span></div>'+
+        '<div class="tile"><span class="tile-k">TDS payable by you</span><span class="tile-v">'+fmtINR(tt.tds)+'</span><span class="tile-s">1% of the P2P sale, credited against the tax above</span></div>'+
+        '<div class="tile"><span class="tile-k">Still to pay after TDS</span><span class="tile-v">'+fmtINR(tt.balance)+'</span><span class="tile-s">Tax minus the TDS credit</span></div>'+
+        '<div class="tile"><span class="tile-k">Fees recorded</span><span class="tile-v">'+fmtINR(fees)+'</span><span class="tile-s">Real cost to you, and not deductible</span></div>'+
+      '</aside>'+
+    '</div>';
+
+  var edit=document.getElementById("editTrail");
+  if(edit) edit.addEventListener("click",function(){
+    editingId=t.id;
+    go("new");
+    loadForm(t);
+  });
+
+  var del=document.getElementById("delTrail");
+  if(del) del.addEventListener("click",function(){
+    if(!confirm("Delete “"+(t.label||"this trail")+"”? This cannot be undone.")) return;
+    store.trails=store.trails.filter(function(x){ return x.id!==t.id; });
+    save(); openTrailId=null; go("trails");
+  });
+}
+
+/* ============================================================
+   RENDER — tax summary (Schedule VDA)
+   ============================================================ */
+function fyList(){
+  var seen={},out=[];
+  for(var i=0;i<store.trails.length;i++){
+    var f=trailFY(store.trails[i]);
+    if(!seen[f]){ seen[f]=1; out.push(f); }
+  }
+  out.sort(); out.reverse();
+  return out;
+}
+var selectedFY=null;
+
+function rowsForFY(fy){
+  var rows=[];
+  for(var i=0;i<store.trails.length;i++){
+    var t=store.trails[i];
+    if(trailFY(t)!==fy) continue;
+    var ev=computeEvents(t);
+    for(var j=0;j<ev.length;j++) rows.push({trail:t,e:ev[j]});
+  }
+  return rows;
+}
+
+function renderSummary(){
+  var sel=document.getElementById("fySelect");
+  var years=fyList();
+  var host=document.getElementById("summaryBody");
+
+  if(!years.length){
+    sel.innerHTML="";
+    host.innerHTML='<div class="empty"><p class="eyebrow">Nothing to summarise</p><p class="small" style="max-width:46ch">Save a trail and its two taxable transfers will appear here as Schedule VDA rows.</p><div class="btn-row" style="justify-content:center"><button class="btn btn-primary" type="button" data-go="new">New trail</button><button class="btn" type="button" id="seedBtn2">Load worked example</button></div></div>';
+    var sb2=document.getElementById("seedBtn2");
+    if(sb2) sb2.addEventListener("click",function(){ seedExample(); renderSummary(); });
+    return;
+  }
+  if(years.indexOf(selectedFY)<0) selectedFY=years[0];
+  var opts="";
+  for(var y=0;y<years.length;y++) opts+='<option value="'+esc(years[y])+'"'+(years[y]===selectedFY?" selected":"")+">"+esc(years[y])+"</option>";
+  sel.innerHTML=opts;
+
+  var rows=rowsForFY(selectedFY);
+  var events=rows.map(function(r){ return r.e; });
+  var tt=totalsOf(events);
+
+  var body="";
+  for(var i=0;i<rows.length;i++){
+    var t=rows[i].trail, e=rows[i].e;
+    body+=
+      "<tr>"+
+        "<td>"+esc(t.label||"Untitled")+'<div class="xs">'+esc(t.quantity||"")+" "+esc(t.asset||"")+"</div></td>"+
+        '<td><span class="chip '+(e.n===1?"crypto":"inr")+'"><span class="dot"></span>#'+e.n+"</span> "+esc(e.label)+"</td>"+
+        '<td class="n">'+fmtDate(e.dateAcq)+"</td>"+
+        '<td class="n">'+fmtDate(e.dateTr)+"</td>"+
+        '<td class="n">'+fmtINR(e.cost)+"</td>"+
+        '<td class="n">'+fmtINR(e.sale)+"</td>"+
+        '<td class="n '+(e.gain>=0?"gain":"loss")+'">'+fmtINR(e.gain)+"</td>"+
+        '<td class="n">'+fmtINR(e.tax)+"</td>"+
+        '<td class="n">'+(e.tds?fmtINR(e.tds):"—")+"</td>"+
+      "</tr>";
+  }
+
+  var faFlag = tt.sale>=toPaise("2000000")
+    ? '<div class="note note-warn"><h3>Schedule FA may also apply</h3><p class="small" style="color:var(--ink)">Total consideration routed through a foreign platform this year is '+fmtINR(tt.sale)+', which is at or above the ₹20 lakh mark. Schedule FA (Foreign Assets) is a separate obligation from Schedule VDA and this tool does not compute it. Raise it with your CA.</p></div>'
+    : "";
+
+  var lossNote = tt.lossesIgnored>0
+    ? '<div class="note note-alarm"><h3>'+fmtINR(tt.lossesIgnored)+' of losses discarded, as the law requires</h3><p class="small" style="color:var(--ink)">Losing legs are taxed at zero and their losses are neither set off against gains nor carried forward. Every figure above is a per-leg total that has been added, never netted.</p></div>'
+    : '<div class="note note-ok"><h3>No losing legs this year</h3><p class="small" style="color:var(--ink)">Every taxable transfer in FY '+esc(selectedFY)+' produced a gain, so the no-set-off rule did not have to bite. It is still enforced in the engine.</p></div>';
+
+  host.innerHTML=
+    '<div class="tiles" style="margin-bottom:20px">'+
+      '<div class="tile accent"><span class="tile-k">Total tax due</span><span class="tile-v">'+fmtINR(tt.tax)+'</span><span class="tile-s">30% + 4% cess</span></div>'+
+      '<div class="tile"><span class="tile-k">TDS payable by you</span><span class="tile-v">'+fmtINR(tt.tds)+'</span><span class="tile-s">1% u/s 194S on P2P legs</span></div>'+
+      '<div class="tile"><span class="tile-k">Balance after TDS credit</span><span class="tile-v">'+fmtINR(tt.balance)+'</span><span class="tile-s">TDS is advance tax, not extra</span></div>'+
+      '<div class="tile"><span class="tile-k">Taxable gains</span><span class="tile-v">'+fmtINR(tt.gains)+'</span><span class="tile-s">Gaining legs only</span></div>'+
+      '<div class="tile"><span class="tile-k">Losses discarded</span><span class="tile-v">'+fmtINR(tt.lossesIgnored)+'</span><span class="tile-s">No set-off, no carry-forward</span></div>'+
+    '</div>'+
+    '<div class="scroller" style="margin-bottom:18px">'+
+      '<table>'+
+        '<caption class="xs" style="text-align:left;padding:11px 14px;caption-side:top">Schedule VDA · FY '+esc(selectedFY)+' · one row per taxable transfer</caption>'+
+        "<thead><tr>"+
+          '<th scope="col">Trail</th><th scope="col">Taxable transfer</th>'+
+          '<th scope="col" class="n">Date of acq.</th><th scope="col" class="n">Date of transfer</th>'+
+          '<th scope="col" class="n">Cost of acq.</th><th scope="col" class="n">Sale consid.</th>'+
+          '<th scope="col" class="n">Gain / (Loss)</th><th scope="col" class="n">Tax 31.2%</th><th scope="col" class="n">TDS 1%</th>'+
+        "</tr></thead>"+
+        "<tbody>"+body+"</tbody>"+
+        "<tfoot><tr>"+
+          '<td colspan="4">Totals · '+rows.length+" taxable transfer"+(rows.length===1?"":"s")+"</td>"+
+          '<td class="n">'+fmtINR(tt.cost)+'</td><td class="n">'+fmtINR(tt.sale)+'</td>'+
+          '<td class="n"></td><td class="n">'+fmtINR(tt.tax)+'</td><td class="n">'+fmtINR(tt.tds)+"</td>"+
+        "</tr></tfoot>"+
+      "</table>"+
+    "</div>"+
+    '<div class="grid-2">'+lossNote+faFlag+"</div>"+
+    '<div class="note" style="margin-top:16px"><h3>For your CA</h3><p class="small" style="color:var(--ink)">'+esc(caSummary(selectedFY))+"</p></div>";
+
+  sel.onchange=function(){ selectedFY=this.value; renderSummary(); };
+}
+
+function caSummary(fy){
+  var rows=rowsForFY(fy);
+  var tt=totalsOf(rows.map(function(r){ return r.e; }));
+  var n=rows.length;
+  var s="For FY "+fy+" there are "+n+" taxable VDA transfer"+(n===1?"":"s")+" across "+
+    (new Set(rows.map(function(r){ return r.trail.id; }))).size+" trail(s). "+
+    "Aggregate sale consideration is "+fmtINR(tt.sale)+" against cost of acquisition of "+fmtINR(tt.cost)+". "+
+    "Gains on profitable legs total "+fmtINR(tt.gains)+", taxed at 30% plus 4% cess = "+fmtINR(tt.tax)+". ";
+  s+= tt.lossesIgnored>0
+    ? "Losses of "+fmtINR(tt.lossesIgnored)+" on other legs have been ignored in line with section 115BBH — no set-off and no carry-forward. "
+    : "No loss-making legs arose. ";
+  s+="TDS under section 194S of "+fmtINR(tt.tds)+" arises on the P2P legs and is payable by the assessee, not deducted by the platform; it is claimable as a credit, leaving "+fmtINR(tt.balance)+" to pay. ";
+  s+="Exchange and gas fees have been recorded but not deducted. Figures are an estimate for review, not a filed computation.";
+  return s;
+}
+
+/* ---- CSV ---- */
+function csvFor(fy){
+  var rows=rowsForFY(fy);
+  var head=["Trail","Asset","Quantity","Taxable transfer","Date of acquisition","Date of transfer","Cost of acquisition (INR)","Sale consideration (INR)","Gain or (Loss) (INR)","Tax at 30% + 4% cess (INR)","TDS at 1% (INR)"];
+  var lines=[head.join(",")];
+  for(var i=0;i<rows.length;i++){
+    var t=rows[i].trail,e=rows[i].e;
+    var cells=[t.label||"",t.asset||"",t.quantity||"",e.label,fmtDate(e.dateAcq),fmtDate(e.dateTr),plainINR(e.cost),plainINR(e.sale),plainINR(e.gain),plainINR(e.tax),plainINR(e.tds)];
+    lines.push(cells.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(","));
+  }
+  var tt=totalsOf(rows.map(function(r){ return r.e; }));
+  lines.push(['"TOTAL"','""','""','""','""','""','"'+plainINR(tt.cost)+'"','"'+plainINR(tt.sale)+'"','""','"'+plainINR(tt.tax)+'"','"'+plainINR(tt.tds)+'"'].join(","));
+  lines.push("");
+  lines.push('"Losses discarded (no set-off, no carry-forward)","'+plainINR(tt.lossesIgnored)+'"');
+  lines.push('"Balance payable after TDS credit","'+plainINR(tt.balance)+'"');
+  return lines.join("\r\n");
+}
+
+/* ============================================================
+   ASK — offline query over your own data
+   ============================================================ */
+function allEvents(){
+  var out=[];
+  for(var i=0;i<store.trails.length;i++){
+    var t=store.trails[i], ev=computeEvents(t);
+    for(var j=0;j<ev.length;j++) out.push({trail:t,e:ev[j],fy:trailFY(t)});
+  }
+  return out;
+}
+function latestFY(){ var l=fyList(); return l.length?l[0]:null; }
+
+function answer(q){
+  var s=q.toLowerCase();
+  var all=allEvents();
+  if(!all.length) return "There are no trails saved yet, so there is nothing to answer from. Add a trail, or load the worked example from the Trails screen.";
+
+  var fy=null;
+  var m=s.match(/20\d\d\s*[-–/]\s*\d{2,4}/);
+  if(m){ var cand=m[0].replace(/\s/g,"").replace(/[–\/]/g,"-"); var yl=fyList();
+    for(var i=0;i<yl.length;i++){ if(yl[i].indexOf(cand.slice(0,4))===0) fy=yl[i]; } }
+  if(!fy) fy=latestFY();
+  var scoped=all.filter(function(x){ return x.fy===fy; });
+  var tt=totalsOf(scoped.map(function(x){ return x.e; }));
+
+  if(/tds/.test(s)){
+    if(tt.tds===0) return "No TDS arises in FY "+fy+" — none of the P2P legs carry a sale consideration.";
+    return "You owe "+fmtINR(tt.tds)+" of TDS for FY "+fy+", at 1% under section 194S on the P2P sale legs. On Binance P2P nobody deducts it for you, so it is yours to deposit. It is an advance tax, so it comes off your "+fmtINR(tt.tax)+" liability rather than adding to it — leaving "+fmtINR(tt.balance)+" to pay.";
+  }
+  if(/(biggest|largest|highest|most)/.test(s)&&/(gain|profit)/.test(s)){
+    var best=null;
+    for(var b=0;b<scoped.length;b++){ if(!best||scoped[b].e.gain>best.e.gain) best=scoped[b]; }
+    if(!best||best.e.gain<=0) return "No leg in FY "+fy+" made a gain.";
+    return "The biggest gain in FY "+fy+" is "+fmtINR(best.e.gain)+" on "+best.e.label+" in the trail “"+(best.trail.label||"Untitled")+"” — sale consideration "+fmtINR(best.e.sale)+" against cost "+fmtINR(best.e.cost)+", taxed at "+fmtINR(best.e.tax)+".";
+  }
+  if(/(biggest|largest|worst)/.test(s)&&/(loss)/.test(s)){
+    var worst=null;
+    for(var w=0;w<scoped.length;w++){ if(!worst||scoped[w].e.gain<worst.e.gain) worst=scoped[w]; }
+    if(!worst||worst.e.gain>=0) return "No leg in FY "+fy+" made a loss.";
+    return "The largest loss in FY "+fy+" is "+fmtINR(-worst.e.gain)+" on "+worst.e.label+" in “"+(worst.trail.label||"Untitled")+"”. It is taxed at zero and, by law, cannot reduce any other leg’s gain or be carried forward.";
+  }
+  if(/(loss|losses)/.test(s)&&/(set.?off|carry|deduct|adjust|net|reduce|offset|cancel|against|claim)/.test(s)){
+    return "No. "+fmtINR(tt.lossesIgnored)+" of losses arose in FY "+fy+" and all of it is discarded. Under section 115BBH a VDA loss cannot be set off against any income, including another VDA gain, and cannot be carried forward. Your tax stays "+fmtINR(tt.tax)+".";
+  }
+  if(/(fee|gas|charge|spread)/.test(s)){
+    var fees=0;
+    for(var f=0;f<store.trails.length;f++){ if(trailFY(store.trails[f])===fy) fees+=feesOf(store.trails[f]); }
+    return "You paid "+fmtINR(fees)+" in gas and platform fees across FY "+fy+". They are recorded so you can see your true economics, but none of it is deductible from the taxable gain.";
+  }
+  if(/(how many|count|number of)\s*(trail|journey)/.test(s)||/how many trails/.test(s)){
+    var c=store.trails.filter(function(t){ return trailFY(t)===fy; }).length;
+    return "You have "+c+" trail"+(c===1?"":"s")+" in FY "+fy+", producing "+scoped.length+" taxable transfer"+(scoped.length===1?"":"s")+".";
+  }
+  if(/(sale|consideration|received|revenue|turnover|total.*sold)/.test(s)){
+    return "Total sale consideration across all taxable legs in FY "+fy+" is "+fmtINR(tt.sale)+", against cost of acquisition of "+fmtINR(tt.cost)+"."+(tt.sale>=toPaise("2000000")?" That is at or above ₹20 lakh, so ask your CA whether Schedule FA also applies.":"");
+  }
+  if(/(balance|still|left|remaining|owe|pay)/.test(s)){
+    return "After crediting "+fmtINR(tt.tds)+" of TDS against "+fmtINR(tt.tax)+" of tax, "+fmtINR(tt.balance)+" is still to pay for FY "+fy+".";
+  }
+  if(/(tax|liability|owe|115bbh|30)/.test(s)){
+    return "Your total VDA tax for FY "+fy+" is "+fmtINR(tt.tax)+" — 30% plus 4% cess on "+fmtINR(tt.gains)+" of gains across "+scoped.length+" taxable transfer"+(scoped.length===1?"":"s")+"."+(tt.lossesIgnored>0?" "+fmtINR(tt.lossesIgnored)+" of losses were discarded rather than set off.":"")+" TDS of "+fmtINR(tt.tds)+" is creditable, leaving "+fmtINR(tt.balance)+".";
+  }
+  return "I can answer questions about tax due, TDS, gains and losses, fees, sale consideration and how many trails you have. For FY "+fy+" the headline is "+fmtINR(tt.tax)+" of tax and "+fmtINR(tt.tds)+" of TDS payable by you.";
+}
+
+var SUGGESTS=["What's my total VDA tax this year?","How much TDS do I still need to deposit?","Which trail had the biggest gain?","Can my loss reduce my gain?","How much did I pay in fees?"];
+
+function renderAskSuggests(){
+  var host=document.getElementById("askSuggests");
+  var html="";
+  for(var i=0;i<SUGGESTS.length;i++) html+='<button class="btn btn-sm" type="button" data-q="'+esc(SUGGESTS[i])+'">'+esc(SUGGESTS[i])+"</button>";
+  host.innerHTML=html;
+  var bs=host.querySelectorAll("[data-q]");
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener("click",function(){ ask(this.getAttribute("data-q")); });
+  var log=document.getElementById("askLog");
+  if(!log.childNodes.length){
+    push("app","Ask me anything about your saved trails. I read only what is in this browser, and I answer from the same engine that produced your Schedule VDA rows.");
+  }
+}
+function push(who,text){
+  var log=document.getElementById("askLog");
+  var d=document.createElement("div");
+  d.className="msg "+(who==="you"?"msg-you":"msg-app");
+  d.textContent=text;
+  log.appendChild(d);
+  d.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function ask(q){
+  if(!q||!q.trim()) return;
+  push("you",q);
+  push("app",answer(q));
+}
+
+/* ============================================================
+   SETTINGS — read-only data keys only. Never a key that moves funds.
+   ============================================================ */
+var SET_KEY="vdatrail.settings";
+var settings={customRpc:"",coingeckoKey:""};
+(function(){
+  try{ var raw=localStorage.getItem(SET_KEY); if(raw){ var p=JSON.parse(raw); if(p) settings=Object.assign(settings,p); } }catch(e){}
+})();
+function saveSettings(){ try{ localStorage.setItem(SET_KEY,JSON.stringify(settings)); }catch(e){} }
+
+/* A blocked request and an offline one look identical to fetch(), so say
+   what to do about it rather than repeating the browser's own wording. */
+function netHint(e){
+  var m=(e&&e.message)||"";
+  if(/Failed to fetch|NetworkError|Load failed|blocked|CSP/i.test(m)){
+    return "Live lookup is blocked in this view. Open the app from its own web address, or fill this hop in by hand \u2014 the worked-example button fills it for you.";
+  }
+  return m||"That didn't work.";
+}
+
+function toast(msg){
+  var old=document.querySelector(".toast");
+  if(old) old.remove();
+  var d=document.createElement("div");
+  d.className="toast"; d.setAttribute("role","status"); d.textContent=msg;
+  document.body.appendChild(d);
+  setTimeout(function(){ if(d.parentNode) d.remove(); },2800);
+}
+function setStatus(id,msg,kind){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.className="status"+(kind?" "+kind:"");
+  el.innerHTML=(kind==="busy"?'<span class="spin"></span> ':"")+esc(msg);
+}
+
+/* ============================================================
+   ON-CHAIN LOOKUP (Etherscan v2 — one key, many chains)
+
+   Two calls: the transaction, then its block for the timestamp.
+   For a token transfer the native `value` is 0 and the real amount
+   sits in an ERC-20 Transfer log, so we read the receipt and decode.
+   ============================================================ */
+var CHAINS={ "Ethereum":1, "Polygon":137, "BNB Chain":56, "Arbitrum":42161, "Base":8453, "Optimism":10 };
+var NATIVE={ 1:{sym:"ETH",dec:18}, 137:{sym:"POL",dec:18}, 56:{sym:"BNB",dec:18}, 42161:{sym:"ETH",dec:18}, 8453:{sym:"ETH",dec:18}, 10:{sym:"ETH",dec:18} };
+/* Public nodes, no key, no account. Several per chain so one being
+   down or rate-limiting doesn't stop the lookup. */
+var RPCS={
+  1:["https://ethereum-rpc.publicnode.com","https://cloudflare-eth.com","https://rpc.ankr.com/eth"],
+  137:["https://polygon-bor-rpc.publicnode.com","https://polygon-rpc.com"],
+  56:["https://bsc-rpc.publicnode.com","https://bsc-dataseed.binance.org"],
+  42161:["https://arbitrum-one-rpc.publicnode.com","https://arb1.arbitrum.io/rpc"],
+  8453:["https://base-rpc.publicnode.com","https://mainnet.base.org"],
+  10:["https://optimism-rpc.publicnode.com","https://mainnet.optimism.io"]
+};
+var TRANSFER_TOPIC="0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
+
+function hexToBig(h){
+  if(h===null||h===undefined) return 0n;
+  var s=String(h).trim();
+  if(s==="") return 0n;
+  if(s.slice(0,2).toLowerCase()!=="0x") s="0x"+s;
+  if(s==="0x") return 0n;
+  try{ return BigInt(s); }catch(e){ return 0n; }
+}
+/* raw integer + decimals -> a trimmed decimal string, no float anywhere */
+function formatUnits(raw,decimals){
+  var neg=raw<0n; if(neg) raw=-raw;
+  var d=BigInt(decimals||0);
+  var base=10n**d;
+  var whole=(raw/base).toString();
+  var frac=(raw%base).toString().padStart(Number(d),"0").replace(/0+$/,"");
+  return (neg?"-":"")+whole+(frac?"."+frac:"");
+}
+/* topics carry addresses right-aligned in 32 bytes */
+function topicToAddress(t){
+  var s=String(t||"").replace(/^0x/,"");
+  return "0x"+s.slice(-40).toLowerCase();
+}
+/* an eth_call returning string comes back ABI-encoded; bytes32 symbols exist too */
+function decodeStringReturn(hex){
+  var s=String(hex||"").replace(/^0x/,"");
+  if(!s) return "";
+  if(s.length===64){                      // bytes32: right-padded ASCII
+    var out="";
+    for(var i=0;i<64;i+=2){
+      var c=parseInt(s.substr(i,2),16);
+      if(c>=32&&c<127) out+=String.fromCharCode(c);
+    }
+    return out.trim();
+  }
+  if(s.length<128) return "";
+  var len=parseInt(s.slice(64,128),16);
+  if(!len||len>256) return "";
+  var body=s.slice(128,128+len*2), r="";
+  for(var j=0;j<body.length;j+=2){
+    var ch=parseInt(body.substr(j,2),16);
+    if(ch>=32&&ch<127) r+=String.fromCharCode(ch);
+  }
+  return r.trim();
+}
+/* pick the Transfer log that actually moved value in this tx */
+function pickTransferLog(logs){
+  if(!logs||!logs.length) return null;
+  var best=null;
+  for(var i=0;i<logs.length;i++){
+    var L=logs[i];
+    if(!L.topics||L.topics.length<3) continue;
+    if(String(L.topics[0]).toLowerCase()!==TRANSFER_TOPIC) continue;
+    var amt=hexToBig(L.data);
+    if(!best||amt>best.amount) best={log:L,amount:amt,token:String(L.address||"").toLowerCase(),
+      from:topicToAddress(L.topics[1]),to:topicToAddress(L.topics[2])};
+  }
+  return best;
+}
+function unixToLocalInput(sec){
+  var d=new Date(Number(sec)*1000);
+  if(isNaN(d.getTime())) return "";
+  var p=function(n){ return String(n).padStart(2,"0"); };
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes());
+}
+
+var rpcId=0;
+function rpcCall(chainId,method,params){
+  var list=(settings.customRpc?[settings.customRpc]:[]).concat(RPCS[chainId]||[]);
+  if(!list.length) return Promise.reject(new Error("No public node is configured for that chain."));
+  var i=0,lastErr=null;
+  function attempt(){
+    return fetch(list[i],{
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({jsonrpc:"2.0",id:++rpcId,method:method,params:params})
+    })
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(j){ if(j&&j.error) throw new Error(j.error.message||"the node returned an error"); return j.result; })
+    .catch(function(e){
+      lastErr=e; i++;
+      if(i<list.length) return attempt();                       // try the next node
+      throw new Error("Couldn't reach a public node for this chain. "+(lastErr&&lastErr.message?lastErr.message:""));
+    });
+  }
+  return attempt();
+}
+
+/* Paste a hash, get back: which token, how much, and exactly when.
+   No API key, no account — this reads public nodes directly. */
+function lookupTx(chainName,hash){
+  var chainId=CHAINS[chainName];
+  if(!chainId) return Promise.reject(new Error(chainName+" isn't covered by automatic lookup yet. Fill this hop in by hand."));
+  if(!/^0x[0-9a-fA-F]{64}$/.test(String(hash||"").trim())) return Promise.reject(new Error("That doesn't look like a transaction hash. It should be 0x followed by 64 hex characters."));
+
+  var tx=null;
+  return rpcCall(chainId,"eth_getTransactionByHash",[hash])
+    .then(function(t){
+      if(!t) throw new Error("Nothing found with that hash on "+chainName+". Check you've picked the right chain.");
+      if(!t.blockNumber) throw new Error("That transaction is still pending, so it has no confirmed time yet.");
+      tx=t;
+      return rpcCall(chainId,"eth_getBlockByNumber",[t.blockNumber,false]);
+    })
+    .then(function(block){
+      var out={
+        timestamp:unixToLocalInput(hexToBig(block&&block.timestamp).toString()),
+        from:String(tx.from||"").toLowerCase(),
+        to:String(tx.to||"").toLowerCase(),
+        chain:chainName
+      };
+      var nativeValue=hexToBig(tx.value);
+      if(nativeValue>0n){                                        // a plain ETH/BNB/POL send
+        var n=NATIVE[chainId];
+        out.asset=n.sym; out.amount=formatUnits(nativeValue,n.dec); out.kind="native";
+        return out;
+      }
+      /* Value is zero, so this is a token move — USDT, USDC and the rest
+         live in the receipt logs, not on the transaction itself. */
+      return rpcCall(chainId,"eth_getTransactionReceipt",[hash]).then(function(rc){
+        var t=pickTransferLog(rc&&rc.logs);
+        if(!t){ out.kind="unknown"; return out; }
+        out.kind="token"; out.token=t.token; out.from=t.from; out.to=t.to;
+        return rpcCall(chainId,"eth_call",[{to:t.token,data:"0x313ce567"},"latest"])          // decimals()
+          .then(function(dhex){
+            var dec=Number(hexToBig(dhex));
+            if(!(dec>=0&&dec<=36)) dec=18;
+            out.decimals=dec; out.amount=formatUnits(t.amount,dec);
+            return rpcCall(chainId,"eth_call",[{to:t.token,data:"0x95d89b41"},"latest"]);      // symbol()
+          })
+          .then(function(shex){ out.asset=decodeStringReturn(shex)||"TOKEN"; return out; })
+          .catch(function(){
+            if(!out.amount) out.amount=formatUnits(t.amount,18);
+            out.asset=out.asset||"TOKEN";
+            return out;
+          });
+      });
+    });
+}
+
+/* ============================================================
+   HISTORICAL INR PRICE — always for the hop's OWN date
+   ============================================================ */
+var COIN_IDS={ETH:"ethereum",WETH:"weth",BTC:"bitcoin",WBTC:"wrapped-bitcoin",USDT:"tether",USDC:"usd-coin",DAI:"dai",
+  BNB:"binancecoin",SOL:"solana",MATIC:"matic-network",POL:"matic-network",ARB:"arbitrum",OP:"optimism",
+  AVAX:"avalanche-2",ADA:"cardano",XRP:"ripple",DOGE:"dogecoin",DOT:"polkadot",LINK:"chainlink",
+  TRX:"tron",LTC:"litecoin",SHIB:"shiba-inu",NEAR:"near",ATOM:"cosmos",UNI:"uniswap"};
+
+function ddmmyyyy(localInput){
+  var d=new Date(localInput);
+  if(isNaN(d.getTime())) return null;
+  var p=function(n){ return String(n).padStart(2,"0"); };
+  return p(d.getDate())+"-"+p(d.getMonth()+1)+"-"+d.getFullYear();
+}
+var STABLES={USDT:1,USDC:1,DAI:1,BUSD:1,TUSD:1,FDUSD:1};
+
+function ymdOf(localInput){
+  var d=new Date(localInput);
+  if(isNaN(d.getTime())) return null;
+  var p=function(n){ return String(n).padStart(2,"0"); };
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+}
+
+/* USD/INR for a given day. Frankfurter serves ECB reference rates, so a
+   weekend or holiday resolves back to the previous working day — it tells
+   us which day it actually used, and we pass that on rather than hide it. */
+function usdInrOn(ymd){
+  return fetch("https://api.frankfurter.app/"+ymd+"?base=USD&symbols=INR")
+    .then(function(r){ if(!r.ok) throw new Error("the USD/INR reference rate wasn't available"); return r.json(); })
+    .then(function(j){
+      var rate=j&&j.rates&&j.rates.INR;
+      if(!rate) throw new Error("no USD/INR rate published for "+ymd);
+      return {rate:rate,on:j.date||ymd};
+    });
+}
+
+/* Binance 1-minute candle at the hop's own minute. The brief is emphatic
+   that a few hours can move the price, so we price the minute, not the day. */
+function priceViaBinance(sym,localInput){
+  var t=new Date(localInput).getTime();
+  if(isNaN(t)) return Promise.reject(new Error("that timestamp isn't valid"));
+  var minute=Math.floor(t/60000)*60000;
+  var ymd=ymdOf(localInput);
+  var inUsdt;
+
+  if(STABLES[sym]) inUsdt=Promise.resolve({v:1,exact:true});
+  else inUsdt=fetch("https://api.binance.com/api/v3/klines?symbol="+encodeURIComponent(sym+"USDT")+"&interval=1m&startTime="+minute+"&limit=1")
+    .then(function(r){ if(!r.ok) throw new Error("Binance has no "+sym+"/USDT market"); return r.json(); })
+    .then(function(a){
+      if(!a||!a.length) throw new Error("Binance has no "+sym+" candle for that minute");
+      return {v:parseFloat(a[0][4]),exact:true};                 // close of that minute
+    });
+
+  return inUsdt.then(function(u){
+    return usdInrOn(ymd).then(function(fx){
+      return {
+        price:u.v*fx.rate,
+        date:ymd,
+        source:STABLES[sym]
+          ? "USD/INR reference rate for "+fx.on
+          : "Binance "+sym+"/USDT at that exact minute, converted at the USD/INR rate for "+fx.on
+      };
+    });
+  });
+}
+
+function priceViaCoinGecko(sym,localInput){
+  var id=COIN_IDS[sym];
+  if(!id) return Promise.reject(new Error("CoinGecko has no id mapped for "+sym));
+  var date=ddmmyyyy(localInput);
+  var url="https://api.coingecko.com/api/v3/coins/"+id+"/history?date="+date+"&localization=false";
+  var opts={};
+  if(settings.coingeckoKey) opts.headers={"x-cg-demo-api-key":settings.coingeckoKey};
+  return fetch(url,opts).then(function(r){
+    if(r.status===429) throw new Error("CoinGecko is rate-limiting us");
+    if(!r.ok) throw new Error("CoinGecko returned HTTP "+r.status);
+    return r.json();
+  }).then(function(j){
+    var p=j&&j.market_data&&j.market_data.current_price&&j.market_data.current_price.inr;
+    if(!p&&p!==0) throw new Error("CoinGecko has no INR price for "+sym+" on "+date);
+    return {price:p,date:date,source:"CoinGecko daily average for "+date};
+  });
+}
+
+/* Minute-accurate first, daily average as the backstop. Both keyless. */
+function lookupPriceINR(symbol,localInput){
+  var sym=String(symbol||"").toUpperCase();
+  if(!sym) return Promise.reject(new Error("Tell me the asset first, so I know what to price."));
+  if(!ymdOf(localInput)) return Promise.reject(new Error("Set the hop's timestamp first — the price is fetched for that moment, never today's."));
+  return priceViaBinance(sym,localInput).catch(function(e1){
+    return priceViaCoinGecko(sym,localInput).catch(function(e2){
+      throw new Error("Couldn't price "+sym+" automatically ("+e1.message+"; "+e2.message+"). Enter the INR price by hand.");
+    });
+  });
+}
+
+/* ============================================================
+   CSV — a tolerant parser, because Binance export columns drift
+   ============================================================ */
+function parseCSV(text){
+  var s=String(text||"").replace(/^\uFEFF/,"");
+  var rows=[],row=[],cell="",q=false;
+  for(var i=0;i<s.length;i++){
+    var c=s[i];
+    if(q){
+      if(c==='"'){ if(s[i+1]==='"'){ cell+='"'; i++; } else q=false; }
+      else cell+=c;
+    } else if(c==='"'){ q=true; }
+    else if(c===","){ row.push(cell); cell=""; }
+    else if(c==="\n"){ row.push(cell); rows.push(row); row=[]; cell=""; }
+    else if(c==="\r"){ /* handled by the \n */ }
+    else cell+=c;
+  }
+  if(cell!==""||row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(function(r){ return r.some(function(x){ return String(x).trim()!==""; }); });
+}
+function findCol(headers,patterns){
+  for(var p=0;p<patterns.length;p++){
+    for(var i=0;i<headers.length;i++){
+      if(patterns[p].test(headers[i])) return i;
+    }
+  }
+  return -1;
+}
+/* Map whatever columns exist onto the four things we actually need. */
+function interpretCSV(rows){
+  if(rows.length<2) return {error:"That file has no data rows under its header."};
+  var headers=rows[0].map(function(h){ return String(h).trim().toLowerCase(); });
+  var col={
+    date:findCol(headers,[/created\s*time/,/date/,/time/,/utc/]),
+    ref:findCol(headers,[/order\s*(number|no|id)/,/trade\s*id/,/\bid\b/,/reference/]),
+    pair:findCol(headers,[/pair/,/market/,/^symbol$/,/asset\s*type/,/coin/]),
+    side:findCol(headers,[/order\s*type/,/side/,/^type$/,/direction/]),
+    total:findCol(headers,[/total\s*price/,/total/,/fiat\s*amount/,/order\s*amount/,/^amount$/,/value/]),
+    qty:findCol(headers,[/quantity/,/executed/,/filled/,/^qty$/,/^amount$/]),
+    price:findCol(headers,[/unit\s*price/,/^price$/,/exchange\s*rate/]),
+    fee:findCol(headers,[/fee/,/commission/]),
+    status:findCol(headers,[/status/,/state/])
+  };
+  if(col.date<0&&col.total<0) return {error:"I could not find a date or an amount column in that file. Check you exported the trade or P2P order history."};
+  var out=[];
+  for(var r=1;r<rows.length;r++){
+    var row=rows[r];
+    var get=function(i){ return i>=0&&i<row.length?String(row[i]).trim():""; };
+    out.push({
+      raw:row,
+      date:get(col.date), ref:get(col.ref), pair:get(col.pair), side:get(col.side),
+      total:get(col.total), qty:get(col.qty), price:get(col.price), fee:get(col.fee), status:get(col.status)
+    });
+  }
+  return {rows:out,headers:headers};
+}
+/* Binance writes UTC like "2025-05-20 11:44:31"; datetime-local wants a T */
+function csvDateToInput(s){
+  var t=String(s||"").trim();
+  if(!t) return "";
+  var m=t.match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  if(m) return m[1]+"-"+m[2]+"-"+m[3]+"T"+m[4]+":"+m[5];
+  m=t.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(m) return m[1]+"-"+m[2]+"-"+m[3]+"T00:00";
+  var d=new Date(t);
+  if(!isNaN(d.getTime())) return unixToLocalInput(Math.floor(d.getTime()/1000));
+  return "";
+}
+
+/* ============================================================
+   NEW TRAIL FORM
+   ============================================================ */
+var form=document.getElementById("trailForm");
+
+function updateDerived(){
+  var qty=parseFloat(String(form.quantity.value).replace(/[^0-9.\-]/g,""))||0;
+  var price=toPaise(form.h1price.value);
+  var unitEls=document.querySelectorAll("[data-unit]");
+  var a=(form.asset.value||"unit").trim()||"unit";
+  for(var i=0;i<unitEls.length;i++) unitEls[i].textContent=a;
+  var el=document.getElementById("h1derived");
+  if(!qty||!price){ el.textContent="Cost of acquisition — enter quantity and price"; return; }
+  el.textContent="Cost of acquisition = "+qty+" × "+fmtINR(price)+" = "+fmtINR(Math.round(price*qty));
+}
+form.addEventListener("input",updateDerived);
+
+document.getElementById("fillExample").addEventListener("click",function(){
+  form.label.value="ETH batch, May 2025";
+  form.asset.value="ETH";
+  form.quantity.value="0.5";
+  form.h1chain.value="Ethereum";
+  form.h1ref.value="0x9f2a4c7b1e88d3f0a6c25b94e7d1130f8ab6c4e29d75f31a08b6e2c4d9f01a3b7";
+  form.h1ts.value="2025-05-10T14:22";
+  form.h1price.value="200000";
+  form.h1fee.value="420";
+  form.h2chain.value="Ethereum";
+  form.h2ref.value="0x4c81ef03a7d259b6c0148e3fa91d7b6205c8e4419af23d06b7e5c81a2f9d43e0";
+  form.h2ts.value="2025-05-12T09:41";
+  form.h2fee.value="380";
+  form.h3ref.value="8812993410";
+  form.h3ts.value="2025-05-15T18:05";
+  form.h3value.value="120000";
+  form.h3fee.value="120";
+  form.h4ref.value="20250520114455";
+  form.h4ts.value="2025-05-20T11:44";
+  form.h4value.value="119000";
+  form.h4fee.value="0";
+  updateDerived();
+  document.getElementById("formErr").textContent="";
+});
+document.getElementById("clearForm").addEventListener("click",function(){
+  editingId=null;
+  resetForm();
+});
+
+form.addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var errEl=document.getElementById("formErr");
+  var missing=[];
+  if(!form.label.value.trim()) missing.push("a label");
+  if(!form.asset.value.trim()) missing.push("the asset");
+  var qty=parseFloat(String(form.quantity.value).replace(/[^0-9.\-]/g,""));
+  if(!qty||qty<=0) missing.push("a quantity greater than zero");
+  if(!form.h1ts.value) missing.push("the Hop 1 timestamp");
+  if(toPaise(form.h1price.value)<=0) missing.push("the Hop 1 INR price");
+  if(!form.h3ts.value) missing.push("the Hop 3 timestamp");
+  if(toPaise(form.h3value.value)<=0) missing.push("the Hop 3 INR value");
+  if(!form.h4ts.value) missing.push("the Hop 4 timestamp");
+  if(toPaise(form.h4value.value)<=0) missing.push("the Hop 4 INR received");
+  if(missing.length){
+    errEl.textContent="Still needed: "+missing.join(", ")+".";
+    return;
+  }
+  errEl.textContent="";
+
+  var price=toPaise(form.h1price.value);
+  var existing=null;
+  if(editingId){ for(var x=0;x<store.trails.length;x++){ if(store.trails[x].id===editingId) existing=store.trails[x]; } }
+  var t={
+    id:existing?existing.id:uid(),
+    label:form.label.value.trim(),
+    asset:form.asset.value.trim().toUpperCase(),
+    quantity:String(qty),
+    createdAt:existing?existing.createdAt:new Date().toISOString(),
+    hops:[
+      {hopNo:1,kind:"arrival",source:"onchain",chain:form.h1chain.value,referenceId:form.h1ref.value.trim(),timestamp:form.h1ts.value,assetIn:form.asset.value.trim().toUpperCase(),inrPrice:price,inrValue:Math.round(price*qty),feeInr:toPaise(form.h1fee.value)},
+      {hopNo:2,kind:"transfer",source:"onchain",chain:form.h2chain.value,referenceId:form.h2ref.value.trim(),timestamp:form.h2ts.value,feeInr:toPaise(form.h2fee.value)},
+      {hopNo:3,kind:"convert",source:"binance",referenceId:form.h3ref.value.trim(),timestamp:form.h3ts.value,assetIn:form.asset.value.trim().toUpperCase(),assetOut:"USDT",inrValue:toPaise(form.h3value.value),feeInr:toPaise(form.h3fee.value)},
+      {hopNo:4,kind:"p2p_sale",source:"binance",referenceId:form.h4ref.value.trim(),timestamp:form.h4ts.value,assetIn:"USDT",assetOut:"INR",inrValue:toPaise(form.h4value.value),feeInr:toPaise(form.h4fee.value)}
+    ]
+  };
+  if(existing){
+    for(var y=0;y<store.trails.length;y++){ if(store.trails[y].id===existing.id) store.trails[y]=t; }
+    toast("Trail updated");
+  } else {
+    store.trails.unshift(t);
+    toast("Trail saved");
+  }
+  save();
+  editingId=null;
+  resetForm();
+  openTrailId=t.id;
+  go("detail");
+});
+
+/* ---- form helpers: reset, and load a trail back in for editing ---- */
+function resetForm(){
+  form.reset();
+  updateDerived();
+  document.getElementById("formErr").textContent="";
+  setStatus("h1status",""); setStatus("h2status","");
+  document.getElementById("newTrailHeading").textContent="New trail";
+  document.getElementById("submitBtn").textContent="Save trail & compute";
+}
+function loadForm(t){
+  var h1=hopOf(t,1),h2=hopOf(t,2),h3=hopOf(t,3),h4=hopOf(t,4);
+  form.label.value=t.label||"";
+  form.asset.value=t.asset||"";
+  form.quantity.value=t.quantity||"";
+  form.h1chain.value=h1.chain||"Ethereum";
+  form.h1ref.value=h1.referenceId||"";
+  form.h1ts.value=h1.timestamp||"";
+  form.h1price.value=h1.inrPrice?plainINR(h1.inrPrice):"";
+  form.h1fee.value=h1.feeInr?plainINR(h1.feeInr):"";
+  form.h2chain.value=h2.chain||"Ethereum";
+  form.h2ref.value=h2.referenceId||"";
+  form.h2ts.value=h2.timestamp||"";
+  form.h2fee.value=h2.feeInr?plainINR(h2.feeInr):"";
+  form.h3ref.value=h3.referenceId||"";
+  form.h3ts.value=h3.timestamp||"";
+  form.h3value.value=h3.inrValue?plainINR(h3.inrValue):"";
+  form.h3fee.value=h3.feeInr?plainINR(h3.feeInr):"";
+  form.h4ref.value=h4.referenceId||"";
+  form.h4ts.value=h4.timestamp||"";
+  form.h4value.value=h4.inrValue?plainINR(h4.inrValue):"";
+  form.h4fee.value=h4.feeInr?plainINR(h4.feeInr):"";
+  updateDerived();
+  document.getElementById("newTrailHeading").textContent="Edit trail";
+  document.getElementById("submitBtn").textContent="Update trail & recompute";
+}
+
+/* ============================================================
+   LOOKUP BUTTONS
+   ============================================================ */
+function runPrice(silent){
+  var sym=form.asset.value.trim();
+  if(!sym){ if(!silent) setStatus("h1status","Tell me the asset first, so I know what to price.","bad"); return Promise.resolve(); }
+  setStatus("h1status","Pricing "+sym.toUpperCase()+" at that exact moment…","busy");
+  return lookupPriceINR(sym,form.h1ts.value).then(function(r){
+    form.h1price.value=String(r.price.toFixed(2));
+    updateDerived();
+    setStatus("h1status","1 "+sym.toUpperCase()+" = "+fmtINR(toPaise(r.price.toFixed(2)))+" then. Source: "+r.source+".","good");
+  }).catch(function(e){
+    setStatus("h1status",netHint(e),"bad");
+  });
+}
+
+function runLookup(hopNo,thenPrice){
+  var chain=hopNo===1?form.h1chain.value:form.h2chain.value;
+  var hash=(hopNo===1?form.h1ref.value:form.h2ref.value).trim();
+  var sid="h"+hopNo+"status";
+  setStatus(sid,"Reading "+chain+"…","busy");
+  return lookupTx(chain,hash).then(function(r){
+    if(hopNo===1){
+      if(r.timestamp) form.h1ts.value=r.timestamp;
+      if(r.asset) form.asset.value=r.asset;
+      if(r.amount) form.quantity.value=r.amount;
+    } else {
+      if(r.timestamp) form.h2ts.value=r.timestamp;
+      if(!form.h2chain.value) form.h2chain.value=chain;
+    }
+    updateDerived();
+    var bits=[];
+    if(r.amount) bits.push(r.amount+" "+(r.asset||""));
+    if(r.timestamp) bits.push("arrived "+fmtTs(r.timestamp));
+    if(r.to) bits.push("into "+r.to.slice(0,10)+"…");
+    setStatus(sid,bits.length?bits.join(" · "):"Found the transaction, but couldn't read a transfer amount from it. Fill the amount in by hand.","good");
+    if(hopNo===1&&thenPrice&&r.asset&&r.timestamp) return runPrice(true);
+  }).catch(function(e){
+    setStatus(sid,netHint(e),"bad");
+  });
+}
+document.getElementById("h1lookup").addEventListener("click",function(){ runLookup(1,true); });
+document.getElementById("h2lookup").addEventListener("click",function(){ runLookup(2,false); });
+document.getElementById("h1price-lookup").addEventListener("click",function(){ runPrice(false); });
+
+/* Paste a hash and it just goes — no button, no key. Debounced so a slow
+   paste or a typed character doesn't fire a request per keystroke. */
+function autoLookup(input,hopNo,thenPrice){
+  var timer=null,lastRun="";
+  function maybe(){
+    var v=String(input.value||"").trim();
+    if(!/^0x[0-9a-fA-F]{64}$/.test(v)) return;
+    if(v===lastRun) return;
+    lastRun=v;
+    runLookup(hopNo,thenPrice);
+  }
+  input.addEventListener("input",function(){
+    clearTimeout(timer);
+    timer=setTimeout(maybe,450);
+  });
+  input.addEventListener("paste",function(){ clearTimeout(timer); timer=setTimeout(maybe,60); });
+  input.addEventListener("blur",function(){ clearTimeout(timer); maybe(); });
+}
+autoLookup(form.h1ref,1,true);
+autoLookup(form.h2ref,2,false);
+
+/* ============================================================
+   CSV IMPORT UI
+   ============================================================ */
+var parsedRows=[];
+function handleCSVText(text){
+  var res=interpretCSV(parseCSV(text));
+  var host=document.getElementById("csvRows");
+  if(res.error){ setStatus("csvStatus",res.error,"bad"); host.innerHTML=""; parsedRows=[]; return; }
+  parsedRows=res.rows;
+  setStatus("csvStatus","Read "+parsedRows.length+" row"+(parsedRows.length===1?"":"s")+" from "+res.headers.length+" columns. Pick the row for each hop.","good");
+  var body="";
+  for(var i=0;i<parsedRows.length&&i<60;i++){
+    var r=parsedRows[i];
+    body+="<tr>"+
+      '<td class="small">'+esc(r.date||"—")+"</td>"+
+      '<td class="small mono">'+esc(r.ref||"—")+"</td>"+
+      '<td class="small">'+esc(r.pair||"—")+(r.side?' <span class="chip">'+esc(r.side)+"</span>":"")+"</td>"+
+      '<td class="n">'+esc(r.qty||"—")+"</td>"+
+      '<td class="n">'+esc(r.total||"—")+"</td>"+
+      '<td class="no-print"><span class="btn-row">'+
+        '<button class="btn btn-sm pick" type="button" data-hop="3" data-row="'+i+'">→ Hop 3</button>'+
+        '<button class="btn btn-sm pick" type="button" data-hop="4" data-row="'+i+'">→ Hop 4</button>'+
+      "</span></td></tr>";
+  }
+  host.innerHTML='<div class="scroller"><table><thead><tr>'+
+    '<th scope="col">Date</th><th scope="col">Reference</th><th scope="col">Pair / type</th>'+
+    '<th scope="col" class="n">Quantity</th><th scope="col" class="n">Total</th><th scope="col" class="no-print">Use as</th>'+
+    "</tr></thead><tbody>"+body+"</tbody></table></div>"+
+    (parsedRows.length>60?'<p class="xs" style="margin-top:8px">Showing the first 60 rows.</p>':"");
+  var picks=host.querySelectorAll(".pick");
+  for(var k=0;k<picks.length;k++){
+    picks[k].addEventListener("click",function(){
+      applyCSVRow(Number(this.getAttribute("data-row")),Number(this.getAttribute("data-hop")));
+    });
+  }
+}
+function applyCSVRow(idx,hop){
+  var r=parsedRows[idx];
+  if(!r) return;
+  var when=csvDateToInput(r.date);
+  var amount=toPaise(r.total)||toPaise(r.qty);
+  if(hop===3){
+    if(r.ref) form.h3ref.value=r.ref;
+    if(when) form.h3ts.value=when;
+    if(amount) form.h3value.value=plainINR(amount);
+    if(r.fee) form.h3fee.value=plainINR(toPaise(r.fee));
+  } else {
+    if(r.ref) form.h4ref.value=r.ref;
+    if(when) form.h4ts.value=when;
+    if(amount) form.h4value.value=plainINR(amount);
+    if(r.fee) form.h4fee.value=plainINR(toPaise(r.fee));
+  }
+  updateDerived();
+  toast("Filled hop "+hop+" — check the figures against Binance before saving");
+  setStatus("csvStatus","Hop "+hop+" filled from the row dated "+(r.date||"unknown")+". Verify it, then save.","good");
+}
+function readFile(file){
+  if(!file) return;
+  if(file.size>6*1024*1024){ setStatus("csvStatus","That file is larger than 6 MB. Trim it to the relevant rows first.","bad"); return; }
+  var fr=new FileReader();
+  fr.onload=function(){ handleCSVText(String(fr.result||"")); };
+  fr.onerror=function(){ setStatus("csvStatus","The file could not be read.","bad"); };
+  fr.readAsText(file);
+}
+document.getElementById("csvFile").addEventListener("change",function(){ readFile(this.files&&this.files[0]); this.value=""; });
+document.getElementById("pasteToggle").addEventListener("click",function(){
+  var ta=document.getElementById("csvPaste"), ac=document.getElementById("pasteActions");
+  var show=ta.hidden;
+  ta.hidden=!show; ac.hidden=!show;
+  if(show) ta.focus();
+});
+document.getElementById("parsePaste").addEventListener("click",function(){
+  handleCSVText(document.getElementById("csvPaste").value);
+});
+(function(){
+  var dz=document.getElementById("dropzone");
+  ["dragenter","dragover"].forEach(function(ev){
+    dz.addEventListener(ev,function(e){ e.preventDefault(); dz.classList.add("over"); });
+  });
+  ["dragleave","drop"].forEach(function(ev){
+    dz.addEventListener(ev,function(e){ e.preventDefault(); dz.classList.remove("over"); });
+  });
+  dz.addEventListener("drop",function(e){
+    var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+    readFile(f);
+  });
+})();
+
+/* ============================================================
+   SETTINGS SCREEN
+   ============================================================ */
+var settingsForm=document.getElementById("settingsForm");
+function renderSettings(){
+  settingsForm.customRpc.value=settings.customRpc||"";
+  settingsForm.coingeckoKey.value=settings.coingeckoKey||"";
+  var used=0;
+  try{ used=(localStorage.getItem(KEY)||"").length; }catch(e){}
+  document.getElementById("storageInfo").innerHTML=
+    '<dl class="kv">'+
+      "<dt>Trails saved</dt><dd>"+store.trails.length+"</dd>"+
+      "<dt>Taxable transfers</dt><dd>"+(store.trails.length*2)+"</dd>"+
+      "<dt>Local storage used</dt><dd>"+(used/1024).toFixed(1)+" KB</dd>"+
+      "<dt>Chain lookup</dt><dd>"+(settings.customRpc?"your node, public nodes as fallback":"public nodes, no key needed")+"</dd>"+
+      "<dt>Pricing</dt><dd>Binance minute feed &times; USD/INR"+(settings.coingeckoKey?", CoinGecko key saved":"")+"</dd>"+
+    "</dl>";
+}
+settingsForm.addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var rpc=settingsForm.customRpc.value.trim();
+  if(rpc&&!/^https:\/\//i.test(rpc)){
+    setStatus("settingsStatus","An RPC endpoint has to start with https:// — a plain http:// node would be blocked by the browser anyway.","bad");
+    return;
+  }
+  settings.customRpc=rpc;
+  settings.coingeckoKey=settingsForm.coingeckoKey.value.trim();
+  saveSettings(); renderSettings();
+  setStatus("settingsStatus","Saved to this browser only.","good");
+});
+document.getElementById("clearKeys").addEventListener("click",function(){
+  settings.customRpc=""; settings.coingeckoKey="";
+  saveSettings(); renderSettings();
+  setStatus("settingsStatus","Cleared. Back to the built-in public nodes.","good");
+});
+
+/* ---- backup / restore / wipe ---- */
+document.getElementById("backupBtn").addEventListener("click",function(){
+  var payload={format:"vdatrail-backup",version:1,exportedAt:new Date().toISOString(),trails:store.trails};
+  var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url; a.download="vda-trail-backup-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+  setStatus("dataStatus","Backup downloaded — "+store.trails.length+" trail(s). Keep it somewhere private.","good");
+});
+document.getElementById("restoreFile").addEventListener("change",function(){
+  var f=this.files&&this.files[0]; this.value="";
+  if(!f) return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var p=JSON.parse(String(fr.result||""));
+      if(!p||!Array.isArray(p.trails)) throw new Error("no trails array");
+      var added=0, have={};
+      for(var i=0;i<store.trails.length;i++) have[store.trails[i].id]=1;
+      for(var j=0;j<p.trails.length;j++){
+        var t=p.trails[j];
+        if(!t||!Array.isArray(t.hops)) continue;
+        if(have[t.id]) continue;                 // merge, never silently overwrite
+        store.trails.push(t); added++;
+      }
+      save(); renderSettings();
+      setStatus("dataStatus","Restored "+added+" new trail(s). "+(p.trails.length-added)+" were already here and were left alone.","good");
+    }catch(e){
+      setStatus("dataStatus","That is not a VDA Trail backup file.","bad");
+    }
+  };
+  fr.readAsText(f);
+});
+document.getElementById("wipeBtn").addEventListener("click",function(){
+  if(!store.trails.length){ setStatus("dataStatus","There is nothing to erase.","bad"); return; }
+  if(!confirm("Erase all "+store.trails.length+" trail(s) from this browser? Download a backup first — this cannot be undone.")) return;
+  store.trails=[]; save(); renderSettings();
+  setStatus("dataStatus","All trails erased.","good");
+});
+
+/* ============================================================
+   SUMMARY ACTIONS
+   ============================================================ */
+document.getElementById("csvBtn").addEventListener("click",function(){
+  if(!selectedFY) return;
+  var blob=new Blob(["﻿"+csvFor(selectedFY)],{type:"text/csv;charset=utf-8"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url; a.download="schedule-vda-"+selectedFY+".csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+});
+document.getElementById("copyBtn").addEventListener("click",function(){
+  if(!selectedFY) return;
+  var btn=this, text=csvFor(selectedFY);
+  function done(msg){ var old=btn.textContent; btn.textContent=msg; setTimeout(function(){ btn.textContent=old; },1600); }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ done("Copied"); },function(){ done("Copy blocked"); });
+  } else { done("Copy blocked"); }
+});
+document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
+
+/* ============================================================
+   ASK FORM
+   ============================================================ */
+document.getElementById("askForm").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var input=document.getElementById("askInput");
+  ask(input.value);
+  input.value="";
+});
+
+/* ============================================================
+   THEME
+   ============================================================ */
+var THEME_KEY="vdatrail.theme";
+(function(){
+  var saved=null;
+  try{ saved=localStorage.getItem(THEME_KEY); }catch(e){}
+  if(saved==="dark"||saved==="light") document.documentElement.setAttribute("data-theme",saved);
+})();
+document.getElementById("themeBtn").addEventListener("click",function(){
+  var root=document.documentElement;
+  var cur=root.getAttribute("data-theme");
+  var isDark = cur ? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var next=isDark?"light":"dark";
+  root.setAttribute("data-theme",next);
+  try{ localStorage.setItem(THEME_KEY,next); }catch(e){}
+});
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+(function(){
+  if(!window.IntersectionObserver) return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var els=document.querySelectorAll(".reveal");
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e,i){
+      if(e.isIntersecting){
+        var el=e.target;
+        setTimeout(function(){ el.classList.add("in"); }, i*90);
+        io.unobserve(el);
+      }
+    });
+  },{rootMargin:"0px 0px -8% 0px"});
+  for(var i=0;i<els.length;i++) io.observe(els[i]);
+})();
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.getElementById("seedFromOverview").addEventListener("click",function(){
+  if(!store.trails.length) seedExample();
+});
+
+load();
+updateDerived();
+go("overview");
+
+(function(){
+  var r=selfTest();
+  var chip=document.getElementById("engineChip");
+  if(r.ok){
+    chip.className="chip pass";
+    chip.innerHTML='<span class="dot"></span>Engine verified · '+r.checks.length+" checks pass";
+    chip.title=r.checks.map(function(c){ return c.name+": "+fmtINR(c.got); }).join("\n");
+  } else {
+    chip.className="chip flagged";
+    var bad=r.checks.filter(function(c){ return !c.pass; });
+    chip.innerHTML='<span class="dot"></span>Engine FAILED · '+bad.length+" check(s)";
+    chip.title=bad.map(function(c){ return c.name+": got "+fmtINR(c.got)+", expected "+fmtINR(c.want); }).join("\n");
+  }
+})();
+</script>
+</body>
+</html>
