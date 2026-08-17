@@ -587,7 +587,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
             <div class="hop-head"><span class="hop-title">You convert it to USDT</span><span class="chip usdt"><span class="dot"></span>USDT</span></div>
             <div class="leg">
               <p class="leg-title">Taxable transfer 1 of 2 · crypto → USDT</p>
-              <p class="small" style="color:var(--ink)">Swapping one coin for another counts as a sale in India, even though no rupees moved. Your cost is the hop&nbsp;1 value. Your sale consideration is what the USDT was worth when you got it.</p>
+              <p class="small" style="color:var(--text)">Swapping one coin for another counts as a sale in India, even though no rupees moved. Your cost is the hop&nbsp;1 value. Your sale consideration is what the USDT was worth when you got it.</p>
             </div>
             <p class="small">Binance keeps this off the public chain, so it comes from your trade history export or you type it in.</p>
           </div>
@@ -598,7 +598,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
             <div class="hop-head"><span class="hop-title">You sell the USDT for rupees</span><span class="chip inr"><span class="dot"></span>INR</span></div>
             <div class="leg">
               <p class="leg-title">Taxable transfer 2 of 2 · USDT → INR</p>
-              <p class="small" style="color:var(--ink)">A second sale, judged entirely on its own. Cost is what the USDT was worth when you acquired it. Sale consideration is what the buyer actually paid into your bank.</p>
+              <p class="small" style="color:var(--text)">A second sale, judged entirely on its own. Cost is what the USDT was worth when you acquired it. Sale consideration is what the buyer actually paid into your bank.</p>
             </div>
             <p class="small">From your P2P order history. This is also the leg carrying the <b>1% TDS that you have to deposit yourself</b>.</p>
           </div>
@@ -633,19 +633,19 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
       <div class="note note-info">
         <h3>Why timing is the whole point</h3>
-        <p class="small" style="color:var(--ink)">The gain on each leg is the price difference between two moments in time. That is why every hop stores its own precise timestamp and its own INR price. A few hours can move the price, and therefore the tax. The app will never reuse today's price for a trade that happened three months ago.</p>
+        <p class="small" style="color:var(--text)">The gain on each leg is the price difference between two moments in time. That is why every hop stores its own precise timestamp and its own INR price. A few hours can move the price, and therefore the tax. The app will never reuse today's price for a trade that happened three months ago.</p>
       </div>
 
       <div class="grid-2">
         <div class="note note-warn">
           <h3>The 1% TDS is on you</h3>
-          <p class="small" style="color:var(--ink)">Section 194S puts a 1% TDS on VDA transfers. An Indian exchange usually deducts it for you. Binance P2P does not — for a P2P trade on an international platform, you are typically the one who has to deduct and deposit it.</p>
-          <p class="small" style="color:var(--ink)">VDA&nbsp;Trail computes it on the sale consideration of the P2P leg and labels it <b>payable by you</b>, never <em>already deducted</em>. It is an advance tax: it is credited against your 30% liability, not charged on top of it.</p>
+          <p class="small" style="color:var(--text)">Section 194S puts a 1% TDS on VDA transfers. An Indian exchange usually deducts it for you. Binance P2P does not — for a P2P trade on an international platform, you are typically the one who has to deduct and deposit it.</p>
+          <p class="small" style="color:var(--text)">VDA&nbsp;Trail computes it on the sale consideration of the P2P leg and labels it <b>payable by you</b>, never <em>already deducted</em>. It is an advance tax: it is credited against your 30% liability, not charged on top of it.</p>
         </div>
         <div class="note note-info">
           <h3>A boundary worth knowing</h3>
-          <p class="small" style="color:var(--ink)">If you hold crypto on a foreign platform and the total value crosses ₹20&nbsp;lakh, it may also need disclosure in <b>Schedule FA</b> (Foreign Assets) — a separate obligation from Schedule VDA.</p>
-          <p class="small" style="color:var(--ink)">The Tax Summary raises a flag when your year crosses that line. It does not compute Schedule FA for you; that is a conversation with your CA.</p>
+          <p class="small" style="color:var(--text)">If you hold crypto on a foreign platform and the total value crosses ₹20&nbsp;lakh, it may also need disclosure in <b>Schedule FA</b> (Foreign Assets) — a separate obligation from Schedule VDA.</p>
+          <p class="small" style="color:var(--text)">The Tax Summary raises a flag when your year crosses that line. It does not compute Schedule FA for you; that is a conversation with your CA.</p>
         </div>
       </div>
     </div>
@@ -705,7 +705,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
       <div class="note note-alarm">
         <h3>What the tool must never do here</h3>
-        <p class="small" style="color:var(--ink)">Total tax is <b>₹6,240</b> — not ₹6,240 minus something for the ₹1,000 P2P loss. That loss is legally invisible; it cannot reduce the gain on Event&nbsp;#1. A naive calculator that nets the two legs into a ₹19,000 gain would report ₹5,928 and <b>under-state your tax by ₹312</b>, which is exactly the kind of thing that earns a notice. Avoiding that is the reason this tool exists.</p>
+        <p class="small" style="color:var(--text)">Total tax is <b>₹6,240</b> — not ₹6,240 minus something for the ₹1,000 P2P loss. That loss is legally invisible; it cannot reduce the gain on Event&nbsp;#1. A naive calculator that nets the two legs into a ₹19,000 gain would report ₹5,928 and <b>under-state your tax by ₹312</b>, which is exactly the kind of thing that earns a notice. Avoiding that is the reason this tool exists.</p>
       </div>
     </div>
   </section>
@@ -732,11 +732,11 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
       <div class="grid-2">
         <div class="note note-ok">
           <h3>Privacy is the whole point</h3>
-          <p class="small" style="color:var(--ink)">This holds your complete crypto-to-cash trail, so it stores everything locally — in this build, in your own browser's storage on this machine. Nothing is uploaded, there is no account and there is no server.</p>
+          <p class="small" style="color:var(--text)">This holds your complete crypto-to-cash trail, so it stores everything locally — in this build, in your own browser's storage on this machine. Nothing is uploaded, there is no account and there is no server.</p>
         </div>
         <div class="note note-alarm">
           <h3>What this app will never ask for</h3>
-          <p class="small" style="color:var(--ink)">No private key. No seed phrase. No Binance password. No API secret with withdrawal rights. It needs only public addresses, public tx hashes and read-only exported history. <b>If a field could hold a secret that moves funds, it does not belong in this tool</b> — and you should distrust any crypto tax tool that asks.</p>
+          <p class="small" style="color:var(--text)">No private key. No seed phrase. No Binance password. No API secret with withdrawal rights. It needs only public addresses, public tx hashes and read-only exported history. <b>If a field could hold a secret that moves funds, it does not belong in this tool</b> — and you should distrust any crypto tax tool that asks.</p>
         </div>
       </div>
     </div>
@@ -774,7 +774,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
     <div class="wrap stack">
       <div class="note note-warn">
         <h3>What this tool is — and isn't</h3>
-        <p class="small" style="color:var(--ink)">VDA&nbsp;Trail produces an <b>estimate</b> to help you and your CA. It is not tax advice and it is not a filing service. Tax law changes, and edge cases — gifts, airdrops landing in the wallet, staking rewards, the ₹20 lakh Schedule FA threshold — sit outside this flow and need a professional. Have a CA review the numbers before you file. The tool exists to make you well-informed, not to replace expert judgement.</p>
+        <p class="small" style="color:var(--text)">VDA&nbsp;Trail produces an <b>estimate</b> to help you and your CA. It is not tax advice and it is not a filing service. Tax law changes, and edge cases — gifts, airdrops landing in the wallet, staking rewards, the ₹20 lakh Schedule FA threshold — sit outside this flow and need a professional. Have a CA review the numbers before you file. The tool exists to make you well-informed, not to replace expert judgement.</p>
       </div>
       <div class="btn-row">
         <button class="btn btn-primary" type="button" data-go="new">Start your first trail</button>
@@ -840,7 +840,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
         </fieldset>
 
         <fieldset>
-          <legend><span class="dot" style="color:var(--asset-crypto)"></span>Hop 1 — arrival in your private wallet · on-chain</legend>
+          <legend><span class="dot" style="color:var(--crypto)"></span>Hop 1 — arrival in your private wallet · on-chain</legend>
           <div class="fields">
             <label>Chain
               <select name="h1chain">
@@ -872,7 +872,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
         </fieldset>
 
         <fieldset>
-          <legend><span class="dot" style="color:var(--asset-crypto)"></span>Hop 2 — wallet to Binance · on-chain · not taxable</legend>
+          <legend><span class="dot" style="color:var(--crypto)"></span>Hop 2 — wallet to Binance · on-chain · not taxable</legend>
           <div class="fields">
             <label>Chain
               <select name="h2chain">
@@ -896,7 +896,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
         </fieldset>
 
         <fieldset>
-          <legend><span class="dot" style="color:var(--asset-usdt)"></span>Hop 3 — convert to USDT · Binance · taxable event #1</legend>
+          <legend><span class="dot" style="color:var(--usdt)"></span>Hop 3 — convert to USDT · Binance · taxable event #1</legend>
           <div class="fields">
             <label>Binance trade / convert ID
               <span class="hint">From your trade-history export</span>
@@ -916,7 +916,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
         </fieldset>
 
         <fieldset>
-          <legend><span class="dot" style="color:var(--asset-inr)"></span>Hop 4 — P2P sale for rupees · Binance · taxable event #2</legend>
+          <legend><span class="dot" style="color:var(--inr)"></span>Hop 4 — P2P sale for rupees · Binance · taxable event #2</legend>
           <div class="fields">
             <label>Binance P2P order ID
               <input type="text" class="mono-in" name="h4ref" placeholder="20250520114455" required>
@@ -1026,12 +1026,12 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
       <div class="note note-ok">
         <h3>What it reads, with no key</h3>
-        <p class="small" style="color:var(--ink)">Public nodes on Ethereum, Polygon, BNB Chain, Arbitrum, Base and Optimism give the timestamp, the token and the amount. Binance's public price feed gives what that token was worth at the exact minute of your hop, and the ECB reference rate converts it to rupees. Several nodes are tried per chain, so one being down doesn't stop you.</p>
+        <p class="small" style="color:var(--text)">Public nodes on Ethereum, Polygon, BNB Chain, Arbitrum, Base and Optimism give the timestamp, the token and the amount. Binance's public price feed gives what that token was worth at the exact minute of your hop, and the ECB reference rate converts it to rupees. Several nodes are tried per chain, so one being down doesn't stop you.</p>
       </div>
 
       <div class="note note-alarm">
         <h3>Never paste a key that can move money</h3>
-        <p class="small" style="color:var(--ink)">Nothing here needs one. A <b>Binance API secret can move your funds and must never go in this app</b>, in this box or any other. If a tax tool ever asks you for one, it's asking for far more than it needs to do the job.</p>
+        <p class="small" style="color:var(--text)">Nothing here needs one. A <b>Binance API secret can move your funds and must never go in this app</b>, in this box or any other. If a tax tool ever asks you for one, it's asking for far more than it needs to do the job.</p>
       </div>
 
       <form id="settingsForm">
@@ -1392,18 +1392,18 @@ function renderDetail(){
 
   var rail=
     '<ol class="trail">'+
-    hopRow({no:1,tone:"crypto",seg:"var(--asset-crypto)",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
+    hopRow({no:1,tone:"crypto",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
       title:"Arrived in your private wallet",
       meta:'<span>'+fmtTs(h1.timestamp)+'</span>'+
            '<span>Chain <b>'+esc(h1.chain||"—")+'</b></span>'+ref(h1)+
            '<span>Unit price <b>'+fmtINR(h1.inrPrice||0)+'</b></span>'+
            '<span>Cost of acquisition <b>'+fmtINR(h1.inrValue||0)+'</b></span>'})+
-    hopRow({no:2,tone:"crypto",seg:"linear-gradient(180deg,var(--asset-crypto),var(--asset-usdt))",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
+    hopRow({no:2,tone:"crypto",chipClass:"crypto",chipText:esc(t.asset||"Crypto"),
       title:"Moved from your wallet to Binance",
       meta:'<span>'+fmtTs(h2.timestamp)+'</span>'+
            '<span>Chain <b>'+esc(h2.chain||"—")+'</b></span>'+ref(h2)+
            '<span><b>Not a sale · no tax</b></span>'})+
-    hopRow({no:3,tone:"usdt",seg:"var(--asset-usdt)",chipClass:"usdt",chipText:"USDT",
+    hopRow({no:3,tone:"usdt",chipClass:"usdt",chipText:"USDT",
       title:"Converted to USDT on Binance",
       meta:'<span>'+fmtTs(h3.timestamp)+'</span>'+ref(h3)+
            '<span>Value received <b>'+fmtINR(h3.inrValue||0)+'</b></span>',
@@ -1412,7 +1412,7 @@ function renderDetail(){
             '<p class="leg-math">'+fmtINR(ev[0].sale)+' sale − '+fmtINR(ev[0].cost)+' cost = <b class="'+(ev[0].gain>=0?"gain":"loss")+'">'+fmtINR(ev[0].gain)+'</b></p>'+
             '<p class="leg-math">Tax at 31.2% = <b>'+fmtINR(ev[0].tax)+'</b>'+(ev[0].gain<=0?' · a loss here is taxed at zero and cannot offset anything else':'')+'</p>'+
           '</div>'})+
-    hopRow({no:4,tone:"inr",seg:"var(--asset-inr)",chipClass:"inr",chipText:"INR",
+    hopRow({no:4,tone:"inr",chipClass:"inr",chipText:"INR",
       title:"Sold for rupees over P2P",
       meta:'<span>'+fmtTs(h4.timestamp)+'</span>'+ref(h4)+
            '<span>Received in bank <b>'+fmtINR(h4.inrValue||0)+'</b></span>',
@@ -1426,7 +1426,7 @@ function renderDetail(){
   var lossNote = tt.lossesIgnored>0
     ? '<div class="note note-alarm" style="margin-top:14px">'+
         '<h3>A loss of '+fmtINR(tt.lossesIgnored)+' has been discarded</h3>'+
-        '<p class="small" style="color:var(--ink)">It is legally invisible. It has <b>not</b> been subtracted from the other leg’s gain, and it cannot be carried into next year. Netting the two legs would have shown '+fmtINR(taxOnGain(tt.gains-tt.lossesIgnored))+' instead of '+fmtINR(tt.tax)+' — an under-statement of '+fmtINR(tt.tax-taxOnGain(tt.gains-tt.lossesIgnored))+'.</p>'+
+        '<p class="small" style="color:var(--text)">It is legally invisible. It has <b>not</b> been subtracted from the other leg’s gain, and it cannot be carried into next year. Netting the two legs would have shown '+fmtINR(taxOnGain(tt.gains-tt.lossesIgnored))+' instead of '+fmtINR(tt.tax)+' — an under-statement of '+fmtINR(tt.tax-taxOnGain(tt.gains-tt.lossesIgnored))+'.</p>'+
       '</div>'
     : '';
 
@@ -1533,12 +1533,12 @@ function renderSummary(){
   }
 
   var faFlag = tt.sale>=toPaise("2000000")
-    ? '<div class="note note-warn"><h3>Schedule FA may also apply</h3><p class="small" style="color:var(--ink)">Total consideration routed through a foreign platform this year is '+fmtINR(tt.sale)+', which is at or above the ₹20 lakh mark. Schedule FA (Foreign Assets) is a separate obligation from Schedule VDA and this tool does not compute it. Raise it with your CA.</p></div>'
+    ? '<div class="note note-warn"><h3>Schedule FA may also apply</h3><p class="small" style="color:var(--text)">Total consideration routed through a foreign platform this year is '+fmtINR(tt.sale)+', which is at or above the ₹20 lakh mark. Schedule FA (Foreign Assets) is a separate obligation from Schedule VDA and this tool does not compute it. Raise it with your CA.</p></div>'
     : "";
 
   var lossNote = tt.lossesIgnored>0
-    ? '<div class="note note-alarm"><h3>'+fmtINR(tt.lossesIgnored)+' of losses discarded, as the law requires</h3><p class="small" style="color:var(--ink)">Losing legs are taxed at zero and their losses are neither set off against gains nor carried forward. Every figure above is a per-leg total that has been added, never netted.</p></div>'
-    : '<div class="note note-ok"><h3>No losing legs this year</h3><p class="small" style="color:var(--ink)">Every taxable transfer in FY '+esc(selectedFY)+' produced a gain, so the no-set-off rule did not have to bite. It is still enforced in the engine.</p></div>';
+    ? '<div class="note note-alarm"><h3>'+fmtINR(tt.lossesIgnored)+' of losses discarded, as the law requires</h3><p class="small" style="color:var(--text)">Losing legs are taxed at zero and their losses are neither set off against gains nor carried forward. Every figure above is a per-leg total that has been added, never netted.</p></div>'
+    : '<div class="note note-ok"><h3>No losing legs this year</h3><p class="small" style="color:var(--text)">Every taxable transfer in FY '+esc(selectedFY)+' produced a gain, so the no-set-off rule did not have to bite. It is still enforced in the engine.</p></div>';
 
   host.innerHTML=
     '<div class="tiles" style="margin-bottom:20px">'+
@@ -1566,7 +1566,7 @@ function renderSummary(){
       "</table>"+
     "</div>"+
     '<div class="grid-2">'+lossNote+faFlag+"</div>"+
-    '<div class="note" style="margin-top:16px"><h3>For your CA</h3><p class="small" style="color:var(--ink)">'+esc(caSummary(selectedFY))+"</p></div>";
+    '<div class="note" style="margin-top:16px"><h3>For your CA</h3><p class="small" style="color:var(--text)">'+esc(caSummary(selectedFY))+"</p></div>";
 
   sel.onchange=function(){ selectedFY=this.value; renderSummary(); };
 }
