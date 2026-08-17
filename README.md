@@ -1,4 +1,4 @@
-# VDA Trail
+# Serevia
 
 Track one batch of crypto from a private wallet to rupees in the bank, and get the exact figures that go into **Schedule VDA** of an Indian ITR.
 
@@ -25,7 +25,7 @@ You paste the transaction IDs for each hop of a journey. The app records the tim
 | 3 | On Binance you convert the crypto to USDT | Binance trade / convert ID | **Yes — taxable event #1** |
 | 4 | You sell the USDT for INR over P2P | Binance P2P order ID + INR received | **Yes — taxable event #2** |
 
-Colour in the interface encodes **which asset you are holding** — indigo for your crypto, green for USDT, brass for rupees. Hops 1 and 2 share a colour because it is the same batch simply moving. Which means a taxable transfer is exactly a point where the trail changes colour, and there are precisely two.
+Colour in the interface encodes **which asset you are holding** — blue for your crypto, green for USDT, amber for rupees. Hops 1 and 2 share a colour because it is the same batch simply moving. Which means a taxable transfer is exactly a point where the colour changes, and there are precisely two.
 
 ---
 
@@ -50,7 +50,7 @@ Event #2  USDT → INR   cost ₹1,20,000  sale ₹1,19,000  loss  (₹1,000)  t
                                                           total tax     ₹6,240
 ```
 
-A calculator that nets the two legs into a ₹19,000 gain reports **₹5,928** and under-states the tax by ₹312. VDA Trail reports ₹6,240 and says so explicitly on screen, naming the amount of loss it discarded and why.
+A calculator that nets the two legs into a ₹19,000 gain reports **₹5,928** and under-states the tax by ₹312. Serevia reports ₹6,240 and says so explicitly on screen, naming the amount of loss it discarded and why.
 
 ---
 
