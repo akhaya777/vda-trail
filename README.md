@@ -1,4 +1,4 @@
-# Serevia
+# SEREVIA
 
 Track one batch of crypto from a private wallet to rupees in the bank, and get the exact figures that go into **Schedule VDA** of an Indian ITR.
 
@@ -50,7 +50,7 @@ Event #2  USDT → INR   cost ₹1,20,000  sale ₹1,19,000  loss  (₹1,000)  t
                                                           total tax     ₹6,240
 ```
 
-A calculator that nets the two legs into a ₹19,000 gain reports **₹5,928** and under-states the tax by ₹312. Serevia reports ₹6,240 and says so explicitly on screen, naming the amount of loss it discarded and why.
+A calculator that nets the two legs into a ₹19,000 gain reports **₹5,928** and under-states the tax by ₹312. SEREVIA reports ₹6,240 and says so explicitly on screen, naming the amount of loss it discarded and why.
 
 ---
 
