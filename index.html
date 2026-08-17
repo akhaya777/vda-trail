@@ -467,27 +467,73 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 .dropzone.over{border-color:var(--accent);background:var(--accent-wash)}
 .pick{white-space:nowrap}
 
-/* ---------- sign-in gate ---------- */
+/* ---------- sign-in gate ----------
+   Split screen: the product's own idea on the left, the form on the right.
+   The full-height spine is the identity — it breaks colour exactly twice,
+   at the two taxable transfers, which is what the whole app is about. */
 .gate{
   position:fixed;inset:0;z-index:300;background:var(--bg);
-  display:grid;place-items:center;padding:24px;overflow-y:auto;
+  display:grid;grid-template-columns:1.12fr 1fr;overflow-y:auto;
 }
 .gate[hidden]{display:none}
-.gate-card{
-  width:100%;max-width:410px;background:var(--panel);border:1px solid var(--line);
-  padding:30px 30px 26px;display:grid;gap:15px;
+
+.gate-left{
+  position:relative;background:var(--rail);border-right:1px solid var(--line);
+  padding:clamp(30px,4.5vw,58px) clamp(28px,4vw,56px);
+  display:flex;flex-direction:column;gap:26px;min-width:0;
 }
-.gate-brand{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-.gate-brand .rail-mark{width:42px;height:42px}
-.gate-brand .rail-mark svg{width:22px;height:22px}
-.gate-brand b{display:block;font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--accent);line-height:1}
-.gate-brand span{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-.gate-card h2{font-size:1.3rem}
-.gate-card .btn{justify-content:center;padding:12px 15px}
-.gate-note{border-top:1px solid var(--line-2);padding-top:13px;margin-top:2px;display:grid;gap:6px}
+.gate-spine{
+  position:absolute;left:0;top:0;bottom:0;width:6px;
+  background:linear-gradient(180deg,
+    var(--crypto) 0 50%,
+    var(--usdt)  50% 76%,
+    var(--inr)   76% 100%);
+}
+.gate-logo{display:flex;align-items:center;gap:11px}
+.gate-logo .rail-mark{width:36px;height:36px}
+.gate-logo .rail-mark svg{width:19px;height:19px}
+.gate-logo b{font-size:1.28rem;font-weight:800;letter-spacing:-.03em;color:var(--accent);line-height:1}
+.gate-pitch{margin-top:auto;display:grid;gap:16px}
+.gate-pitch h1{
+  font-size:clamp(2rem,1.1rem + 3vw,3.3rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;
+}
+.gate-pitch h1 em{font-style:normal;color:var(--accent)}
+.gate-pitch p{color:var(--muted);font-size:1rem;max-width:44ch}
+
+.gate-hops{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.gate-hops li{
+  display:grid;grid-template-columns:4px 30px 1fr auto;align-items:center;gap:0 13px;
+  padding:12px 0;border-bottom:1px solid var(--line-2);
+}
+.gate-hops i{width:4px;height:26px;background:var(--c);display:block}
+.gate-hops b{font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--dim)}
+.gate-hops span.what{font-size:.9rem;color:var(--text)}
+.gate-hops span.tag{
+  font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);white-space:nowrap;
+}
+.gate-hops span.tag.tx{color:var(--bad)}
+
+.gate-right{display:grid;place-items:center;padding:clamp(28px,4vw,48px) clamp(22px,3.5vw,44px);min-width:0}
+.gate-card{width:100%;max-width:378px;display:grid;gap:15px}
+.gate-card h2{font-size:1.55rem;letter-spacing:-.028em}
+.gate-card .sub{color:var(--muted);font-size:.93rem;margin-top:-9px}
+.gate-card .btn{justify-content:center;padding:13px 15px;font-size:.9rem;margin-top:4px}
+.gate-card input{padding:13px 14px;font-size:.95rem}
+.gate-note{border-top:1px solid var(--line-2);padding-top:14px;margin-top:6px;display:grid;gap:7px}
 input[readonly]{color:var(--muted);cursor:not-allowed}
 input[readonly]:hover{border-color:var(--line)}
 .app-hidden{display:none!important}
+
+@media (max-width:860px){
+  .gate{grid-template-columns:1fr;align-content:start}
+  .gate-left{border-right:0;border-bottom:1px solid var(--line);gap:20px;padding-bottom:26px}
+  .gate-spine{width:100%;height:5px;bottom:auto;
+    background:linear-gradient(90deg,var(--crypto) 0 50%,var(--usdt) 50% 76%,var(--inr) 76% 100%)}
+  .gate-pitch{margin-top:6px}
+  .gate-hops{display:none}
+  .gate-right{place-items:start center}
+}
 
 /* ---------- print ---------- */
 @media print{
@@ -510,31 +556,52 @@ input[readonly]:hover{border-color:var(--line)}
 <a class="skip" href="#main">Skip to content</a>
 
 <div class="gate no-print" id="gate" hidden>
-  <form class="gate-card" id="gateForm" autocomplete="on">
-    <div class="gate-brand">
+
+  <section class="gate-left">
+    <span class="gate-spine" aria-hidden="true"></span>
+
+    <div class="gate-logo">
       <span class="rail-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="miter"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
       </span>
-      <span>
-        <b>SEREVIA</b>
-        <span>by Freya</span>
-      </span>
+      <b>SEREVIA</b>
     </div>
-    <h2>Sign in</h2>
-    <p class="small">This holds your complete crypto-to-cash trail. Sign in to continue.</p>
-    <label>Username
-      <input type="text" id="gateUser" name="username" value="hellspook" readonly autocomplete="username">
-    </label>
-    <label>Password
-      <input type="password" id="gatePass" name="password" autocomplete="current-password" required>
-    </label>
-    <button class="btn btn-primary" type="submit" id="gateBtn">Sign in</button>
-    <p class="status" id="gateStatus" role="status" aria-live="polite"></p>
-    <div class="gate-note">
-      <p class="xs">The username is fixed and cannot be changed. Change the password under Settings once you are in.</p>
-      <p class="xs">Forgotten it? There is no reset link, because there is no server. Clearing this site's data restores the default password — but it also erases your saved trails, so keep a backup.</p>
+
+    <div class="gate-pitch">
+      <h1>Four hops.<br><em>Two of them are taxed.</em></h1>
+      <p>Most people count one sale and file on that. The rupees only move once, so it feels like one. It is two, and the second one cannot borrow the first one's loss.</p>
     </div>
-  </form>
+
+    <ol class="gate-hops" aria-label="The journey this tool follows">
+      <li><i style="--c:var(--crypto)"></i><b>01</b><span class="what">Arrives in your wallet</span><span class="tag">cost basis</span></li>
+      <li><i style="--c:var(--crypto)"></i><b>02</b><span class="what">Moved to the exchange</span><span class="tag">not a sale</span></li>
+      <li><i style="--c:var(--usdt)"></i><b>03</b><span class="what">Converted to USDT</span><span class="tag tx">taxable</span></li>
+      <li><i style="--c:var(--inr)"></i><b>04</b><span class="what">Sold for rupees</span><span class="tag tx">taxable</span></li>
+    </ol>
+  </section>
+
+  <section class="gate-right">
+    <form class="gate-card" id="gateForm" autocomplete="on">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to pick up your trail</p>
+      <label>Username
+        <input type="text" id="gateUser" name="username" value="hellspook" readonly autocomplete="username">
+      </label>
+      <label>Password
+        <input type="password" id="gatePass" name="password" autocomplete="current-password" placeholder="••••••" required>
+      </label>
+      <button class="btn btn-primary" type="submit" id="gateBtn">
+        Sign in
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="miter"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="status" id="gateStatus" role="status" aria-live="polite"></p>
+      <div class="gate-note">
+        <p class="xs">One fixed account. The username cannot be changed; the password can, under Settings.</p>
+        <p class="xs">No reset link exists, because no server does. Clearing this site's data restores the default password and erases your saved trails with it, so keep a backup.</p>
+      </div>
+    </form>
+  </section>
+
 </div>
 
 <div class="shell" id="appShell">
