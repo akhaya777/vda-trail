@@ -1114,7 +1114,7 @@ input[readonly]:hover{border-color:var(--line)}
               <input type="password" name="current" autocomplete="current-password">
             </label>
             <label>New password
-              <span class="hint">At least 8 characters</span>
+              <span class="hint">At least 4 characters</span>
               <input type="password" name="next" autocomplete="new-password">
             </label>
             <label>Confirm new password
@@ -1295,7 +1295,7 @@ var USERNAME="hellspook";
 var AUTH_KEY="serevia.auth";
 var SESSION_KEY="serevia.session";
 /* Shipped default. Replaced the moment the user sets their own password. */
-var DEFAULT_AUTH={salt:"3995e7f0ab5ad54c6693715efddcc930",hash:"8e83a2708a5bf519efc571de234b1a56ff17418521a967eeed6fb55644b8f53d",isDefault:true};
+var DEFAULT_AUTH={salt:"1ed38683668d5044a110a76736ffa95a",hash:"865c6c54c21a332a6287c798074738a644a594090937231451b7724c7c957e3c",isDefault:true};
 
 function currentAuth(){
   try{
@@ -2808,7 +2808,7 @@ document.getElementById("passwordForm").addEventListener("submit",function(ev){
   var cur=f.current.value, next=f.next.value, confirm=f.confirm.value;
 
   if(!cur){ setStatus("pwStatus","Enter your current password.","bad"); return; }
-  if(next.length<8){ setStatus("pwStatus","The new password needs at least 8 characters.","bad"); return; }
+  if(next.length<4){ setStatus("pwStatus","The new password needs at least 4 characters.","bad"); return; }
   if(next!==confirm){ setStatus("pwStatus","The two new passwords do not match.","bad"); return; }
   if(next===cur){ setStatus("pwStatus","The new password is the same as the current one.","bad"); return; }
 
