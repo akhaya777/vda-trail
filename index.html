@@ -467,6 +467,28 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 .dropzone.over{border-color:var(--accent);background:var(--accent-wash)}
 .pick{white-space:nowrap}
 
+/* ---------- sign-in gate ---------- */
+.gate{
+  position:fixed;inset:0;z-index:300;background:var(--bg);
+  display:grid;place-items:center;padding:24px;overflow-y:auto;
+}
+.gate[hidden]{display:none}
+.gate-card{
+  width:100%;max-width:410px;background:var(--panel);border:1px solid var(--line);
+  padding:30px 30px 26px;display:grid;gap:15px;
+}
+.gate-brand{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.gate-brand .rail-mark{width:42px;height:42px}
+.gate-brand .rail-mark svg{width:22px;height:22px}
+.gate-brand b{display:block;font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--accent);line-height:1}
+.gate-brand span{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.gate-card h2{font-size:1.3rem}
+.gate-card .btn{justify-content:center;padding:12px 15px}
+.gate-note{border-top:1px solid var(--line-2);padding-top:13px;margin-top:2px;display:grid;gap:6px}
+input[readonly]{color:var(--muted);cursor:not-allowed}
+input[readonly]:hover{border-color:var(--line)}
+.app-hidden{display:none!important}
+
 /* ---------- print ---------- */
 @media print{
   :root{--bg:#fff;--rail:#fff;--panel:#fff;--panel-2:#fff;--sunken:#fff;--line:#bbb;--line-2:#ddd;
@@ -487,7 +509,35 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="shell">
+<div class="gate no-print" id="gate" hidden>
+  <form class="gate-card" id="gateForm" autocomplete="on">
+    <div class="gate-brand">
+      <span class="rail-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="miter"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+      </span>
+      <span>
+        <b>SEREVIA</b>
+        <span>by Freya</span>
+      </span>
+    </div>
+    <h2>Sign in</h2>
+    <p class="small">This holds your complete crypto-to-cash trail. Sign in to continue.</p>
+    <label>Username
+      <input type="text" id="gateUser" name="username" value="hellspook" readonly autocomplete="username">
+    </label>
+    <label>Password
+      <input type="password" id="gatePass" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-primary" type="submit" id="gateBtn">Sign in</button>
+    <p class="status" id="gateStatus" role="status" aria-live="polite"></p>
+    <div class="gate-note">
+      <p class="xs">The username is fixed and cannot be changed. Change the password under Settings once you are in.</p>
+      <p class="xs">Forgotten it? There is no reset link, because there is no server. Clearing this site's data restores the default password — but it also erases your saved trails, so keep a backup.</p>
+    </div>
+  </form>
+</div>
+
+<div class="shell" id="appShell">
 
 <aside class="rail no-print">
   <button class="rail-brand" data-go="overview" type="button">
@@ -533,6 +583,10 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
     <button class="btn btn-sm btn-quiet" id="themeBtn" type="button" aria-label="Switch colour theme">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
       Theme
+    </button>
+    <button class="btn btn-sm btn-quiet" id="signOutBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M15 17l5-5-5-5M20 12H9M12 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h6"/></svg>
+      Sign out
     </button>
     <p class="rail-by">by Freya</p>
   </div>
@@ -1046,6 +1100,35 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
         <p class="small" style="color:var(--text)">Nothing here needs one. A <b>Binance API secret can move your funds and must never go in this app</b>, in this box or any other. If a tax tool ever asks you for one, it's asking for far more than it needs to do the job.</p>
       </div>
 
+      <form id="passwordForm">
+        <fieldset>
+          <legend>Sign-in</legend>
+          <div class="fields">
+            <label>Username
+              <span class="hint">Fixed for this install and cannot be changed</span>
+              <input type="text" name="username" value="hellspook" readonly autocomplete="username">
+            </label>
+          </div>
+          <div class="fields">
+            <label>Current password
+              <input type="password" name="current" autocomplete="current-password">
+            </label>
+            <label>New password
+              <span class="hint">At least 8 characters</span>
+              <input type="password" name="next" autocomplete="new-password">
+            </label>
+            <label>Confirm new password
+              <input type="password" name="confirm" autocomplete="new-password">
+            </label>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" type="submit">Change password</button>
+            <span class="status" id="pwStatus" role="status" aria-live="polite"></span>
+          </div>
+          <p class="xs">The password is never stored. What is kept is a salted hash of it, produced by 50,000 rounds of SHA-256, so the password itself cannot be read back out of this browser.</p>
+        </fieldset>
+      </form>
+
       <form id="settingsForm">
         <fieldset>
           <legend>Your own node</legend>
@@ -1094,6 +1177,150 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
 <script>
 "use strict";
+
+/* ============================================================
+   SIGN-IN GATE
+
+   Be clear about what this is: the whole app is a static file with no
+   server, so this is a lock on the front door, not real authentication.
+   Anyone with devtools can walk past it. It exists to keep casual eyes off
+   your trails on a shared machine — nothing stronger is possible without a
+   backend.
+
+   What it does do properly: the password is never stored. Only a salted
+   hash is kept, so somebody reading this browser's storage cannot recover
+   a password you might have reused elsewhere.
+
+   SHA-256 is implemented here rather than via crypto.subtle because
+   crypto.subtle is unavailable on file:// pages, and the app is meant to
+   work by double-clicking index.html.
+   ============================================================ */
+var K256=[
+0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+
+function rotr32(x,n){ return ((x>>>n)|(x<<(32-n)))>>>0; }
+
+function sha256Bytes(bytes){
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var l=bytes.length;
+  var padded=(((l+9)+63)>>6)<<6;
+  var m=new Uint8Array(padded);
+  m.set(bytes);
+  m[l]=0x80;
+  var dv=new DataView(m.buffer);
+  var bits=l*8;
+  dv.setUint32(padded-8,Math.floor(bits/4294967296));
+  dv.setUint32(padded-4,bits>>>0);
+  var w=new Uint32Array(64);
+  for(var off=0;off<padded;off+=64){
+    var t;
+    for(t=0;t<16;t++) w[t]=dv.getUint32(off+t*4);
+    for(t=16;t<64;t++){
+      var x=w[t-15], y=w[t-2];
+      var s0=(rotr32(x,7)^rotr32(x,18)^(x>>>3))>>>0;
+      var s1=(rotr32(y,17)^rotr32(y,19)^(y>>>10))>>>0;
+      w[t]=(w[t-16]+s0+w[t-7]+s1)>>>0;
+    }
+    var a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(t=0;t<64;t++){
+      var S1=(rotr32(e,6)^rotr32(e,11)^rotr32(e,25))>>>0;
+      var ch=((e&f)^((~e)&g))>>>0;
+      var t1=(h+S1+ch+K256[t]+w[t])>>>0;
+      var S0=(rotr32(a,2)^rotr32(a,13)^rotr32(a,22))>>>0;
+      var maj=((a&b)^(a&c)^(b&c))>>>0;
+      var t2=(S0+maj)>>>0;
+      h=g; g=f; f=e; e=(d+t1)>>>0; d=c; c=b; b=a; a=(t1+t2)>>>0;
+    }
+    H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+    H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
+  }
+  var out=new Uint8Array(32);
+  for(var i=0;i<8;i++){ out[i*4]=H[i]>>>24; out[i*4+1]=(H[i]>>>16)&255; out[i*4+2]=(H[i]>>>8)&255; out[i*4+3]=H[i]&255; }
+  return out;
+}
+function utf8Bytes(s){
+  var out=[],i,c;
+  for(i=0;i<s.length;i++){
+    c=s.charCodeAt(i);
+    if(c<0x80) out.push(c);
+    else if(c<0x800){ out.push(0xc0|(c>>6),0x80|(c&63)); }
+    else if(c<0xd800||c>=0xe000){ out.push(0xe0|(c>>12),0x80|((c>>6)&63),0x80|(c&63)); }
+    else { i++; var cp=0x10000+(((c&0x3ff)<<10)|(s.charCodeAt(i)&0x3ff));
+      out.push(0xf0|(cp>>18),0x80|((cp>>12)&63),0x80|((cp>>6)&63),0x80|(cp&63)); }
+  }
+  return new Uint8Array(out);
+}
+function toHex(bytes){
+  var s="";
+  for(var i=0;i<bytes.length;i++) s+=(bytes[i]<16?"0":"")+bytes[i].toString(16);
+  return s;
+}
+
+var PW_ROUNDS=50000;
+/* Salt is folded in on every round so a precomputed table for one salt is
+   useless against another. */
+function derivePassword(password,salt){
+  var saltBytes=utf8Bytes(salt);
+  var d=sha256Bytes(utf8Bytes(salt+" "+password));
+  var buf=new Uint8Array(32+saltBytes.length);
+  buf.set(saltBytes,32);
+  for(var i=1;i<PW_ROUNDS;i++){
+    buf.set(d,0);
+    d=sha256Bytes(buf);
+  }
+  return toHex(d);
+}
+function randomSalt(){
+  var b=new Uint8Array(16);
+  if(window.crypto&&window.crypto.getRandomValues) window.crypto.getRandomValues(b);
+  else for(var i=0;i<16;i++) b[i]=Math.floor(Math.random()*256);
+  return toHex(b);
+}
+/* Compare without leaking how much of the hash matched. */
+function constantTimeEqual(a,b){
+  if(typeof a!=="string"||typeof b!=="string"||a.length!==b.length) return false;
+  var diff=0;
+  for(var i=0;i<a.length;i++) diff|=a.charCodeAt(i)^b.charCodeAt(i);
+  return diff===0;
+}
+
+var USERNAME="hellspook";
+var AUTH_KEY="serevia.auth";
+var SESSION_KEY="serevia.session";
+/* Shipped default. Replaced the moment the user sets their own password. */
+var DEFAULT_AUTH={salt:"3995e7f0ab5ad54c6693715efddcc930",hash:"8e83a2708a5bf519efc571de234b1a56ff17418521a967eeed6fb55644b8f53d",isDefault:true};
+
+function currentAuth(){
+  try{
+    var raw=localStorage.getItem(AUTH_KEY);
+    if(raw){
+      var p=JSON.parse(raw);
+      if(p&&p.salt&&p.hash) return p;
+    }
+  }catch(e){}
+  return DEFAULT_AUTH;
+}
+function storeAuth(rec){
+  try{ localStorage.setItem(AUTH_KEY,JSON.stringify(rec)); }
+  catch(e){ /* storage blocked — the change simply will not persist */ }
+}
+function verifyPassword(password){
+  var rec=currentAuth();
+  return constantTimeEqual(derivePassword(password,rec.salt),rec.hash);
+}
+function isSignedIn(){
+  try{ return sessionStorage.getItem(SESSION_KEY)==="1"; }catch(e){ return false; }
+}
+function setSignedIn(on){
+  try{ if(on) sessionStorage.setItem(SESSION_KEY,"1"); else sessionStorage.removeItem(SESSION_KEY); }catch(e){}
+}
 
 /* ============================================================
    MONEY — integer paise everywhere. Never floats for currency.
@@ -2384,6 +2611,8 @@ function renderSettings(){
       "<dt>Trails saved</dt><dd>"+store.trails.length+"</dd>"+
       "<dt>Taxable transfers</dt><dd>"+(store.trails.length*2)+"</dd>"+
       "<dt>Local storage used</dt><dd>"+(used/1024).toFixed(1)+" KB</dd>"+
+      "<dt>Signed in as</dt><dd>"+esc(USERNAME)+"</dd>"+
+      "<dt>Password</dt><dd>"+(currentAuth().isDefault?"still the shipped default":"set by you")+"</dd>"+
       "<dt>Chain lookup</dt><dd>"+(settings.customRpc?"your node, public nodes as fallback":"public nodes, no key needed")+"</dd>"+
       "<dt>Pricing</dt><dd>Binance minute feed &times; USD/INR"+(settings.coingeckoKey?", CoinGecko key saved":"")+"</dd>"+
     "</dl>";
@@ -2524,9 +2753,84 @@ document.getElementById("seedFromOverview").addEventListener("click",function(){
   if(!store.trails.length) seedExample();
 });
 
+/* ============================================================
+   GATE WIRING
+   ============================================================ */
+var gateEl=document.getElementById("gate");
+var shellEl=document.getElementById("appShell");
+
+function showGate(){
+  gateEl.hidden=false;
+  shellEl.classList.add("app-hidden");
+  setTimeout(function(){ document.getElementById("gatePass").focus(); },40);
+}
+function unlockApp(){
+  gateEl.hidden=true;
+  shellEl.classList.remove("app-hidden");
+  document.getElementById("gatePass").value="";
+  setStatus("gateStatus","");
+  if(currentAuth().isDefault){
+    toast("You are on the default password — change it under Settings");
+  }
+}
+
+document.getElementById("gateForm").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var pass=document.getElementById("gatePass").value;
+  var btn=document.getElementById("gateBtn");
+  if(!pass){ setStatus("gateStatus","Enter your password.","bad"); return; }
+
+  setStatus("gateStatus","Checking…","busy");
+  btn.disabled=true;
+  /* Hand the browser a frame so the busy state actually paints before the
+     50,000 hash rounds block the thread. */
+  setTimeout(function(){
+    var ok=false;
+    try{ ok=verifyPassword(pass); }catch(e){ ok=false; }
+    btn.disabled=false;
+    if(ok){ setSignedIn(true); unlockApp(); }
+    else{
+      document.getElementById("gatePass").value="";
+      document.getElementById("gatePass").focus();
+      setStatus("gateStatus","That password is not right.","bad");
+    }
+  },30);
+});
+
+document.getElementById("signOutBtn").addEventListener("click",function(){
+  setSignedIn(false);
+  showGate();
+});
+
+document.getElementById("passwordForm").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var f=this;
+  var cur=f.current.value, next=f.next.value, confirm=f.confirm.value;
+
+  if(!cur){ setStatus("pwStatus","Enter your current password.","bad"); return; }
+  if(next.length<8){ setStatus("pwStatus","The new password needs at least 8 characters.","bad"); return; }
+  if(next!==confirm){ setStatus("pwStatus","The two new passwords do not match.","bad"); return; }
+  if(next===cur){ setStatus("pwStatus","The new password is the same as the current one.","bad"); return; }
+
+  setStatus("pwStatus","Working…","busy");
+  setTimeout(function(){
+    if(!verifyPassword(cur)){
+      setStatus("pwStatus","Your current password is not right.","bad");
+      return;
+    }
+    var salt=randomSalt();
+    storeAuth({salt:salt,hash:derivePassword(next,salt),isDefault:false,changedAt:new Date().toISOString()});
+    f.reset();
+    setStatus("pwStatus","Password changed. It applies the next time you sign in.","good");
+    toast("Password changed");
+    renderSettings();
+  },30);
+});
+
 load();
 updateDerived();
 go("overview");
+if(isSignedIn()) unlockApp(); else showGate();
 
 (function(){
   var r=selfTest();
