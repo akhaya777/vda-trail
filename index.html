@@ -48,9 +48,9 @@
   --sans:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --mono:"Cascadia Mono",Consolas,ui-monospace,"SF Mono","Roboto Mono",monospace;
 
-  --r-lg:14px;
-  --r-md:10px;
-  --r-sm:8px;
+  --r-lg:0;
+  --r-md:0;
+  --r-sm:0;
   --rail-w:252px;
 }
 /* Light counterpart keeps the same DNA: coral accent, rounded panels,
@@ -123,7 +123,7 @@ body{
   font-family:var(--sans);font-size:15px;line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:0}
 img{max-width:100%}
 
 /* ---------- type ---------- */
@@ -153,7 +153,7 @@ a{color:var(--accent);text-underline-offset:3px}
 }
 .rail-brand{display:flex;align-items:center;gap:11px;padding:2px 8px 22px;background:none;border:0;cursor:pointer;text-align:left;width:100%}
 .rail-mark{
-  width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;
+  width:38px;height:38px;border-radius:0;flex:none;display:grid;place-items:center;
   background:linear-gradient(150deg,var(--accent),#E8613F);color:var(--accent-ink);
 }
 .rail-mark svg{width:20px;height:20px}
@@ -165,7 +165,7 @@ a{color:var(--accent);text-underline-offset:3px}
 nav.views{display:flex;flex-direction:column;gap:1px}
 nav.views button{
   font:inherit;font-size:.92rem;font-weight:500;color:var(--muted);
-  background:none;border:0;border-radius:var(--r-md);
+  background:none;border:0;border-radius:0;
   padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:12px;
   text-align:left;width:100%;position:relative;transition:background .13s ease,color .13s ease;
 }
@@ -174,7 +174,7 @@ nav.views button:hover{color:var(--text);background:var(--panel)}
 nav.views button[aria-current="page"]{color:var(--accent);background:var(--panel);font-weight:600}
 nav.views button[aria-current="page"]::after{
   content:"";position:absolute;right:-14px;top:8px;bottom:8px;width:3px;
-  background:var(--accent);border-radius:3px 0 0 3px;
+  background:var(--accent);border-radius:0;
 }
 .rail-spacer{flex:1}
 .rail-foot{display:grid;gap:11px;padding:12px 10px 0;border-top:1px solid var(--line)}
@@ -215,7 +215,7 @@ section.band:last-child{margin-bottom:0}
 .btn{
   font:inherit;font-size:.86rem;font-weight:600;
   display:inline-flex;align-items:center;gap:8px;
-  padding:9px 15px;border-radius:var(--r-md);cursor:pointer;text-decoration:none;
+  padding:9px 15px;border-radius:0;cursor:pointer;text-decoration:none;
   border:1px solid var(--line);background:var(--panel-2);color:var(--text);
   transition:background .13s ease,border-color .13s ease,transform .1s ease;
 }
@@ -224,7 +224,7 @@ section.band:last-child{margin-bottom:0}
 .btn svg{width:15px;height:15px;flex:none}
 .btn-primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
 .btn-primary:hover{background:var(--accent);border-color:var(--accent);filter:brightness(1.08)}
-.btn-sm{padding:7px 12px;font-size:.79rem;border-radius:var(--r-sm)}
+.btn-sm{padding:7px 12px;font-size:.79rem;border-radius:0}
 .btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 .btn-quiet{background:transparent;color:var(--muted)}
 .btn-quiet:hover{color:var(--text);background:var(--panel-2)}
@@ -235,7 +235,7 @@ section.band:last-child{margin-bottom:0}
 .chip{
   display:inline-flex;align-items:center;gap:6px;
   font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
-  padding:4px 9px;border-radius:999px;white-space:nowrap;
+  padding:4px 9px;border-radius:0;white-space:nowrap;
   border:1px solid var(--line);color:var(--muted);background:var(--panel-2);
 }
 .chip.flagged{color:var(--bad);border-color:transparent;background:var(--bad-wash)}
@@ -244,17 +244,17 @@ section.band:last-child{margin-bottom:0}
 .chip.crypto{color:var(--crypto);border-color:transparent;background:color-mix(in srgb,var(--crypto) 13%,transparent)}
 .chip.usdt{color:var(--usdt);border-color:transparent;background:var(--good-wash)}
 .chip.inr{color:var(--inr);border-color:transparent;background:var(--warn-wash)}
-.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+.dot{width:6px;height:6px;border-radius:0;background:currentColor;flex:none}
 
 /* ---------- panels ---------- */
-.card,.note,.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
+.card,.note,.panel{background:var(--panel);border:1px solid var(--line);border-radius:0}
 .card{padding:19px 21px;display:grid;gap:9px;align-content:start}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
 .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px}
 
 /* panel header: icon tile + title + description, meta on the right */
 .panel-head{display:flex;align-items:center;gap:13px;padding:17px 21px;border-bottom:1px solid var(--line-2)}
-.panel-icon{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--accent-wash);color:var(--accent)}
+.panel-icon{width:38px;height:38px;border-radius:0;flex:none;display:grid;place-items:center;background:var(--accent-wash);color:var(--accent)}
 .panel-icon svg{width:19px;height:19px}
 .panel-icon.g{background:var(--good-wash);color:var(--good)}
 .panel-icon.w{background:var(--warn-wash);color:var(--warn)}
@@ -277,7 +277,7 @@ section.band:last-child{margin-bottom:0}
 .note-ok h3{color:var(--good)}
 
 /* ---------- alert rows (the "Fix" strips) ---------- */
-.alert{display:flex;align-items:center;gap:13px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
+.alert{display:flex;align-items:center;gap:13px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:0}
 .alert-ico{width:26px;height:26px;flex:none;display:grid;place-items:center;color:var(--warn)}
 .alert-ico svg{width:18px;height:18px}
 .alert-txt{display:grid;gap:1px;min-width:0}
@@ -288,7 +288,7 @@ section.band:last-child{margin-bottom:0}
 /* ---------- stat tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:14px}
 .tile{
-  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  background:var(--panel);border:1px solid var(--line);border-radius:0;
   padding:17px 19px;display:grid;gap:5px;position:relative;overflow:hidden;
 }
 .tile-k{font-size:.65rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
@@ -302,7 +302,7 @@ section.band:last-child{margin-bottom:0}
 .trail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .hop{
   display:grid;grid-template-columns:44px minmax(0,1fr);gap:0;
-  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  background:var(--panel);border:1px solid var(--line);border-radius:0;
   border-left:3px solid var(--tone,var(--line));overflow:hidden;
 }
 .hop-node{display:none}
@@ -315,7 +315,7 @@ section.band:last-child{margin-bottom:0}
 .hop-title{font-size:1.02rem;font-weight:700;letter-spacing:-.012em}
 .hop-meta{display:flex;gap:5px 20px;flex-wrap:wrap;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
 .hop-meta b{color:var(--text);font-weight:700}
-.leg{padding:12px 15px;border-radius:var(--r-md);background:var(--bad-wash);border:1px solid transparent;display:grid;gap:6px}
+.leg{padding:12px 15px;border-radius:0;background:var(--bad-wash);border:1px solid transparent;display:grid;gap:6px}
 .leg-title{font-size:.66rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--bad)}
 .leg-math{font-family:var(--mono);font-size:.81rem;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.55}
 .tone-crypto{--tone:var(--crypto)}
@@ -333,7 +333,7 @@ section.band:last-child{margin-bottom:0}
 }
 
 /* ---------- tables ---------- */
-.scroller{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
+.scroller{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:0}
 table{border-collapse:collapse;width:100%;min-width:680px;font-size:.86rem}
 caption{text-align:left;padding:15px 19px 3px;font-size:.75rem;color:var(--dim);caption-side:top}
 thead th{
@@ -355,7 +355,7 @@ form{display:grid;gap:14px}
    behave as a grid item, so floating it full-width is the reliable way to
    turn it into a proper panel header rule. */
 fieldset{
-  border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel);
+  border:1px solid var(--line);border-radius:0;background:var(--panel);
   padding:0 21px 20px;margin:0;display:block;
 }
 legend{
@@ -373,7 +373,7 @@ label .hint{font-size:.74rem;font-weight:400;letter-spacing:0;text-transform:non
 input,select,textarea{
   font-family:var(--sans);font-size:.9rem;font-weight:400;letter-spacing:0;text-transform:none;
   color:var(--text);background:var(--sunken);
-  border:1px solid var(--line);border-radius:var(--r-md);padding:11px 13px;width:100%;
+  border:1px solid var(--line);border-radius:0;padding:11px 13px;width:100%;
   transition:border-color .13s ease,background .13s ease;
 }
 input::placeholder,textarea::placeholder{color:var(--dim)}
@@ -383,7 +383,7 @@ input.mono-in{font-family:var(--mono);font-size:.82rem}
 textarea{resize:vertical;min-height:90px}
 .derived{
   font-family:var(--mono);font-size:.85rem;font-variant-numeric:tabular-nums;
-  background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:var(--r-md);
+  background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:0;
   padding:11px 14px;color:var(--text);
 }
 .err{color:var(--bad);font-size:.82rem}
@@ -397,7 +397,7 @@ textarea{resize:vertical;min-height:90px}
 
 .trail-card{
   background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--crypto);
-  border-radius:var(--r-lg);padding:17px 20px;display:grid;gap:11px;width:100%;
+  border-radius:0;padding:17px 20px;display:grid;gap:11px;width:100%;
   text-align:left;cursor:pointer;font:inherit;color:inherit;
   transition:border-color .13s ease,background .13s ease;
 }
@@ -407,53 +407,53 @@ textarea{resize:vertical;min-height:90px}
 .mini{display:flex;gap:6px 22px;flex-wrap:wrap;font-size:.79rem;color:var(--muted)}
 .mini b{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--text);font-weight:700}
 .empty{
-  border:1px dashed var(--line);border-radius:var(--r-lg);padding:48px 24px;text-align:center;
+  border:1px dashed var(--line);border-radius:0;padding:48px 24px;text-align:center;
   display:grid;gap:14px;justify-items:center;background:var(--panel);
 }
 
 /* ---------- ask ---------- */
 .ask-log{display:flex;flex-direction:column;gap:11px;margin-bottom:16px}
-.msg{max-width:74ch;padding:13px 17px;border-radius:var(--r-lg);font-size:.92rem;line-height:1.6}
+.msg{max-width:74ch;padding:13px 17px;border-radius:0;font-size:.92rem;line-height:1.6}
 .msg-you{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;font-weight:500}
 .msg-app{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--text)}
 .suggests{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
 .ask-form{display:flex;gap:9px}
 
 /* ---------- lookup / import / misc ---------- */
-.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:var(--accent-ink);padding:10px 15px;border-radius:var(--r-md);z-index:100;font-weight:600;font-size:.85rem}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:var(--accent-ink);padding:10px 15px;border-radius:0;z-index:100;font-weight:600;font-size:.85rem}
 .skip:focus{left:12px;top:10px}
 .lookup-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 .status{font-size:.79rem;color:var(--muted);line-height:1.5}
 .status.bad{color:var(--bad)}
 .status.good{color:var(--good)}
-.spin{width:12px;height:12px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);display:inline-block;animation:sp .7s linear infinite;vertical-align:-1px}
+.spin{width:12px;height:12px;border-radius:0;border:2px solid var(--line);border-top-color:var(--accent);display:inline-block;animation:sp .7s linear infinite;vertical-align:-1px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){.spin{animation:none;border-top-color:var(--line)}}
 .toast{
   position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
   background:var(--panel);color:var(--text);border:1px solid var(--line);
-  padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:500;z-index:200;
+  padding:12px 20px;border-radius:0;font-size:.85rem;font-weight:500;z-index:200;
   max-width:90vw;text-align:center;box-shadow:0 12px 40px -12px rgba(0,0,0,.7);
 }
 .kv{display:grid;grid-template-columns:auto 1fr;gap:0;font-size:.83rem;margin:0;
-  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+  background:var(--panel);border:1px solid var(--line);border-radius:0;overflow:hidden}
 .kv dt{color:var(--dim);padding:11px 17px;border-bottom:1px solid var(--line-2);font-size:.65rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
 .kv dd{margin:0;padding:11px 17px;border-bottom:1px solid var(--line-2);font-family:var(--mono);font-variant-numeric:tabular-nums;word-break:break-all;color:var(--text)}
 .kv dt:last-of-type,.kv dd:last-of-type{border-bottom:0}
 
-details.drop{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel)}
+details.drop{border:1px solid var(--line);border-radius:0;background:var(--panel)}
 details.drop>summary{
   cursor:pointer;padding:16px 21px;list-style:none;display:flex;align-items:center;gap:11px;
   font-size:.94rem;font-weight:600;color:var(--text);
 }
 details.drop>summary::-webkit-details-marker{display:none}
-details.drop>summary::before{content:"";width:26px;height:26px;border-radius:8px;background:var(--accent-wash);color:var(--accent);display:grid;place-items:center;font-size:1rem;font-weight:700;line-height:1}
+details.drop>summary::before{content:"";width:26px;height:26px;border-radius:0;background:var(--accent-wash);color:var(--accent);display:grid;place-items:center;font-size:1rem;font-weight:700;line-height:1}
 details.drop>summary::before{content:"+"}
 details.drop[open]>summary::before{content:"\2212"}
 details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 .drop-body{padding:19px 21px;display:grid;gap:14px}
 .dropzone{
-  border:1px dashed var(--line);border-radius:var(--r-md);padding:26px;text-align:center;
+  border:1px dashed var(--line);border-radius:0;padding:26px;text-align:center;
   background:var(--sunken);display:grid;gap:11px;justify-items:center;
 }
 .dropzone.over{border-color:var(--accent);background:var(--accent-wash)}
@@ -484,7 +484,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 <aside class="rail no-print">
   <button class="rail-brand" data-go="overview" type="button">
     <span class="rail-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="miter"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
     </span>
     <span class="rail-name">
       <b>VDA Trail</b>
@@ -494,27 +494,27 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
   <nav class="views" aria-label="Sections">
     <button type="button" data-go="overview">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span>Overview</span>
     </button>
     <button type="button" data-go="new">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M12 5v14M5 12h14"/></svg>
       <span>New Trail</span>
     </button>
     <button type="button" data-go="trails">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M6 7h9a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h9"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M6 4v16M6 7h9a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h9"/></svg>
       <span>Trails</span>
     </button>
     <button type="button" data-go="summary">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
       <span>Tax Summary</span>
     </button>
     <button type="button" data-go="ask">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.4 7.2L3 21l1.8-6.6A8 8 0 1 1 21 12z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M21 12a8 8 0 0 1-11.4 7.2L3 21l1.8-6.6A8 8 0 1 1 21 12z"/></svg>
       <span>Ask</span>
     </button>
     <button type="button" data-go="settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4z"/></svg>
       <span>Settings</span>
     </button>
   </nav>
@@ -523,7 +523,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
   <div class="rail-foot">
     <button class="btn btn-sm btn-quiet" id="themeBtn" type="button" aria-label="Switch colour theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
       Theme
     </button>
     <p class="rail-by">by Freya</p>
