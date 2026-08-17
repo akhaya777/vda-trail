@@ -19,6 +19,10 @@
 :root{
   --bg:#141110;
   --rail:#0E0C0C;
+  /* The rail needs its own hover/active fills. Reusing --panel breaks in light
+     mode, where the rail and the panels are both white. */
+  --rail-hover:#1B1716;
+  --rail-active:rgba(255,138,115,.14);
   --panel:#1B1716;
   --panel-2:#221D1C;
   --sunken:#100D0D;
@@ -59,6 +63,8 @@
   :root:not([data-theme="dark"]){
     --bg:#F6F3F1;
     --rail:#FFFFFF;
+    --rail-hover:#F0EBE8;
+    --rail-active:rgba(232,97,63,.13);
     --panel:#FFFFFF;
     --panel-2:#F4F0EE;
     --sunken:#EDE8E5;
@@ -88,7 +94,9 @@
 }
 :root[data-theme="light"]{
   --bg:#F6F3F1;
-  --rail:#FFFFFF;
+    --rail:#FFFFFF;
+    --rail-hover:#F0EBE8;
+    --rail-active:rgba(232,97,63,.13);
   --panel:#FFFFFF;
   --panel-2:#F4F0EE;
   --sunken:#EDE8E5;
@@ -170,8 +178,8 @@ nav.views button{
   text-align:left;width:100%;position:relative;transition:background .13s ease,color .13s ease;
 }
 nav.views button svg{width:18px;height:18px;flex:none;opacity:.85}
-nav.views button:hover{color:var(--text);background:var(--panel)}
-nav.views button[aria-current="page"]{color:var(--accent);background:var(--panel);font-weight:600}
+nav.views button:hover{color:var(--text);background:var(--rail-hover)}
+nav.views button[aria-current="page"]{color:var(--accent);background:var(--rail-active);font-weight:600}
 nav.views button[aria-current="page"]::after{
   content:"";position:absolute;right:-14px;top:8px;bottom:8px;width:3px;
   background:var(--accent);border-radius:0;
