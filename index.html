@@ -556,10 +556,14 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 .gate-logo .rail-mark svg{width:25px;height:25px}
 .gate-logo b{font-size:1.62rem;font-weight:800;letter-spacing:-.035em;color:var(--accent);line-height:1}
 
-.gate-pitch{align-self:center;display:grid;gap:clamp(20px,2.4vw,34px);max-width:15ch}
+.gate-pitch{align-self:center;display:grid;gap:clamp(18px,2.2vw,30px);max-width:none}
+/* One line, always. The panel is 45% of the viewport, so the size is driven by
+   vw rather than a fixed scale — the headline shrinks with its column instead
+   of wrapping. The clamp floor keeps it readable on a phone. */
 .gate-pitch h1{
-  font-size:clamp(2.1rem,1rem + 3.6vw,3.55rem);
-  font-weight:800;letter-spacing:-.038em;line-height:1.16;max-width:none;
+  font-size:clamp(.85rem,1.95vw,2.3rem);
+  font-weight:800;letter-spacing:-.038em;line-height:1.18;max-width:none;
+  white-space:nowrap;
 }
 .gate-pitch h1 em{font-style:normal;color:var(--accent)}
 .gate-pitch p{color:var(--muted);font-size:clamp(1rem,.9rem + .3vw,1.2rem);max-width:34ch}
@@ -612,6 +616,8 @@ input[readonly]:hover{border-color:var(--line)}
   .gate{grid-template-columns:1fr;align-content:start}
   .gate-left{grid-template-rows:auto auto;gap:34px;padding-bottom:34px}
   .gate-pitch{align-self:start;max-width:none}
+  /* the panel is full width here, so the line can take a bigger share of it */
+  .gate-pitch h1{font-size:clamp(.85rem,4.2vw,2rem)}
   .gate-by{display:none}
   .gate-right{place-items:start center}
 }
@@ -647,7 +653,7 @@ input[readonly]:hover{border-color:var(--line)}
     </div>
 
     <div class="gate-pitch">
-      <h1>Your CA used to do<br><em>this manually.</em></h1>
+      <h1>Your CA used to do <em>this manually.</em></h1>
       <p>We don't talk about those days.</p>
     </div>
 
