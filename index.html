@@ -56,6 +56,9 @@
   --r-md:0;
   --r-sm:0;
   --rail-w:252px;
+  /* Lets the browser paint scrollbars, form controls and the password reveal
+     icon to match, instead of always assuming a light page. */
+  color-scheme:dark;
 }
 /* Light counterpart keeps the same DNA: coral accent, rounded panels,
    uppercase labels — just flipped onto warm paper. */
@@ -90,6 +93,7 @@
     --crypto:#4359C4;
     --usdt:#1E9757;
     --inr:#A9700A;
+  color-scheme:light;
   }
 }
 :root[data-theme="light"]{
@@ -122,6 +126,7 @@
   --crypto:#4359C4;
   --usdt:#1E9757;
   --inr:#A9700A;
+  color-scheme:light;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -474,44 +479,6 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 .gate{
   position:fixed;inset:0;z-index:300;background:var(--bg);
   display:grid;grid-template-columns:1.12fr 1fr;overflow-y:auto;
-
-  /* The sign-in screen is always dark, whatever theme the app is set to.
-     Redefining the tokens here rather than hard-coding colours on each rule
-     means everything inside the gate follows automatically. */
-  --bg:#141110;
-  --rail:#0E0C0C;
-  --panel:#1B1716;
-  --panel-2:#221D1C;
-  --sunken:#100D0D;
-  --line:#2A2322;
-  --line-2:#201A19;
-
-  --text:#F5F1EF;
-  --muted:#8E8482;
-  --dim:#645B59;
-
-  --accent:#FF8A73;
-  --accent-ink:#1A0F0C;
-  --accent-wash:rgba(255,138,115,.13);
-  --accent-line:rgba(255,138,115,.32);
-
-  --good:#5FCF8A;
-  --good-wash:rgba(95,207,138,.12);
-  --warn:#E8A33D;
-  --warn-wash:rgba(232,163,61,.12);
-  --bad:#F2695C;
-  --bad-wash:rgba(242,105,92,.12);
-
-  --crypto:#8B9DF7;
-  --usdt:#5FCF8A;
-  --inr:#FFB35C;
-}
-/* The browser paints password reveal icons and autofill using the page's
-   own scheme, so tell it this region is dark even in light mode. */
-.gate{color-scheme:dark}
-.gate input:-webkit-autofill{
-  -webkit-text-fill-color:#F5F1EF;
-  -webkit-box-shadow:0 0 0 1000px #100D0D inset;
 }
 .gate[hidden]{display:none}
 
@@ -520,13 +487,10 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
   padding:clamp(30px,4.5vw,58px) clamp(28px,4vw,56px);
   display:flex;flex-direction:column;gap:26px;min-width:0;
 }
-.gate-spine{
-  position:absolute;left:0;top:0;bottom:0;width:6px;
-  background:linear-gradient(180deg,
-    var(--crypto) 0 50%,
-    var(--usdt)  50% 76%,
-    var(--inr)   76% 100%);
-}
+/* One accent stripe, nothing else. The four-colour version competed with the
+   form for attention; this just marks the edge and leaves the accent free to
+   mean one thing on this screen — what is taxed, and what to press. */
+.gate-spine{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
 .gate-logo{display:flex;align-items:center;gap:11px}
 .gate-logo .rail-mark{width:36px;height:36px}
 .gate-logo .rail-mark svg{width:19px;height:19px}
@@ -540,19 +504,40 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 
 .gate-hops{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
 .gate-hops li{
-  display:grid;grid-template-columns:4px 30px 1fr auto;align-items:center;gap:0 13px;
+  display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:0 14px;
   padding:12px 0;border-bottom:1px solid var(--line-2);
 }
-.gate-hops i{width:4px;height:26px;background:var(--c);display:block}
 .gate-hops b{font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--dim)}
-.gate-hops span.what{font-size:.9rem;color:var(--text)}
+.gate-hops span.what{font-size:.9rem;color:var(--muted)}
 .gate-hops span.tag{
   font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
   color:var(--dim);white-space:nowrap;
 }
-.gate-hops span.tag.tx{color:var(--bad)}
+/* the only colour in this list, on the only two rows that cost money */
+.gate-hops li.taxed span.what{color:var(--text)}
+.gate-hops li.taxed span.tag{color:var(--accent)}
+.gate-hops li.taxed b{color:var(--accent)}
 
-.gate-right{display:grid;place-items:center;padding:clamp(28px,4vw,48px) clamp(22px,3.5vw,44px);min-width:0}
+.gate-right{position:relative;display:grid;place-items:center;padding:clamp(28px,4vw,48px) clamp(22px,3.5vw,44px);min-width:0}
+.theme-icon{
+  position:absolute;top:clamp(20px,2.6vw,30px);right:clamp(20px,2.6vw,30px);
+  width:38px;height:38px;display:grid;place-items:center;cursor:pointer;
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  transition:color .13s ease,border-color .13s ease,background .13s ease;
+}
+.theme-icon:hover{color:var(--text);border-color:var(--dim);background:var(--panel)}
+.theme-icon svg{width:17px;height:17px}
+/* one icon per theme, only the relevant one is drawn */
+.theme-icon .sun{display:none}
+.theme-icon .moon{display:block}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]) .theme-icon .sun{display:block}
+  :root:not([data-theme="dark"]) .theme-icon .moon{display:none}
+}
+:root[data-theme="light"] .theme-icon .sun{display:block}
+:root[data-theme="light"] .theme-icon .moon{display:none}
+:root[data-theme="dark"] .theme-icon .sun{display:none}
+:root[data-theme="dark"] .theme-icon .moon{display:block}
 .gate-card{width:100%;max-width:378px;display:grid;gap:15px}
 .gate-card h2{font-size:1.55rem;letter-spacing:-.028em}
 .gate-card .sub{color:var(--muted);font-size:.93rem;margin-top:-9px}
@@ -566,8 +551,7 @@ input[readonly]:hover{border-color:var(--line)}
 @media (max-width:860px){
   .gate{grid-template-columns:1fr;align-content:start}
   .gate-left{border-right:0;border-bottom:1px solid var(--line);gap:20px;padding-bottom:26px}
-  .gate-spine{width:100%;height:5px;bottom:auto;
-    background:linear-gradient(90deg,var(--crypto) 0 50%,var(--usdt) 50% 76%,var(--inr) 76% 100%)}
+  .gate-spine{width:100%;height:3px;bottom:auto;background:var(--accent)}
   .gate-pitch{margin-top:6px}
   .gate-hops{display:none}
   .gate-right{place-items:start center}
@@ -611,14 +595,19 @@ input[readonly]:hover{border-color:var(--line)}
     </div>
 
     <ol class="gate-hops" aria-label="The journey this tool follows">
-      <li><i style="--c:var(--crypto)"></i><b>01</b><span class="what">Arrives in your wallet</span><span class="tag">cost basis</span></li>
-      <li><i style="--c:var(--crypto)"></i><b>02</b><span class="what">Moved to the exchange</span><span class="tag">not a sale</span></li>
-      <li><i style="--c:var(--usdt)"></i><b>03</b><span class="what">Converted to USDT</span><span class="tag tx">taxable</span></li>
-      <li><i style="--c:var(--inr)"></i><b>04</b><span class="what">Sold for rupees</span><span class="tag tx">taxable</span></li>
+      <li><b>01</b><span class="what">Arrives in your wallet</span><span class="tag">cost basis</span></li>
+      <li><b>02</b><span class="what">Moved to the exchange</span><span class="tag">not a sale</span></li>
+      <li class="taxed"><b>03</b><span class="what">Converted to USDT</span><span class="tag">taxable</span></li>
+      <li class="taxed"><b>04</b><span class="what">Sold for rupees</span><span class="tag">taxable</span></li>
     </ol>
   </section>
 
   <section class="gate-right">
+    <button class="theme-icon" id="gateThemeBtn" type="button" aria-label="Switch between light and dark">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="miter" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+
     <form class="gate-card" id="gateForm" autocomplete="on">
       <h2>Welcome back</h2>
       <p class="sub">Sign in to pick up your trail</p>
@@ -2823,13 +2812,20 @@ var THEME_KEY="serevia.theme";
   try{ saved=readWithLegacy(THEME_KEY,"vdatrail.theme"); }catch(e){}
   if(saved==="dark"||saved==="light") document.documentElement.setAttribute("data-theme",saved);
 })();
-document.getElementById("themeBtn").addEventListener("click",function(){
+/* One toggle, two buttons — the rail inside the app and the icon on the
+   sign-in screen. With no explicit choice stored we are on the system
+   setting, so read that to decide which way "the other one" is. */
+function toggleTheme(){
   var root=document.documentElement;
   var cur=root.getAttribute("data-theme");
   var isDark = cur ? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
   var next=isDark?"light":"dark";
   root.setAttribute("data-theme",next);
   try{ localStorage.setItem(THEME_KEY,next); }catch(e){}
+}
+["themeBtn","gateThemeBtn"].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener("click",toggleTheme);
 });
 
 /* ============================================================
