@@ -481,7 +481,28 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
    at the two taxable transfers, which is what the whole app is about. */
 .gate{
   position:fixed;inset:0;z-index:300;background:var(--bg);
-  display:grid;grid-template-columns:1.12fr 1fr;overflow-y:auto;
+  display:grid;grid-template-columns:45% 1fr;overflow-y:auto;
+  /* panel-local shades: the reference has no borders here, only tone changes */
+  --gate-wash:rgba(255,255,255,.045);
+  --gate-field:#060505;
+  --gate-field-line:#191716;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]) .gate{
+    --gate-wash:rgba(0,0,0,.035);
+    --gate-field:#F1ECE9;
+    --gate-field-line:#E2DAD6;
+  }
+}
+:root[data-theme="light"] .gate{
+  --gate-wash:rgba(0,0,0,.035);
+  --gate-field:#F1ECE9;
+  --gate-field-line:#E2DAD6;
+}
+:root[data-theme="dark"] .gate{
+  --gate-wash:rgba(255,255,255,.045);
+  --gate-field:#060505;
+  --gate-field-line:#191716;
 }
 
 /* The sign-in screen carries its own accent, separate from the app's coral.
@@ -516,37 +537,37 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 }
 .gate[hidden]{display:none}
 
+/* Left panel: logo pinned top-left, the statement sitting on the optical
+   centre line, the byline pinned bottom-left. The faint wash is lit from the
+   top-left corner so the panel does not read as a flat black rectangle. */
 .gate-left{
-  position:relative;background:var(--rail);border-right:1px solid var(--line);
-  padding:clamp(30px,4.5vw,58px) clamp(28px,4vw,56px);
-  display:flex;flex-direction:column;gap:26px;min-width:0;
+  position:relative;background:var(--rail);
+  padding:clamp(34px,3.6vw,58px) clamp(30px,3.9vw,74px);
+  display:grid;grid-template-rows:auto 1fr auto;min-width:0;
 }
-.gate-logo{display:flex;align-items:center;gap:11px}
-.gate-logo .rail-mark{width:36px;height:36px}
-.gate-logo .rail-mark svg{width:19px;height:19px}
-.gate-logo b{font-size:1.28rem;font-weight:800;letter-spacing:-.03em;color:var(--accent);line-height:1}
-.gate-pitch{margin-top:auto;display:grid;gap:16px}
+.gate-left::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 0% 0%, var(--gate-wash) 0%, transparent 62%);
+}
+.gate-left>*{position:relative}
+
+.gate-logo{display:flex;align-items:center;gap:14px}
+.gate-logo .rail-mark{width:50px;height:50px}
+.gate-logo .rail-mark svg{width:25px;height:25px}
+.gate-logo b{font-size:1.62rem;font-weight:800;letter-spacing:-.035em;color:var(--accent);line-height:1}
+
+.gate-pitch{align-self:center;display:grid;gap:clamp(20px,2.4vw,34px);max-width:15ch}
 .gate-pitch h1{
-  font-size:clamp(2rem,1.1rem + 3vw,3.3rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;
+  font-size:clamp(2.1rem,1rem + 3.6vw,3.55rem);
+  font-weight:800;letter-spacing:-.038em;line-height:1.16;max-width:none;
 }
 .gate-pitch h1 em{font-style:normal;color:var(--accent)}
-.gate-pitch p{color:var(--muted);font-size:1rem;max-width:44ch}
+.gate-pitch p{color:var(--muted);font-size:clamp(1rem,.9rem + .3vw,1.2rem);max-width:34ch}
 
-.gate-hops{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
-.gate-hops li{
-  display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:0 14px;
-  padding:12px 0;border-bottom:1px solid var(--line-2);
+.gate-by{
+  align-self:end;margin:0;
+  font-size:.72rem;font-weight:600;letter-spacing:.19em;text-transform:uppercase;color:var(--dim);
 }
-.gate-hops b{font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--dim)}
-.gate-hops span.what{font-size:.9rem;color:var(--muted)}
-.gate-hops span.tag{
-  font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--dim);white-space:nowrap;
-}
-/* the only colour in this list, on the only two rows that cost money */
-.gate-hops li.taxed span.what{color:var(--text)}
-.gate-hops li.taxed span.tag{color:var(--accent)}
-.gate-hops li.taxed b{color:var(--accent)}
 
 .gate-right{position:relative;display:grid;place-items:center;padding:clamp(28px,4vw,48px) clamp(22px,3.5vw,44px);min-width:0}
 .theme-icon{
@@ -568,21 +589,30 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 :root[data-theme="light"] .theme-icon .moon{display:none}
 :root[data-theme="dark"] .theme-icon .sun{display:none}
 :root[data-theme="dark"] .theme-icon .moon{display:block}
-.gate-card{width:100%;max-width:378px;display:grid;gap:15px}
-.gate-card h2{font-size:1.55rem;letter-spacing:-.028em}
-.gate-card .sub{color:var(--muted);font-size:.93rem;margin-top:-9px}
-.gate-card .btn{justify-content:center;padding:13px 15px;font-size:.9rem;margin-top:4px}
-.gate-card input{padding:13px 14px;font-size:.95rem}
-.gate-note{border-top:1px solid var(--line-2);padding-top:14px;margin-top:6px;display:grid;gap:7px}
+/* Right panel: one column, wider than a typical card and with no border or
+   panel fill — the form floats on the ground, exactly as in the reference. */
+.gate-card{width:100%;max-width:502px;display:grid;gap:0}
+.gate-card h2{font-size:clamp(1.5rem,1.2rem + .8vw,1.72rem);letter-spacing:-.028em;margin-bottom:9px}
+.gate-card .sub{color:var(--muted);font-size:1.04rem;margin-bottom:clamp(30px,3.4vw,46px)}
+.gate-card label{gap:11px;margin-bottom:24px;font-size:.72rem;letter-spacing:.12em}
+.gate-card input{padding:18px 19px;font-size:1rem;background:var(--gate-field);border-color:var(--gate-field-line)}
+.gate-card input::placeholder{color:var(--dim)}
+.gate-card .btn{
+  justify-content:center;gap:11px;padding:21px 15px;font-size:1.02rem;font-weight:700;
+  margin-top:clamp(20px,2.4vw,30px);
+}
+.gate-card .btn svg{width:17px;height:17px}
+.gate-card .status:not(:empty){margin-top:16px}
+.gate-note{border-top:1px solid var(--line-2);padding-top:16px;margin-top:26px;display:grid;gap:7px}
 input[readonly]{color:var(--muted);cursor:not-allowed}
 input[readonly]:hover{border-color:var(--line)}
 .app-hidden{display:none!important}
 
-@media (max-width:860px){
+@media (max-width:900px){
   .gate{grid-template-columns:1fr;align-content:start}
-  .gate-left{border-right:0;border-bottom:1px solid var(--line);gap:20px;padding-bottom:26px}
-  .gate-pitch{margin-top:6px}
-  .gate-hops{display:none}
+  .gate-left{grid-template-rows:auto auto;gap:34px;padding-bottom:34px}
+  .gate-pitch{align-self:start;max-width:none}
+  .gate-by{display:none}
   .gate-right{place-items:start center}
 }
 
@@ -617,16 +647,11 @@ input[readonly]:hover{border-color:var(--line)}
     </div>
 
     <div class="gate-pitch">
-      <h1>Four hops.<br><em>Two of them are taxed.</em></h1>
-      <p>Most people count one sale and file on that. The rupees only move once, so it feels like one. It is two, and the second one cannot borrow the first one's loss.</p>
+      <h1>Your CA used to do<br><em>this manually.</em></h1>
+      <p>We don't talk about those days.</p>
     </div>
 
-    <ol class="gate-hops" aria-label="The journey this tool follows">
-      <li><b>01</b><span class="what">Arrives in your wallet</span><span class="tag">cost basis</span></li>
-      <li><b>02</b><span class="what">Moved to the exchange</span><span class="tag">not a sale</span></li>
-      <li class="taxed"><b>03</b><span class="what">Converted to USDT</span><span class="tag">taxable</span></li>
-      <li class="taxed"><b>04</b><span class="what">Sold for rupees</span><span class="tag">taxable</span></li>
-    </ol>
+    <p class="gate-by">by Freya</p>
   </section>
 
   <section class="gate-right">
@@ -637,7 +662,7 @@ input[readonly]:hover{border-color:var(--line)}
 
     <form class="gate-card" id="gateForm" autocomplete="on">
       <h2>Welcome back</h2>
-      <p class="sub">Sign in to pick up your trail</p>
+      <p class="sub">Sign in to your workspace</p>
       <label>Username
         <input type="text" id="gateUser" name="username" value="hellspook" readonly autocomplete="username">
       </label>
