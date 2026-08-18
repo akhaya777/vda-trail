@@ -487,10 +487,6 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
   padding:clamp(30px,4.5vw,58px) clamp(28px,4vw,56px);
   display:flex;flex-direction:column;gap:26px;min-width:0;
 }
-/* One accent stripe, nothing else. The four-colour version competed with the
-   form for attention; this just marks the edge and leaves the accent free to
-   mean one thing on this screen — what is taxed, and what to press. */
-.gate-spine{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
 .gate-logo{display:flex;align-items:center;gap:11px}
 .gate-logo .rail-mark{width:36px;height:36px}
 .gate-logo .rail-mark svg{width:19px;height:19px}
@@ -551,7 +547,6 @@ input[readonly]:hover{border-color:var(--line)}
 @media (max-width:860px){
   .gate{grid-template-columns:1fr;align-content:start}
   .gate-left{border-right:0;border-bottom:1px solid var(--line);gap:20px;padding-bottom:26px}
-  .gate-spine{width:100%;height:3px;bottom:auto;background:var(--accent)}
   .gate-pitch{margin-top:6px}
   .gate-hops{display:none}
   .gate-right{place-items:start center}
@@ -580,8 +575,6 @@ input[readonly]:hover{border-color:var(--line)}
 <div class="gate no-print" id="gate" hidden>
 
   <section class="gate-left">
-    <span class="gate-spine" aria-hidden="true"></span>
-
     <div class="gate-logo">
       <span class="rail-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="miter"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
