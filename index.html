@@ -563,12 +563,12 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
    vw rather than a fixed scale — the headline shrinks with its column instead
    of wrapping. The clamp floor keeps it readable on a phone. */
 .gate-pitch h1{
-  font-size:clamp(.85rem,1.95vw,2.3rem);
-  font-weight:800;letter-spacing:-.038em;line-height:1.18;max-width:none;
+  font-size:clamp(.8rem,1.5vw,1.75rem);
+  font-weight:800;letter-spacing:-.032em;line-height:1.2;max-width:none;
   white-space:nowrap;
 }
 .gate-pitch h1 em{font-style:normal;color:var(--accent)}
-.gate-pitch p{color:var(--muted);font-size:clamp(1rem,.9rem + .3vw,1.2rem);max-width:34ch}
+.gate-pitch p{color:var(--muted);font-size:clamp(.86rem,.82rem + .2vw,1rem);max-width:38ch}
 
 .gate-by{
   align-self:end;margin:0;
@@ -619,7 +619,7 @@ input[readonly]:hover{border-color:var(--line)}
   .gate-left{grid-template-rows:auto auto;gap:34px;padding-bottom:34px}
   .gate-pitch{align-self:start;max-width:none}
   /* the panel is full width here, so the line can take a bigger share of it */
-  .gate-pitch h1{font-size:clamp(.85rem,4.2vw,2rem)}
+  .gate-pitch h1{font-size:clamp(.8rem,3.2vw,1.5rem)}
   .gate-by{display:none}
   .gate-right{place-items:start center}
 }
