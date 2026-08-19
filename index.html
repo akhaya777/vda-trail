@@ -615,22 +615,6 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 }
 .gate-card .btn svg{width:17px;height:17px}
 .gate-card .status:not(:empty){margin-top:16px}
-/* Sits directly under the password field, pulled up out of that label's own
-   bottom margin so it reads as part of the field rather than as a new row. */
-.gate-forgot{
-  justify-self:start;margin:-6px 0 -2px;padding:0;border:0;background:none;border-radius:0;
-  font:inherit;font-size:11px;letter-spacing:0;color:var(--muted);
-  display:inline-flex;align-items:center;gap:6px;cursor:pointer;
-}
-.gate-forgot:hover{color:var(--accent)}
-.gate-forgot svg{width:12px;height:12px;flex:none}
-.gate-reset{border-top:1px solid var(--line-2);padding-top:14px;margin-top:18px;display:grid;gap:10px}
-/* The card's own label and field sizing is undone here so the panel stays
-   compact rather than inheriting full sign-in-sized rows. */
-.gate-reset label{margin-bottom:0;gap:5px}
-.gate-reset input{padding:8px 12px;font-size:13px}
-.gate-reset .btn{margin-top:0;padding:8px 12px;font-size:11px}
-.gate-reset .status:not(:empty){margin-top:0}
 input[readonly]{color:var(--muted);cursor:not-allowed}
 input[readonly]:hover{border-color:var(--line)}
 .app-hidden{display:none!important}
@@ -704,30 +688,11 @@ input[readonly]:hover{border-color:var(--line)}
       <label>Password
         <input type="password" id="gatePass" name="password" autocomplete="current-password" placeholder="••••••" required>
       </label>
-      <button class="gate-forgot" type="button" id="gateForgot">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="miter" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 1 1 3.2 3.2v1.4"/><path d="M12.6 17.2h-.01"/></svg>
-        Forgot password?
-      </button>
       <button class="btn btn-primary" type="submit" id="gateBtn">
         Sign in
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="miter"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
       </button>
       <p class="status" id="gateStatus" role="status" aria-live="polite"></p>
-      <div class="gate-reset" id="gateReset" hidden>
-        <p class="xs">Set a new password, or fall back to the default. Either way it happens only in this browser, and your saved trails and settings are left alone.</p>
-        <label>New password
-          <input type="password" id="gateNewPass" autocomplete="new-password" placeholder="At least 4 characters">
-        </label>
-        <label>Confirm new password
-          <input type="password" id="gateNewPass2" autocomplete="new-password" placeholder="Type it again">
-        </label>
-        <div class="btn-row">
-          <button class="btn btn-sm btn-primary" type="button" id="gateSetGo">Set new password</button>
-          <button class="btn btn-sm" type="button" id="gateResetGo">Restore default</button>
-          <button class="btn btn-sm" type="button" id="gateResetNo">Cancel</button>
-        </div>
-        <p class="status" id="gateResetStatus" role="status" aria-live="polite"></p>
-      </div>
     </form>
   </section>
 
@@ -2997,69 +2962,12 @@ document.getElementById("gateForm").addEventListener("submit",function(ev){
       document.getElementById("gatePass").focus();
       /* Say WHICH password was checked. Being told the default is wrong when
          this browser is actually holding a password you set months ago is the
-         difference between a two-second fix and being locked out. */
+         difference between a two-second fix and a long confused hunt. */
       setStatus("gateStatus", currentAuth().isDefault
         ? "That password is not right."
-        : "That password is not right. This browser is using a password you set yourself — use Forgot password to restore the default.","bad");
+        : "That password is not right. This browser is using a password you set yourself, not the default one.","bad");
     }
   },30);
-});
-
-/* No server, so "forgot" can only mean: drop the password this browser is
-   holding and fall back to the shipped default. Trails and settings live under
-   different keys and are deliberately left alone. */
-function gateResetHide(){
-  document.getElementById("gateReset").hidden=true;
-  setStatus("gateResetStatus","");
-  document.getElementById("gateNewPass").value="";
-  document.getElementById("gateNewPass2").value="";
-}
-/* Hand the sign-in field back afterwards: whichever branch ran, the next step
-   is always to sign in with the password you just settled on. */
-function gateBackToSignIn(msg){
-  gateResetHide();
-  var pass=document.getElementById("gatePass");
-  pass.value=""; pass.focus();
-  setStatus("gateStatus",msg,"good");
-}
-document.getElementById("gateForgot").addEventListener("click",function(){
-  var box=document.getElementById("gateReset");
-  if(box.hidden){
-    box.hidden=false;
-    setStatus("gateStatus","");
-    document.getElementById("gateNewPass").focus();
-  } else gateResetHide();
-});
-document.getElementById("gateResetNo").addEventListener("click",gateResetHide);
-document.getElementById("gateResetGo").addEventListener("click",function(){
-  try{ localStorage.removeItem(AUTH_KEY); }catch(e){}
-  setSignedIn(false);
-  gateBackToSignIn("Default password restored. Sign in, then set your own under Settings.");
-});
-
-/* Setting a new password here asks for no old one — but neither does restoring
-   the default, and the default is public. Both branches grant exactly the same
-   access, so this is convenience, not extra exposure. */
-function gateSetPassword(){
-  var a=document.getElementById("gateNewPass").value;
-  var b=document.getElementById("gateNewPass2").value;
-  if(a.length<4){ setStatus("gateResetStatus","The new password needs at least 4 characters.","bad"); return; }
-  if(a!==b){ setStatus("gateResetStatus","The two passwords do not match.","bad"); return; }
-  setStatus("gateResetStatus","Working…","busy");
-  setTimeout(function(){
-    var salt=randomSalt();
-    storeAuth({salt:salt,hash:derivePassword(a,salt),isDefault:false,changedAt:new Date().toISOString()});
-    setSignedIn(false);
-    gateBackToSignIn("Password changed. Sign in with your new password.");
-  },30);
-}
-document.getElementById("gateSetGo").addEventListener("click",gateSetPassword);
-/* These sit inside the sign-in form, so Enter would otherwise fire a sign-in
-   attempt with an empty password field. */
-["gateNewPass","gateNewPass2"].forEach(function(id){
-  document.getElementById(id).addEventListener("keydown",function(ev){
-    if(ev.key==="Enter"){ ev.preventDefault(); gateSetPassword(); }
-  });
 });
 
 document.getElementById("signOutBtn").addEventListener("click",function(){
