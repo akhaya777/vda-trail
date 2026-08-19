@@ -540,14 +540,13 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 /* Left panel: logo pinned top-left, the statement sitting on the optical
    centre line, the byline pinned bottom-left. The faint wash is lit from the
    top-left corner so the panel does not read as a flat black rectangle. */
+/* Every number below is read off the reference's own stylesheet rather than
+   measured off a screenshot: p-12, mb-16, text-[42px], leading-[1.1] and so on.
+   The screenshot renders 1.5x larger only because that display is at 150%
+   scaling — the CSS behind it is this size. */
 .gate-left{
-  position:relative;background:var(--rail);
-  padding:clamp(28px,2.37vw,46px) clamp(30px,3.4vw,68px);
-  /* logo, the statement, then an empty row that takes the slack so the byline
-     still sits on the floor. The gap is deliberately large: in the reference
-     the statement sits in the upper third, not tucked under the logo and not
-     centred in the panel. */
-  display:grid;grid-template-rows:auto auto 1fr;row-gap:clamp(40px,5.6vw,110px);min-width:0;
+  position:relative;background:var(--rail);padding:48px;
+  display:flex;flex-direction:column;min-width:0;
 }
 .gate-left::before{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -555,26 +554,30 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 }
 .gate-left>*{position:relative}
 
-.gate-logo{display:flex;align-items:center;gap:14px}
-.gate-logo .rail-mark{width:52px;height:52px}
-.gate-logo .rail-mark svg{width:26px;height:26px}
-.gate-logo b{font-size:1.62rem;font-weight:800;letter-spacing:-.035em;color:var(--accent);line-height:1}
+.gate-logo{display:flex;align-items:center;gap:10px;margin-bottom:64px}
+.gate-logo .rail-mark{width:36px;height:36px}
+.gate-logo .rail-mark svg{width:18px;height:18px}
+.gate-logo b{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--accent);line-height:1.4}
 
-.gate-pitch{align-self:start;display:grid;gap:clamp(20px,2.2vw,42px);max-width:none}
+.gate-pitch{display:grid;gap:20px;max-width:none}
 /* Two lines, broken at the accent — the second half is the <em>, so making it
    a block is what forces the break. That beats a <br> because each half then
    wraps on its own if a narrow screen ever demands it, instead of overflowing.
    The panel is 45% of the viewport, so size is driven by vw, not a fixed scale. */
+/* 42px is the reference's fixed size. Ours is capped there but allowed to
+   shrink below ~1180px, because our line is 18 characters against their 16 —
+   at a fixed 42px it would spill onto a third line on a narrow laptop. */
 .gate-pitch h1{
-  font-size:clamp(1.55rem,3.365vw,4rem);
-  font-weight:800;letter-spacing:-.034em;line-height:1.08;max-width:none;
+  font-size:min(42px,3.55vw);
+  font-weight:700;letter-spacing:-.025em;line-height:1.1;max-width:none;
 }
 .gate-pitch h1 em{display:block;font-style:normal;color:var(--accent)}
-.gate-pitch p{color:var(--muted);font-size:clamp(1.05rem,1.262vw,1.5rem);max-width:38ch}
+.gate-pitch p{color:var(--muted);font-size:16px;line-height:1.625;max-width:448px}
 
 .gate-by{
-  align-self:end;margin:0;
-  font-size:.72rem;font-weight:600;letter-spacing:.19em;text-transform:uppercase;color:var(--dim);
+  margin:auto 0 0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
 }
 
 .gate-right{position:relative;display:grid;place-items:center;padding:clamp(28px,4vw,48px) clamp(22px,3.5vw,44px);min-width:0}
@@ -599,19 +602,16 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 :root[data-theme="dark"] .theme-icon .moon{display:block}
 /* Right panel: one column, wider than a typical card and with no border or
    panel fill — the form floats on the ground, exactly as in the reference. */
-.gate-card{width:100%;max-width:502px;display:grid;gap:0}
-/* Fixed px, not vw: the form column never changes width, so scaling it with
-   the viewport is what made it read differently from the reference on a
-   narrower window. These are the reference sizes, derived from the measured
-   pixel width of each string divided by its width in em units. */
-.gate-card h2{font-size:2rem;letter-spacing:-.028em;margin-bottom:9px}
-.gate-card .sub{color:var(--muted);font-size:1.3125rem;margin-bottom:clamp(34px,3.9vw,54px)}
-.gate-card label{gap:18px;margin-bottom:30px;font-size:.8125rem;letter-spacing:.12em}
-.gate-card input{padding:13px 16px;font-size:1.3125rem;background:var(--gate-field);border-color:var(--gate-field-line)}
+/* max-w-sm + px-6, border-box: 384px outer, 336px of actual field width. */
+.gate-card{width:100%;max-width:384px;padding:0 24px;display:grid;gap:0}
+.gate-card h2{font-size:20px;font-weight:700;letter-spacing:-.025em;margin-bottom:4px}
+.gate-card .sub{color:var(--muted);font-size:14px;margin-bottom:32px}
+.gate-card label{gap:6px;margin-bottom:16px;font-size:10px;font-weight:600;letter-spacing:.1em}
+.gate-card input{padding:10px 14px;font-size:14px;background:var(--gate-field);border-color:var(--gate-field-line)}
 .gate-card input::placeholder{color:var(--dim)}
 .gate-card .btn{
-  justify-content:center;gap:11px;padding:18px 15px;font-size:1.3125rem;font-weight:700;
-  margin-top:clamp(28px,3.3vw,46px);
+  justify-content:center;gap:8px;padding:12px 15px;font-size:14px;font-weight:700;
+  margin-top:28px;
 }
 .gate-card .btn svg{width:17px;height:17px}
 .gate-card .status:not(:empty){margin-top:16px}
@@ -619,18 +619,18 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 /* Sits directly under the password field, pulled up out of that label's own
    bottom margin so it reads as part of the field rather than as a new row. */
 .gate-forgot{
-  justify-self:start;margin:-18px 0 -16px;padding:0;border:0;background:none;border-radius:0;
-  font:inherit;font-size:.82rem;letter-spacing:0;color:var(--muted);
-  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  justify-self:start;margin:-6px 0 -2px;padding:0;border:0;background:none;border-radius:0;
+  font:inherit;font-size:11px;letter-spacing:0;color:var(--muted);
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;
 }
 .gate-forgot:hover{color:var(--accent)}
-.gate-forgot svg{width:14px;height:14px;flex:none}
-.gate-reset{border-top:1px solid var(--line-2);padding-top:16px;margin-top:20px;display:grid;gap:12px}
-/* A compact panel inside a roomy card, so the card's own sizing is undone
-   here rather than the panel inheriting sign-in-sized fields and buttons. */
-.gate-reset label{margin-bottom:0;gap:8px}
-.gate-reset input{padding:11px 13px;font-size:.92rem}
-.gate-reset .btn{margin-top:0;padding:10px 14px;font-size:.82rem}
+.gate-forgot svg{width:12px;height:12px;flex:none}
+.gate-reset{border-top:1px solid var(--line-2);padding-top:14px;margin-top:18px;display:grid;gap:10px}
+/* The card's own label and field sizing is undone here so the panel stays
+   compact rather than inheriting full sign-in-sized rows. */
+.gate-reset label{margin-bottom:0;gap:5px}
+.gate-reset input{padding:8px 12px;font-size:13px}
+.gate-reset .btn{margin-top:0;padding:8px 12px;font-size:11px}
 .gate-reset .status:not(:empty){margin-top:0}
 input[readonly]{color:var(--muted);cursor:not-allowed}
 input[readonly]:hover{border-color:var(--line)}
@@ -638,8 +638,9 @@ input[readonly]:hover{border-color:var(--line)}
 
 @media (max-width:900px){
   .gate{grid-template-columns:1fr;align-content:start}
-  .gate-left{grid-template-rows:auto auto;gap:34px;padding-bottom:34px}
-  .gate-pitch{align-self:start;max-width:none}
+  .gate-left{padding:32px}
+  .gate-logo{margin-bottom:32px}
+  .gate-pitch{max-width:none}
   /* the panel is full width here, so the line can take a bigger share of it */
   .gate-pitch h1{font-size:clamp(1.5rem,6.4vw,2.6rem)}
   .gate-by{display:none}
