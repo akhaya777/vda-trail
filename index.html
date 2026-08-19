@@ -542,7 +542,7 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
    top-left corner so the panel does not read as a flat black rectangle. */
 .gate-left{
   position:relative;background:var(--rail);
-  padding:clamp(30px,2.6vw,50px) clamp(30px,3.4vw,68px);
+  padding:clamp(28px,2.37vw,46px) clamp(30px,3.4vw,68px);
   /* logo, the statement, then an empty row that takes the slack so the byline
      still sits on the floor. The gap is deliberately large: in the reference
      the statement sits in the upper third, not tucked under the logo and not
@@ -566,11 +566,11 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
    wraps on its own if a narrow screen ever demands it, instead of overflowing.
    The panel is 45% of the viewport, so size is driven by vw, not a fixed scale. */
 .gate-pitch h1{
-  font-size:clamp(1.55rem,3.26vw,3.9rem);
+  font-size:clamp(1.55rem,3.365vw,4rem);
   font-weight:800;letter-spacing:-.034em;line-height:1.08;max-width:none;
 }
 .gate-pitch h1 em{display:block;font-style:normal;color:var(--accent)}
-.gate-pitch p{color:var(--muted);font-size:clamp(1rem,.9rem + .3vw,1.2rem);max-width:38ch}
+.gate-pitch p{color:var(--muted);font-size:clamp(1.05rem,1.262vw,1.5rem);max-width:38ch}
 
 .gate-by{
   align-self:end;margin:0;
@@ -600,13 +600,17 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 /* Right panel: one column, wider than a typical card and with no border or
    panel fill — the form floats on the ground, exactly as in the reference. */
 .gate-card{width:100%;max-width:502px;display:grid;gap:0}
-.gate-card h2{font-size:clamp(1.5rem,1.2rem + .9vw,1.9rem);letter-spacing:-.028em;margin-bottom:9px}
-.gate-card .sub{color:var(--muted);font-size:1.04rem;margin-bottom:clamp(34px,3.9vw,54px)}
-.gate-card label{gap:18px;margin-bottom:30px;font-size:.72rem;letter-spacing:.12em}
-.gate-card input{padding:18px 19px;font-size:1rem;background:var(--gate-field);border-color:var(--gate-field-line)}
+/* Fixed px, not vw: the form column never changes width, so scaling it with
+   the viewport is what made it read differently from the reference on a
+   narrower window. These are the reference sizes, derived from the measured
+   pixel width of each string divided by its width in em units. */
+.gate-card h2{font-size:2rem;letter-spacing:-.028em;margin-bottom:9px}
+.gate-card .sub{color:var(--muted);font-size:1.3125rem;margin-bottom:clamp(34px,3.9vw,54px)}
+.gate-card label{gap:18px;margin-bottom:30px;font-size:.8125rem;letter-spacing:.12em}
+.gate-card input{padding:13px 16px;font-size:1.3125rem;background:var(--gate-field);border-color:var(--gate-field-line)}
 .gate-card input::placeholder{color:var(--dim)}
 .gate-card .btn{
-  justify-content:center;gap:11px;padding:23px 15px;font-size:1.02rem;font-weight:700;
+  justify-content:center;gap:11px;padding:18px 15px;font-size:1.3125rem;font-weight:700;
   margin-top:clamp(28px,3.3vw,46px);
 }
 .gate-card .btn svg{width:17px;height:17px}
