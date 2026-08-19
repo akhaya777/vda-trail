@@ -615,7 +615,6 @@ details.drop[open]>summary{border-bottom:1px solid var(--line-2)}
 }
 .gate-card .btn svg{width:17px;height:17px}
 .gate-card .status:not(:empty){margin-top:16px}
-.gate-note{border-top:1px solid var(--line-2);padding-top:16px;margin-top:26px;display:grid;gap:7px}
 /* Sits directly under the password field, pulled up out of that label's own
    bottom margin so it reads as part of the field rather than as a new row. */
 .gate-forgot{
@@ -723,10 +722,6 @@ input[readonly]:hover{border-color:var(--line)}
           <button class="btn btn-sm" type="button" id="gateResetNo">Cancel</button>
         </div>
         <p class="status" id="gateResetStatus" role="status" aria-live="polite"></p>
-      </div>
-      <div class="gate-note">
-        <p class="xs">One fixed account. The username cannot be changed; the password can, under Settings.</p>
-        <p class="xs">There is no email reset, because there is no server. Restoring the default password happens entirely in this browser and leaves your saved trails alone.</p>
       </div>
     </form>
   </section>
